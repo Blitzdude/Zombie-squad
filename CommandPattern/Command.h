@@ -50,3 +50,11 @@ class MoveRightCommand : public Command
         actor.moveRight();
     }
 };
+
+class NothingCommand : public Command
+{
+    virtual void execute(Actor& actor) override
+    {
+        // Empty command, do nothing
+    }
+};
