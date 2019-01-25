@@ -5,55 +5,55 @@ class Command
 {
 public:
     virtual ~Command() {}
-    virtual void execute(Actor& actor) = 0;
+    virtual void execute(Actor& actor, float deltaTime) = 0;
 
 };
 
 class JumpCommand : public Command
 {
 public:
-    virtual void execute(Actor& actor) override
+    virtual void execute(Actor& actor, float deltaTime) override
     {
-        actor.jump();
+        actor.jump(deltaTime);
     }
 };
 
 class MoveUpCommand : public Command
 {
-    virtual void execute(Actor& actor) override
+    virtual void execute(Actor& actor, float deltaTime) override
     {
-        actor.moveUp();
+        actor.moveUp(deltaTime);
     }
 
 };
 
 class MoveDownCommand : public Command
 {
-    virtual void execute(Actor& actor) override
+    virtual void execute(Actor& actor, float deltaTime) override
     {
-        actor.moveDown();
+        actor.moveDown(deltaTime);
     }
 };
 
 class MoveLeftCommand : public Command
 {
-    virtual void execute(Actor& actor) override
+    virtual void execute(Actor& actor, float deltaTime) override
     {
-        actor.moveLeft();
+        actor.moveLeft(deltaTime);
     }
 };
 
 class MoveRightCommand : public Command
 {
-    virtual void execute(Actor& actor) override
+    virtual void execute(Actor& actor, float deltaTime) override
     {
-        actor.moveRight();
+        actor.moveRight(deltaTime);
     }
 };
 
 class NothingCommand : public Command
 {
-    virtual void execute(Actor& actor) override
+    virtual void execute(Actor&, float) override
     {
         // Empty command, do nothing
     }

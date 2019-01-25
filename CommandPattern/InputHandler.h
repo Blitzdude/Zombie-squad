@@ -26,6 +26,7 @@ private:
 InputHandler::InputHandler(olc::PixelGameEngine& engine)
     : m_engine(&engine)
 {
+    bindButtons();
 }
 
 InputHandler::~InputHandler()
@@ -41,11 +42,26 @@ InputHandler::~InputHandler()
 
 inline Command* InputHandler::handleInput()
 {
-    if (m_engine->GetKey(olc::W).bPressed)     return buttonW;
-    if (m_engine->GetKey(olc::A).bPressed)     return buttonA;
-    if (m_engine->GetKey(olc::S).bPressed)     return buttonS;
-    if (m_engine->GetKey(olc::D).bPressed)     return buttonD;
-    if (m_engine->GetKey(olc::SPACE).bPressed) return buttonSpace;
+    if (m_engine->GetKey(olc::W).bPressed)
+    {
+        return buttonW;
+    }
+    if (m_engine->GetKey(olc::A).bPressed)
+    {
+        return buttonA;
+    }
+    if (m_engine->GetKey(olc::S).bPressed)
+    {
+        return buttonS;
+    }
+    if (m_engine->GetKey(olc::D).bPressed)
+    {
+        return buttonD;
+    }
+    if (m_engine->GetKey(olc::SPACE).bPressed)
+    {
+        return buttonSpace;
+    }
 
     return nullptr;
 }

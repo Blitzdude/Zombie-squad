@@ -1,20 +1,60 @@
 #pragma once
 
-/* Actor base class ment for inheritance*/
+/* Actor base class meant for inheritance*/
 class Actor
 {
 public:
     Actor();
     virtual ~Actor();
 
-    virtual void draw() const = 0;
+    virtual void jump(float deltaTime);
+    virtual void moveLeft(float deltaTime);
+    virtual void moveRight(float deltaTime);
+    virtual void moveUp(float deltaTime);
+    virtual void moveDown(float deltaTime);
 
-    virtual void jump();
-    virtual void moveLeft();
-    virtual void moveRight();
-    virtual void moveUp();
-    virtual void moveDown();
+    // Getters/setters
+    float getXPos() {return m_xPos;};
+    float getYPos() { return m_yPos;};
+
+    void setXPos(float val) { m_xPos = val;};
+    void setYPos(float val) { m_yPos = val; };
+
 private:
     float m_xPos;
     float m_yPos;
 };
+
+
+Actor::Actor()
+{
+}
+
+Actor::~Actor()
+{
+}
+
+void Actor::jump(float deltaTime)
+{
+    std::cout << "jumping\n";
+}
+
+void Actor::moveLeft(float deltaTime)
+{
+    std::cout << "moving left\n";
+}
+
+void Actor::moveRight(float deltaTime)
+{
+    std::cout << "moving right\n";
+}
+
+void Actor::moveUp(float deltaTime)
+{
+    std::cout << "moving up\n";
+}
+
+void Actor::moveDown(float deltaTime)
+{
+    std::cout << "moving down\n";
+}
