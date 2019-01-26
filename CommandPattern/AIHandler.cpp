@@ -17,7 +17,7 @@ AIHandler::~AIHandler()
 
 }
 
-Command* AIHandler::handleInput(const Actor &actor)
+Command* AIHandler::handleInput(const Actor &player)
 {
     if (0) return UpCommand;
     if (0) return DownCommand;
