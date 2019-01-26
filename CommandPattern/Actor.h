@@ -4,8 +4,8 @@
 class Actor
 {
 public:
-    Actor();
-    virtual ~Actor();
+    Actor() {};
+    virtual ~Actor() {};
 
     virtual void jump(float deltaTime);
     virtual void moveLeft(float deltaTime);
@@ -24,37 +24,3 @@ private:
     float m_xPos;
     float m_yPos;
 };
-
-
-Actor::Actor()
-{
-}
-
-Actor::~Actor()
-{
-}
-
-void Actor::jump(float deltaTime)
-{
-    std::cout << "jumping\n";
-}
-
-void Actor::moveLeft(float deltaTime)
-{
-    std::cout << "moving left\n";
-}
-
-void Actor::moveRight(float deltaTime)
-{
-    std::cout << "moving right\n";
-}
-
-void Actor::moveUp(float deltaTime)
-{
-    std::cout << "moving up\n";
-}
-
-void Actor::moveDown(float deltaTime)
-{
-    std::cout << "moving down\n";
-}

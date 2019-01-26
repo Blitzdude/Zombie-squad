@@ -116,14 +116,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="AIHandler.h" />
     <ClInclude Include="Command.h" />
-    <ClInclude Include="Actor.cpp" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="InputHandler.h" />
+    <ClInclude Include="MainGame.h" />
     <ClInclude Include="olcPixelGameEngine.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="AIHandler.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainGame.cpp" />
+    <ClCompile Include="olcPixelGameEngine.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
