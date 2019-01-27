@@ -119,6 +119,7 @@
     <ClInclude Include="AIHandler.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyState.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="olcPixelGameEngine.h" />
@@ -128,6 +129,7 @@
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="AIHandler.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyState.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />

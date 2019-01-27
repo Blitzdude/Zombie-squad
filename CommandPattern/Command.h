@@ -18,6 +18,22 @@ public:
     }
 };
 
+class Move : public Command
+{
+    Move(float tX, float tY)
+        : targetX(tX)
+        , targetY(tY)
+    {};
+
+    virtual void execute(Actor& actor, float deltaTime) override
+    {
+        actor.move(targetX, targetY, deltaTime);
+    }
+
+    float targetX;
+    float targetY;
+};
+
 class MoveUpCommand : public Command
 {
     virtual void execute(Actor& actor, float deltaTime) override

@@ -16,6 +16,9 @@ public:
     bool OnUserCreate() override;
     bool OnUserUpdate(float fElapsedTime) override;
 
+    void Input(float deltaTime);
+    void Update(float deltaTime);
+    void Draw();
 
 private:
     InputHandler m_inputHandler;

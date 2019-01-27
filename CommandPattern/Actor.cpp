@@ -6,6 +6,11 @@ void Actor::jump(float deltaTime)
     std::cout << "jumping\n";
 }
 
+void Actor::move(float tX, float tY, float deltaTime)
+{
+    std::cout << "moving to " << tX << " " << tY << "\n";
+}
+
 void Actor::moveLeft(float deltaTime)
 {
     std::cout << "moving left\n";
