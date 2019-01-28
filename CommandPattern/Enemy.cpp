@@ -1,17 +1,18 @@
 #include "Enemy.h"
+#include <math.h>
 
-Enemy::Enemy()
+Enemy::Enemy(const Player& player, float x, float y)
+    : targetX(x)
+    , targetY(y)
 {
     m_state = new Roam();
-    setXPos(200.0f);
-    setYPos(100.0f);
+    m_player = &player; // Enemy should only read from player, and not change anything in its states
+    setXPos(x);
+    setYPos(y);
 }
 
-Enemy::~Enemy()
-{
-}
 
-void Enemy::move(float tX, float tY, float deltaTime)
+void Enemy::move(float tX, float tY, float deltaTime) // TODO: Not needed ???
 {
     // move in the direction of the target
     /*
@@ -19,59 +20,44 @@ void Enemy::move(float tX, float tY, float deltaTime)
     |     |
     0,h-w,h
     */
-    
-    // TODO: Currently called every update, actor should prob handle its own moving
-    // something like doMove() in update, if target hasn't been reached, 
 
     if (targetX != tX)
         targetX = tX;
     if (targetY != tY)
         targetY = tY;
-/*
-    if (getXPos() < targetX)
-        moveRight(deltaTime); // replace with straight math?
-    else if (getXPos() > targetX)
-        moveLeft(deltaTime); // replace with straight math?
-    if (getYPos() < targetY)
-        moveDown(deltaTime); // replace with straight math?
-    else if (getYPos() > targetY)
-        moveUp(deltaTime); // replace with straight math?
-*/
+}
+
+void Enemy::chase()
+{
+    if (m_state->getStateID() != StateID::CHASE)
+        setState(new Chase(*m_player));
+}
+
+void Enemy::roam()
+{
+    if (m_state->getStateID() != StateID::ROAM)
+        setState(new Roam());
 }
 
 void Enemy::doMove(float deltaTime)
 {
-    if (getXPos() < targetX)
-        moveRight(deltaTime); // replace with straight math?
-    else if (getXPos() > targetX)
-        moveLeft(deltaTime); // replace with straight math?
-    if (getYPos() < targetY)
-        moveDown(deltaTime); // replace with straight math?
-    else if (getYPos() > targetY)
-        moveUp(deltaTime); // replace with straight math?
+    // get vector to target
+    float vecX = targetX - getXPos();
+    float vecY = targetY - getYPos();
+    float length = sqrtf(vecX*vecX + vecY*vecY);
+
+    // normalize vector
+    vecX /= length;
+    vecY /= length;
+
+    if (length > 0.1f)
+    {
+       setXPos(getXPos() + vecX * 50.0f * deltaTime);
+       setYPos(getYPos() + vecY * 50.0f * deltaTime);
+    }
 }
 
 void Enemy::update(float deltaTime)
 {
     m_state->update(*this, deltaTime);
-}
-
-void Enemy::moveLeft(float deltaTime)
-{
-    setXPos(getXPos() - 10.0f*deltaTime);
-}
-
-void Enemy::moveRight(float deltaTime)
-{
-    setXPos(getXPos() + 10.0f*deltaTime);
-}
-
-void Enemy::moveUp(float deltaTime)
-{
-    setYPos(getYPos() - 10.0f*deltaTime);
-}
-
-void Enemy::moveDown(float deltaTime)
-{
-    setYPos(getYPos() + 10.0f*deltaTime);
 }

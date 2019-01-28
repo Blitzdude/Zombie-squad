@@ -1,12 +1,12 @@
 #pragma once
 #include "Actor.h"
 
+
 class Command
 {
 public:
     virtual ~Command() {}
     virtual void execute(Actor& actor, float deltaTime) = 0;
-
 };
 
 class JumpCommand : public Command
@@ -73,4 +73,24 @@ class NothingCommand : public Command
     {
         // Empty command, do nothing
     }
+};
+
+class ChaseCommand : public Command
+{
+    void execute(Actor& actor, float deltaTime) override 
+    {
+        // TODO: check if actor has chase command. Maybe check if is type enemy?
+        actor.chase();
+    };
+    
+};
+
+class RoamCommand : public Command
+{
+    void execute(Actor& actor, float deltaTime) override 
+    {
+        // TODO: check if actor has roam command. Maybe check if is type enemy?
+        actor.roam();
+    };
+
 };

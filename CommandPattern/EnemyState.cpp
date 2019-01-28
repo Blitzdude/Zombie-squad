@@ -2,13 +2,24 @@
 #include "Enemy.h"
 #include <random>
 
+void EnemyState::enter(Enemy & enemy, float deltaTime)
+{
+    // base, do nothing
+}
+
 void EnemyState::update(Enemy & enemy, float deltaTime)
+{
+    // base, do nothing
+}
+
+void EnemyState::exit(Enemy & enemy, float deltaTime)
 {
     // base, do nothing
 }
 
 void Chase::update(Enemy & enemy, float deltaTime)
 {
+    enemy.setTarget(m_player->getXPos(), m_player->getYPos());
     enemy.doMove(deltaTime);
 }
 
@@ -23,7 +34,7 @@ void Roam::update(Enemy & enemy, float deltaTime)
         // randomize direction
         float rX = ((rand() % (2*100)) - 100) / 100.0f; // returns value between -1.0f / 1.0f 
         float rY = ((rand() % (2*100)) - 100) / 100.0f; // returns value between -1.0f / 1.0f
-        enemy.setTarget(rX * 100.0f, rY * 100.0f); // TODO: replace 100.0f with enemy-speed
+        enemy.setTarget(enemy.getXPos() + rX * 100.0f, enemy.getYPos() + rY * 100.0f); // TODO: replace 100.0f with enemy-speed
     }
     enemy.doMove(deltaTime);
 

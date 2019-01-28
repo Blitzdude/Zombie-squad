@@ -1,6 +1,9 @@
 #pragma once
 #include "Command.h"
 
+#include <iostream>
+
+class Player;
 class Enemy;
 
 enum class StateID
@@ -19,23 +22,35 @@ public:
 
     virtual ~EnemyState() {};
 
+    virtual void enter(Enemy& enemy, float deltaTime);
     virtual void update(Enemy& enemy, float deltaTime);
+    virtual void exit(Enemy& enemy, float deltaTime);
 
-    StateID id; // TODO: make setters/getters for id, this breaks encapsulation
+    const StateID& getStateID() const { return id; };
+
+protected:
+    StateID id; // TODO: make getters for id, this breaks encapsulation
 };
 
 // TODO: send chase target through reference to actor in constructor
 class Chase : public EnemyState
 {
 public:
-    Chase()
+    Chase(const Player& player)
+        : m_player(&player)
     {
         id = StateID::CHASE;    
     };
 
-    ~Chase() {};
+    ~Chase() 
+    {
+        // pointer to player is not owned by Chase, so don't delete the object
+        m_player = nullptr; 
+    };
 
     void update(Enemy& enemy, float deltaTime) override;
+private:
+    const Player* m_player;
 };
 
 class Roam : public EnemyState
@@ -46,11 +61,9 @@ public:
     {
         id = StateID::ROAM;
     };
-    ~Roam() {};
+    ~Roam() { std::cout << "[Roam]: destructor\n"; };
 
     void update(Enemy& enemy, float deltaTime) override;
 
     float m_timer;
-
-
 };

@@ -6,27 +6,23 @@
 class Enemy : public Actor
 {
 public:
-    Enemy();
-    ~Enemy();
-   
-    void moveLeft(float deltaTime)  override;
-    void moveRight(float deltaTime) override;
-    void moveUp(float deltaTime)    override;
-    void moveDown(float deltaTime)  override;
-;
-    void move(float tX, float tY, float deltaTime) override;
-    void doMove(float deltaTime);
+    Enemy(const Player& player, float x, float y);
+    ~Enemy() {};
 
+    void move(float tX, float tY, float deltaTime) override;
+    void chase() override;
+    void roam() override;
+    void doMove(float deltaTime);
     void update(float deltaTime);
 
     // Setters/Getters
-    EnemyState* getState() const { return m_state; };
-    void setState(EnemyState* state) { delete m_state; m_state = state; };
-    void setTarget(float x, float y) {targetX = x; targetY = y; };
+    EnemyState* getState() const { return m_state; }; // TODO: maybe not needed?
+    void setState(EnemyState* state) { delete m_state; m_state = state; }; // TODO: Maybe not needed, when removed from AiHandler
+    void setTarget(float x, float y) { targetX = x; targetY = y; };
 
 private:
     EnemyState* m_state;
-    Player* m_player;
+    const Player* m_player;
     float targetX;
     float targetY;
 };

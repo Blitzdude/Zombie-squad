@@ -6,6 +6,7 @@
 #include "AIHandler.h"
 #include "InputHandler.h"
 
+#include <vector>
 
 class MainGame : public olc::PixelGameEngine
 {
@@ -24,9 +25,10 @@ private:
     InputHandler m_inputHandler;
     AIHandler m_aiHandler;
     Player m_player;
-    Enemy  m_enemy;
+    std::vector<Enemy*> m_vecEnemies;
     olc::Sprite* sprPlayer;
     olc::Sprite* sprEnemy;
+
 };
 
 

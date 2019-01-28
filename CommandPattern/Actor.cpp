@@ -30,3 +30,13 @@ void Actor::moveDown(float deltaTime)
 {
     std::cout << "moving down\n";
 }
+
+void Actor::chase()
+{
+    std::cout << "chasing\n";
+}
+
+void Actor::roam()
+{
+    std::cout << "roam\n";
+}

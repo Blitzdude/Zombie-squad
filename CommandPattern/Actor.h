@@ -8,13 +8,18 @@ public:
     Actor() {};
     virtual ~Actor() {};
 
-    virtual void jump(float deltaTime);
+    virtual void jump(float deltaTime); // TODO: Not used anywhere
     virtual void move(float tX, float tY, float deltaTime);
 
+    // player commands
     virtual void moveLeft(float deltaTime);
     virtual void moveRight(float deltaTime);
     virtual void moveUp(float deltaTime);
     virtual void moveDown(float deltaTime);
+
+    // enemy commands
+    virtual void chase();
+    virtual void roam();
 
     // Getters/setters
     float getXPos() const { return m_xPos;};
