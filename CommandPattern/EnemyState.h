@@ -22,7 +22,7 @@ public:
 
     virtual ~EnemyState() {};
 
-    virtual void enter(Enemy& enemy, float deltaTime);
+    virtual void enter(Enemy& enemy);
     virtual void update(Enemy& enemy, float deltaTime);
     virtual void exit(Enemy& enemy, float deltaTime);
 
@@ -41,13 +41,12 @@ public:
     {
         id = StateID::CHASE;    
     };
-
     ~Chase() 
     {
         // pointer to player is not owned by Chase, so don't delete the object
         m_player = nullptr; 
     };
-
+    void enter(Enemy& enemy) override;
     void update(Enemy& enemy, float deltaTime) override;
 private:
     const Player* m_player;

@@ -2,7 +2,7 @@
 #include "Enemy.h"
 #include <random>
 
-void EnemyState::enter(Enemy & enemy, float deltaTime)
+void EnemyState::enter(Enemy & enemy)
 {
     // base, do nothing
 }
@@ -15,6 +15,12 @@ void EnemyState::update(Enemy & enemy, float deltaTime)
 void EnemyState::exit(Enemy & enemy, float deltaTime)
 {
     // base, do nothing
+}
+
+void Chase::enter(Enemy& enemy)
+{
+    // change graphics, play sound etc..
+    std::cout << "enter: Zombie says 'Braainzz!!'\n";
 }
 
 void Chase::update(Enemy & enemy, float deltaTime)

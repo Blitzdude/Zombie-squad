@@ -9,33 +9,39 @@ public:
     virtual void execute(Actor& actor, float deltaTime) = 0;
 };
 
+/*
 class JumpCommand : public Command
 {
 public:
+
     virtual void execute(Actor& actor, float deltaTime) override
     {
         actor.jump(deltaTime);
     }
 };
+*/
 
 class Move : public Command
 {
+    Move() = delete; // No default construction
     Move(float tX, float tY)
         : targetX(tX)
         , targetY(tY)
     {};
 
+
     virtual void execute(Actor& actor, float deltaTime) override
     {
         actor.move(targetX, targetY, deltaTime);
     }
-
+    // TODO: Replace with A-star path when switching
     float targetX;
     float targetY;
 };
 
 class MoveUpCommand : public Command
 {
+
     virtual void execute(Actor& actor, float deltaTime) override
     {
         actor.moveUp(deltaTime);
@@ -45,6 +51,7 @@ class MoveUpCommand : public Command
 
 class MoveDownCommand : public Command
 {
+
     virtual void execute(Actor& actor, float deltaTime) override
     {
         actor.moveDown(deltaTime);
@@ -53,6 +60,7 @@ class MoveDownCommand : public Command
 
 class MoveLeftCommand : public Command
 {
+
     virtual void execute(Actor& actor, float deltaTime) override
     {
         actor.moveLeft(deltaTime);
@@ -61,6 +69,7 @@ class MoveLeftCommand : public Command
 
 class MoveRightCommand : public Command
 {
+
     virtual void execute(Actor& actor, float deltaTime) override
     {
         actor.moveRight(deltaTime);
@@ -69,6 +78,7 @@ class MoveRightCommand : public Command
 
 class NothingCommand : public Command
 {
+
     virtual void execute(Actor&, float) override
     {
         // Empty command, do nothing
@@ -77,7 +87,8 @@ class NothingCommand : public Command
 
 class ChaseCommand : public Command
 {
-    void execute(Actor& actor, float deltaTime) override 
+ 
+ void execute(Actor& actor, float deltaTime) override 
     {
         // TODO: check if actor has chase command. Maybe check if is type enemy?
         actor.chase();
