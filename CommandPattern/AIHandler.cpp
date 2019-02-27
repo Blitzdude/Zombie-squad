@@ -12,8 +12,8 @@ AIHandler::AIHandler(const Player& player)
 
 AIHandler::~AIHandler()
 {
-    // Cleaning, because we are nice
     /*
+    // Cleaning, because we are nice
     delete UpCommand;    UpCommand = nullptr;
     delete DownCommand;  DownCommand = nullptr;
     delete LeftCommand;  LeftCommand = nullptr;
