@@ -274,6 +274,27 @@ private:
 			}
 	}
 
+	/*
+	bool CheckEdgeIntersection(const sEdge& rhs, const sEdge& lhs)
+	{
+		// Create line segment vector
+		float sdx = lhs.ex - lhs.sx;
+		float sdy = lhs.ey - lhs.sy;
+
+		if (fabs(sdx - rdx) > 0.0f && fabs(sdy - rdy) > 0.0f)
+		{
+			// t2 is normalised distance from line segment start to line segment end of intersect point
+			float t2 = (rdx * (e2.sy - oy) + (rdy * (ox - e2.sx))) / (sdx * rdy - sdy * rdx);
+			// t1 is normalised distance from source along ray to ray length of intersect point
+			float t1 = (e2.sx + sdx * t2 - ox) / rdx;
+
+			// If intersect point exists along ray, and along line 
+			// segment then intersect point is valid
+
+			return t1 > 0 && t2 >= 0 && t2 <= 1.0f;
+	}
+	*/
+
 	void CalculateVisibilityPolygon(float ox, float oy, float radius)
 	{
 		// Get rid of existing polygon
@@ -312,6 +333,7 @@ private:
 					// Check for ray intersection with all edges
 					for (auto &e2 : vecEdges)
 					{
+						// INTERSECTION CHECK
 						// Create line segment vector
 						float sdx = e2.ex - e2.sx;
 						float sdy = e2.ey - e2.sy;
@@ -327,6 +349,7 @@ private:
 							// segment then intersect point is valid
 							if (t1 > 0 && t2 >= 0 && t2 <= 1.0f)
 							{
+							// INTERSECTION CHECK END
 								// Check if this intersect point is closest to source. If
 								// it is, then store this point and reject others
 								if (t1 < min_t1)
@@ -359,12 +382,44 @@ private:
 
 	}
 
+	// must be called after vecVisibility
 	bool CheckIsEnemyVisible(float x, float y)
 	{
-		auto onLine = [&](const float px, const float py, const float lx, const float ly)
+		// create ray going from right to left
+		sEdge ray;
+		ray.sx = x - ScreenWidth() / 2.0f;
+		ray.ex = x;
+		ray.sy = y;
+		ray.ey = y;
+
+		// for each side of polygon
+		for (int i = 0; i < vecVisibilityPolygonPoints.size(); i++)
 		{
-			return false;
-		};
+			// get edge from current index to next
+			sEdge side;
+			if (i == vecVisibilityPolygonPoints.size())
+			{
+				// we are checking the final point in the list
+				// check this one to the first point
+
+				side.sx = get<1>(vecVisibilityPolygonPoints[i]); // the last point
+				side.sy = get<2>(vecVisibilityPolygonPoints[i]);
+
+				side.ex = get<1>(vecVisibilityPolygonPoints[0]);
+				side.ey = get<2>(vecVisibilityPolygonPoints[0]);
+			}
+			else
+			{
+				side.sx = get<1>(vecVisibilityPolygonPoints[i]);
+				side.sy = get<2>(vecVisibilityPolygonPoints[i]);
+
+				side.ex = get<1>(vecVisibilityPolygonPoints[i + 1]);
+				side.ey = get<2>(vecVisibilityPolygonPoints[i + 1]);
+			}
+		}
+		// check if ray intersects the side
+
+		// if number of intersections is odd, it intersects
 	}
 
 
@@ -538,10 +593,6 @@ public:
 				get<2>(vecVisibilityPolygonPoints[0])
 			);
 		}
-
-
-
-		
 
 		// Draw Enemies
 		if (GetMouse(1).bHeld && vecEnemies.size() > 0)
