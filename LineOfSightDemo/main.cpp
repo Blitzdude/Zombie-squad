@@ -79,6 +79,17 @@ using namespace std;
 #include "olcPixelGameEngine.h"
 
 
+// TODO: World class
+/*
+	List of cells
+	List of Edges
+	GetCell()
+	Clear()
+	CreatePolymap()
+	
+*/
+
+// TODO: Add normals to this?
 struct sEdge
 {
 	float sx, sy; // Start coordinate
@@ -131,6 +142,7 @@ private:
 		// Clear "PolyMap"
 		vecEdges.clear();
 
+		// Clear each cells information
 		for (int x = 0; x < w; x++)
 			for (int y = 0; y < h; y++)
 				for (int j = 0; j < 4; j++)
@@ -144,9 +156,9 @@ private:
 			for (int y = 1; y < h - 1; y++)
 			{
 				// Create some convenient indices
-				int i = (y + sy) * pitch + (x + sx);			// This
-				int n = (y + sy - 1) * pitch + (x + sx);		// Northern Neighbour
-				int s = (y + sy + 1) * pitch + (x + sx);		// Southern Neighbour
+				int i = (y + sy) * pitch + (x + sx);		// This
+				int n = (y + sy - 1) * pitch + (x + sx);	// Northern Neighbour
+				int s = (y + sy + 1) * pitch + (x + sx);	// Southern Neighbour
 				int w = (y + sy) * pitch + (x + sx - 1);	// Western Neighbour
 				int e = (y + sy) * pitch + (x + sx + 1);	// Eastern Neighbour
 
@@ -628,6 +640,6 @@ public:
 int main()
 {
 	ShadowCasting2D demo;
-	if (demo.Construct(640, 480, 2, 2))
+	if (demo.Construct(640, 480, 1, 1))
 		demo.Start();
 }
