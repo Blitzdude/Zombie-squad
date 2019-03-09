@@ -91,6 +91,14 @@ using namespace std;
 
 struct sIntersectResult
 {
+	sIntersectResult()
+	{
+		px = 0.0f; 
+		py = 0.0f;
+		t = -1.0f;
+		valid = false;
+	};
+
 	float px, py;
 	float t;
 	bool valid;
@@ -120,6 +128,7 @@ struct sEnemy // enemies are circles
 {
 	float x, y;
 	bool visible;
+	int count; // Number of intersections
 };
 
 #define NORTH 0
@@ -299,44 +308,35 @@ private:
 			}
 	}
 
-	// check if two line segments intersects, returns the t value
-
-	sIntersectResult CheckEdgeIntersection(float p0_x, float p0_y, float p1_x, float p1_y,
-		float p2_x, float p2_y, float p3_x, float p3_y)
+	sIntersectResult checkLineIntersection(float ox, float oy, float raydx, float raydy, float edge2sx, float edge2sy, float segmentdx, float segmentdy)
 	{
-		//Initilize return values
 		sIntersectResult ret;
-		ret.valid = false;
-		ret.px = 0.0f; ret.py = 0.0f;
-		ret.t = -1.0f;
 
-		// initialize the segments
-		vec2d seg1s, seg1e;
-		seg1s.x = p0_x; seg1s.y = p0_y;
-		seg1e.x = p1_x; seg1e.y = p1_y;
 
-		vec2d seg2s, seg2e;
-		seg2s.x = p2_x; seg2s.y = p2_y;
-		seg2e.x = p3_x; seg2e.y = p3_y;
-
-		// intersection check
-		// Standard "off the shelf" line segment intersection
-		float h = (seg2e.x - seg2s.x) * (seg1s.y - seg1e.y) - (seg1s.x - seg1e.x) * (seg2e.y - seg2s.y);
-		float t1 = ((seg2s.y - seg2e.y) * (seg1s.x - seg2s.x) + (seg2e.x - seg2s.x) * (seg1s.y - seg2s.y)) / h;
-		float t2 = ((seg1s.y - seg1e.y) * (seg1s.x - seg2s.x) + (seg1e.x - seg1s.x) * (seg1s.y - seg2s.y)) / h;
-
-		if (t1 >= 0.0f && t1 < 1.0f && t2 >= 0.0f && t2 < 1.0f)
+		// check that ray is not colinear with edge
+		if (fabs(segmentdx - raydx) > 0.0f && fabs(segmentdy - raydy) > 0.0f)
 		{
-			ret.t = t1;
-			ret.valid;
-			ret.px = seg1s.x + t1 * seg1e.x;
-			ret.py = seg1s.y + t1 * seg1e.y;
+			// t2 is normalised distance from line segment start to line segment end of intersect point - distance along the edge
+			float t2 = (raydx * (edge2sy - oy) + (raydy * (ox - edge2sx))) / (segmentdx * raydy - segmentdy * raydx);
+			// t1 is normalised distance from source along ray to ray length of intersect point - distance along the ray
+			float t1 = (edge2sx + segmentdx * t2 - ox) / raydx;
+
+			// If intersect point exists along ray, and along line 
+			// segment then intersect point is valid
+			if (t1 > 0 && t2 >= 0 && t2 <= 1.0f)
+			{
+				ret.t = t1;
+				ret.px = ox + raydx * t1;
+				ret.py = oy + raydy * t1;
+
+				ret.valid;
+			}
 		}
-
 		return ret;
-	}
+	};
 
-	void CalculateVisibilityPolygon(float ox, float oy, float radius)
+
+	void MyCalculateVisibilityPolygon(float ox, float oy, float radius, float direction, float fovRad = 0.0f) // fovRad = 0.0 is 360 vision
 	{
 		// Get rid of existing polygon
 		vecVisibilityPolygonPoints.clear();
@@ -363,9 +363,121 @@ private:
 					if (j == 1)	ang = base_ang;
 					if (j == 2)	ang = base_ang + 0.0001f;
 
-					// Create ray along angle for required distance
-					raydx = radius * cosf(ang);
-					raydy = radius * sinf(ang);
+					float min_t1 = INFINITY;
+					float min_px = 0, min_py = 0, min_ang = 0;
+					bool bValid = false;
+
+					// Check for ray intersection with all edges
+					for (auto &edge2 : vecEdges)
+					{
+						// Create ray along angle for required distance
+						raydx = radius * cosf(ang);
+						raydy = radius * sinf(ang);
+
+						// Create line segment vector
+						float segmentdx = edge2.ex - edge2.sx;
+						float segmentdy = edge2.ey - edge2.sy;
+
+						sIntersectResult result = checkLineIntersection(ox, oy, raydx, raydy, edge2.sx, edge2.sy, segmentdx, segmentdy);
+
+						if (result.valid && result.t < min_t1)
+						{
+							min_t1 = result.t;
+							min_px = result.px;
+							min_py = result.py;
+							min_ang = atan2f(min_py - oy, min_px - ox);
+							bValid = result.valid;
+						}
+						/*
+						// check that ray is not colinear with edge
+						if (fabs(segmentdx - raydx) > 0.0f && fabs(segmentdy - raydy) > 0.0f)
+						{
+							// t2 is normalised distance from line segment start to line segment end of intersect point - distance along the edge
+							float t2 = (raydx * (edge2.sy - oy) + (raydy * (ox - edge2.sx))) / (segmentdx * raydy - segmentdy * raydx);
+							// t1 is normalised distance from source along ray to ray length of intersect point - distance along the ray
+							float t1 = (edge2.sx + segmentdx * t2 - ox) / raydx;
+
+							// If intersect point exists along ray, and along line 
+							// segment then intersect point is valid
+							if (t1 > 0 && t2 >= 0 && t2 <= 1.0f)
+							{
+								// Check if this intersect point is closest to source. If
+								// it is, then store this point and reject others
+								if (t1 < min_t1)
+								{
+									min_t1 = t1;
+									min_px = ox + raydx * t1;
+									min_py = oy + raydy * t1;
+									min_ang = atan2f(min_py - oy, min_px - ox);
+									bValid = true;
+								}
+							}
+						}
+						*/
+					}
+
+					if (fovRad > 0.0f)
+					{
+						if (bValid && (min_ang >= direction - fovRad && min_ang <= direction + fovRad)) // Add intersection point to visibility polygon perimeter
+							vecVisibilityPolygonPoints.push_back({ min_ang, min_px, min_py });
+					}
+					else
+					{
+						if (bValid) // Add intersection point to visibility polygon perimeter
+							vecVisibilityPolygonPoints.push_back({ min_ang, min_px, min_py });
+					}
+
+				}
+			}
+		}
+
+		// Sort perimeter points by angle from source. This will allow
+		// us to draw a triangle fan.
+		sort(
+			vecVisibilityPolygonPoints.begin(),
+			vecVisibilityPolygonPoints.end(),
+			[&](const tuple<float, float, float> &t1, const tuple<float, float, float> &t2)
+		{
+			return get<0>(t1) < get<0>(t2);
+		});
+
+		// unless we have 360 degree vision, we need to add a point in the mouse position
+		// to the back of the array
+		if (fovRad > 0.0f)
+		{
+			vecVisibilityPolygonPoints.push_back({ 0.0f, GetMouseX(), GetMouseY() });
+		}
+
+
+	}
+
+
+	void CalculateVisibilityPolygon(float ox, float oy, float radius, float direction, float fovRad = 0.0f) // fovRad = 0.0 is 360 vision
+	{
+		// Get rid of existing polygon
+		vecVisibilityPolygonPoints.clear();
+
+		// For each edge in PolyMap
+		for (auto &edge1 : vecEdges)
+		{
+			// Take the start point, then the end point (we could use a pool of
+			// non-duplicated points here, it would be more optimal)
+			for (int i = 0; i < 2; i++)
+			{
+				float raydx, raydy;
+				raydx = (i == 0 ? edge1.sx : edge1.ex) - ox;
+				raydy = (i == 0 ? edge1.sy : edge1.ey) - oy;
+
+				float base_ang = atan2f(raydy, raydx);
+				
+				float ang = 0;
+				// For each point, cast 3 rays, 1 directly at point
+				// and 1 a little bit either side
+				for (int j = 0; j < 3; j++)
+				{
+					if (j == 0)	ang = base_ang - 0.0001f;
+					if (j == 1)	ang = base_ang;
+					if (j == 2)	ang = base_ang + 0.0001f;
 
 					float min_t1 = INFINITY;
 					float min_px = 0, min_py = 0, min_ang = 0;
@@ -374,6 +486,10 @@ private:
 					// Check for ray intersection with all edges
 					for (auto &edge2 : vecEdges)
 					{
+						// Create ray along angle for required distance
+						raydx = radius * cosf(ang);
+						raydy = radius * sinf(ang);
+
 						// Create line segment vector
 						float segmentdx = edge2.ex - edge2.sx;
 						float segmentdy = edge2.ey - edge2.sy;
@@ -404,8 +520,17 @@ private:
 						}
 					}
 
-					if (bValid) // Add intersection point to visibility polygon perimeter
-						vecVisibilityPolygonPoints.push_back({ min_ang, min_px, min_py });
+					if (fovRad > 0.0f)
+					{
+						if (bValid && (min_ang >= direction - fovRad && min_ang <= direction + fovRad)) // Add intersection point to visibility polygon perimeter
+							vecVisibilityPolygonPoints.push_back({ min_ang, min_px, min_py });
+					}
+					else
+					{
+						if (bValid) // Add intersection point to visibility polygon perimeter
+							vecVisibilityPolygonPoints.push_back({ min_ang, min_px, min_py });
+					}
+
 				}
 			}
 		}
@@ -420,10 +545,17 @@ private:
 			return get<0>(t1) < get<0>(t2);
 		});
 
+		// unless we have 360 degree vision, we need to add a point in the mouse position
+		// to the back of the array
+		if (fovRad > 0.0f)
+		{
+			vecVisibilityPolygonPoints.push_back({ 0.0f, GetMouseX(), GetMouseY() });
+		}
+
 	}
 
 
-	bool checkIfEnemyIsVisible(float ox, float oy, float radius)
+	bool checkIfEnemyIsVisible(float ox, float oy, float radius, int &retCount)
 	{
 		float raydx, raydy;
 		raydx = radius;
@@ -433,12 +565,12 @@ private:
 		int count = 0;
 
 		// For each edge in PolyMap
-		for (int i = 0; i < vecVisibilityPolygonPoints.size() - 1; i++)
+		for (int i = 0; i < vecVisibilityPolygonPoints.size(); i++)
 		{
 			float edgeSx, edgeSy;
 			float edgeEx, edgeEy;
 
-			if (i + 1 == vecVisibilityPolygonPoints.size())
+			if (i == vecVisibilityPolygonPoints.size() - 1)
 			{
 				// next point would go over
 				edgeSx = get<1>(vecVisibilityPolygonPoints[i]);
@@ -479,6 +611,8 @@ private:
 		}
 
 		// returns true if odd, false for even
+
+		retCount = count;
 		bool ret = count % 2;
 		return ret;
 	}
@@ -532,14 +666,14 @@ public:
 
 		if (GetMouse(1).bHeld)
 		{
-			CalculateVisibilityPolygon(fSourceX, fSourceY, 1000.0f);
+			CalculateVisibilityPolygon(fSourceX, fSourceY, 1000.0f, 0.0f);
 		}
 
 		// Add "enemy" with A-key
 		if (GetKey(olc::A).bPressed)
 		{
 			// add enemy to vector
-			vecEnemies.push_back({ fSourceX, fSourceY, false });
+			vecEnemies.push_back({ fSourceX, fSourceY, false, 0 });
 		}
 
 		// Reset vecEnemies with R-key
@@ -651,7 +785,8 @@ public:
 				get<2>(vecVisibilityPolygonPoints[vecVisibilityPolygonPoints.size() - 1]),
 
 				get<1>(vecVisibilityPolygonPoints[0]),
-				get<2>(vecVisibilityPolygonPoints[0])
+				get<2>(vecVisibilityPolygonPoints[0]),
+				olc::MAGENTA
 			);
 		}
 
@@ -662,16 +797,19 @@ public:
 			// check if enemy should be visible
 			for (auto &enemy : vecEnemies)
 			{
-				enemy.visible = checkIfEnemyIsVisible(enemy.x, enemy.y, ScreenWidth());
+				int num;
+				enemy.visible = checkIfEnemyIsVisible(enemy.x, enemy.y, ScreenWidth(), num);
+				enemy.count = num;
 			}
 
 			// if enemy is visible -> draw it
 			for (auto &enemy : vecEnemies)
 			{
-				DrawLine(enemy.x, enemy.y, ScreenWidth(), enemy.y);
-
 				if (enemy.visible)
-					FillCircle(enemy.x, enemy.y, 6.0f, olc::CYAN);
+				{
+					FillCircle(enemy.x, enemy.y, 6.0f, olc::DARK_CYAN);
+					DrawString(enemy.x - 1, enemy.y - 1, to_string(enemy.count));
+				}
 			}
 		}
 		
