@@ -96,12 +96,10 @@ struct sIntersectResult
 		px = 0.0f; 
 		py = 0.0f;
 		t = -1.0f;
-		valid = false;
 	};
 
 	float px, py;
 	float t;
-	bool valid;
 };
 
 struct vec2d
@@ -112,9 +110,8 @@ struct vec2d
 // TODO: Add normals to this?, so if we a ball is overlapping, we can push it away
 struct sEdge
 {
-	float sx, sy; // Start coordinate
-	float ex, ey; // End coordinate
-	float nx, ny; // Normal vector
+	vec2d start;
+	vec2d end;
 };
 
 struct sCell
@@ -156,6 +153,7 @@ private:
 	vector<sEdge> vecEdges;
 	vector<sEnemy> vecEnemies;
 
+
 	//			angle	x	   y
 	vector<tuple<float, float, float>> vecVisibilityPolygonPoints;
 
@@ -195,7 +193,7 @@ private:
 						if (world[n].edge_exist[WEST])
 						{
 							// Northern neighbour has a western edge, so grow it downwards
-							vecEdges[world[n].edge_id[WEST]].ey += fBlockWidth;
+							vecEdges[world[n].edge_id[WEST]].end.y += fBlockWidth;
 							world[i].edge_id[WEST] = world[n].edge_id[WEST];
 							world[i].edge_exist[WEST] = true;
 						}
@@ -203,8 +201,8 @@ private:
 						{
 							// Northern neighbour does not have one, so create one
 							sEdge edge;
-							edge.sx = (sx + x) * fBlockWidth; edge.sy = (sy + y) * fBlockWidth;
-							edge.ex = edge.sx; edge.ey = edge.sy + fBlockWidth;
+							edge.start.x = (sx + x) * fBlockWidth; edge.start.y = (sy + y) * fBlockWidth;
+							edge.end.x = edge.start.x; edge.end.y = edge.start.y + fBlockWidth;
 
 							// Add edge to Polygon Pool
 							int edge_id = vecEdges.size();
@@ -224,7 +222,7 @@ private:
 						if (world[n].edge_exist[EAST])
 						{
 							// Northern neighbour has one, so grow it downwards
-							vecEdges[world[n].edge_id[EAST]].ey += fBlockWidth;
+							vecEdges[world[n].edge_id[EAST]].end.y += fBlockWidth;
 							world[i].edge_id[EAST] = world[n].edge_id[EAST];
 							world[i].edge_exist[EAST] = true;
 						}
@@ -232,8 +230,8 @@ private:
 						{
 							// Northern neighbour does not have one, so create one
 							sEdge edge;
-							edge.sx = (sx + x + 1) * fBlockWidth; edge.sy = (sy + y) * fBlockWidth;
-							edge.ex = edge.sx; edge.ey = edge.sy + fBlockWidth;
+							edge.start.x = (sx + x + 1) * fBlockWidth; edge.start.y = (sy + y) * fBlockWidth;
+							edge.end.x = edge.start.x; edge.end.y = edge.start.y + fBlockWidth;
 
 							// Add edge to Polygon Pool
 							int edge_id = vecEdges.size();
@@ -253,7 +251,7 @@ private:
 						if (world[w].edge_exist[NORTH])
 						{
 							// Western neighbour has one, so grow it eastwards
-							vecEdges[world[w].edge_id[NORTH]].ex += fBlockWidth;
+							vecEdges[world[w].edge_id[NORTH]].end.x += fBlockWidth;
 							world[i].edge_id[NORTH] = world[w].edge_id[NORTH];
 							world[i].edge_exist[NORTH] = true;
 						}
@@ -261,8 +259,8 @@ private:
 						{
 							// Western neighbour does not have one, so create one
 							sEdge edge;
-							edge.sx = (sx + x) * fBlockWidth; edge.sy = (sy + y) * fBlockWidth;
-							edge.ex = edge.sx + fBlockWidth; edge.ey = edge.sy;
+							edge.start.x = (sx + x) * fBlockWidth; edge.start.y = (sy + y) * fBlockWidth;
+							edge.end.x = edge.start.x + fBlockWidth; edge.end.y = edge.start.y;
 
 							// Add edge to Polygon Pool
 							int edge_id = vecEdges.size();
@@ -282,7 +280,7 @@ private:
 						if (world[w].edge_exist[SOUTH])
 						{
 							// Western neighbour has one, so grow it eastwards
-							vecEdges[world[w].edge_id[SOUTH]].ex += fBlockWidth;
+							vecEdges[world[w].edge_id[SOUTH]].end.x += fBlockWidth;
 							world[i].edge_id[SOUTH] = world[w].edge_id[SOUTH];
 							world[i].edge_exist[SOUTH] = true;
 						}
@@ -290,8 +288,8 @@ private:
 						{
 							// Western neighbour does not have one, so I need to create one
 							sEdge edge;
-							edge.sx = (sx + x) * fBlockWidth; edge.sy = (sy + y + 1) * fBlockWidth;
-							edge.ex = edge.sx + fBlockWidth; edge.ey = edge.sy;
+							edge.start.x = (sx + x) * fBlockWidth; edge.start.y = (sy + y + 1) * fBlockWidth;
+							edge.end.x = edge.start.x + fBlockWidth; edge.end.y = edge.start.y;
 
 							// Add edge to Polygon Pool
 							int edge_id = vecEdges.size();
@@ -308,31 +306,38 @@ private:
 			}
 	}
 
-	sIntersectResult checkLineIntersection(float ox, float oy, float raydx, float raydy, float edge2sx, float edge2sy, float segmentdx, float segmentdy)
+	bool checkLineIntersection(sIntersectResult* point, sEdge& e1, sEdge& e2)
 	{
-		sIntersectResult ret;
+		// Source: http://www.cs.swan.ac.uk/~cssimon/line_intersection.html
+		// calculate t1 and t2 where t1 is 
 
+		// calculate denominator 
+		float denominator = (e2.end.x - e2.start.x)*(e1.start.y - e1.end.y) - (e1.start.x - e1.end.x)*(e2.end.y - e2.start.y);
 
-		// check that ray is not colinear with edge
-		if (fabs(segmentdx - raydx) > 0.0f && fabs(segmentdy - raydy) > 0.0f)
+		// check for division by zero error
+		if (denominator != 0.0f)
 		{
-			// t2 is normalised distance from line segment start to line segment end of intersect point - distance along the edge
-			float t2 = (raydx * (edge2sy - oy) + (raydy * (ox - edge2sx))) / (segmentdx * raydy - segmentdy * raydx);
-			// t1 is normalised distance from source along ray to ray length of intersect point - distance along the ray
-			float t1 = (edge2sx + segmentdx * t2 - ox) / raydx;
+			// calculate t1 and t2 values
+			float t1 = ((e2.start.y - e2.end.y)*(e1.start.x - e2.start.x) + (e2.end.x - e2.start.x)*(e1.start.y - e2.start.y))
+				/ denominator;
 
-			// If intersect point exists along ray, and along line 
-			// segment then intersect point is valid
-			if (t1 > 0 && t2 >= 0 && t2 <= 1.0f)
+			float t2 = ((e1.start.y - e1.end.y)*(e1.start.x - e2.start.x) + (e1.end.x - e1.start.x)*(e1.start.y - e2.start.y))
+				/ denominator;
+
+			if ((t1 >= 0.0f && t1 <= 1.0f) && (t2 >= 0.0f && t2 <= 1.0f)) // line segments are intersecting if true
 			{
-				ret.t = t1;
-				ret.px = ox + raydx * t1;
-				ret.py = oy + raydy * t1;
-
-				ret.valid;
+				if (point != nullptr)
+				{
+					// calculate intersection point
+					point->px = e1.start.x + t1 * (e1.end.x - e1.start.x);
+					point->py = e1.start.y + t1 * (e1.end.y - e1.start.y);
+					point->t = t1;
+				}
+				return true;
 			}
 		}
-		return ret;
+
+		return false; // no intersection was found
 	};
 
 
@@ -349,8 +354,8 @@ private:
 			for (int i = 0; i < 2; i++)
 			{
 				float raydx, raydy;
-				raydx = (i == 0 ? edge1.sx : edge1.ex) - ox;
-				raydy = (i == 0 ? edge1.sy : edge1.ey) - oy;
+				raydx = (i == 0 ? edge1.start.x : edge1.end.x) - ox;
+				raydy = (i == 0 ? edge1.start.y : edge1.end.y) - oy;
 
 				float base_ang = atan2f(raydy, raydx);
 
@@ -363,6 +368,11 @@ private:
 					if (j == 1)	ang = base_ang;
 					if (j == 2)	ang = base_ang + 0.0001f;
 
+					vec2d rayS = { ox, oy };
+					vec2d rayE = { radius * cosf(ang) + ox, radius * sinf(ang) + oy };
+
+					sEdge ray = { rayS, rayE };
+
 					float min_t1 = INFINITY;
 					float min_px = 0, min_py = 0, min_ang = 0;
 					bool bValid = false;
@@ -370,63 +380,25 @@ private:
 					// Check for ray intersection with all edges
 					for (auto &edge2 : vecEdges)
 					{
-						// Create ray along angle for required distance
-						raydx = radius * cosf(ang);
-						raydy = radius * sinf(ang);
+						sIntersectResult result;
 
-						// Create line segment vector
-						float segmentdx = edge2.ex - edge2.sx;
-						float segmentdy = edge2.ey - edge2.sy;
-
-						sIntersectResult result = checkLineIntersection(ox, oy, raydx, raydy, edge2.sx, edge2.sy, segmentdx, segmentdy);
-
-						if (result.valid && result.t < min_t1)
+						if (checkLineIntersection(&result, ray, edge2))
 						{
-							min_t1 = result.t;
-							min_px = result.px;
-							min_py = result.py;
-							min_ang = atan2f(min_py - oy, min_px - ox);
-							bValid = result.valid;
-						}
-						/*
-						// check that ray is not colinear with edge
-						if (fabs(segmentdx - raydx) > 0.0f && fabs(segmentdy - raydy) > 0.0f)
-						{
-							// t2 is normalised distance from line segment start to line segment end of intersect point - distance along the edge
-							float t2 = (raydx * (edge2.sy - oy) + (raydy * (ox - edge2.sx))) / (segmentdx * raydy - segmentdy * raydx);
-							// t1 is normalised distance from source along ray to ray length of intersect point - distance along the ray
-							float t1 = (edge2.sx + segmentdx * t2 - ox) / raydx;
-
-							// If intersect point exists along ray, and along line 
-							// segment then intersect point is valid
-							if (t1 > 0 && t2 >= 0 && t2 <= 1.0f)
+							if (result.t < min_t1)
 							{
-								// Check if this intersect point is closest to source. If
-								// it is, then store this point and reject others
-								if (t1 < min_t1)
-								{
-									min_t1 = t1;
-									min_px = ox + raydx * t1;
-									min_py = oy + raydy * t1;
-									min_ang = atan2f(min_py - oy, min_px - ox);
-									bValid = true;
-								}
+								min_t1 = result.t;
+								min_px = result.px;
+								min_py = result.py;
+								min_ang = atan2f(min_py - oy, min_px - ox);
+								bValid = true;
+
 							}
 						}
-						*/
 					}
 
-					if (fovRad > 0.0f)
-					{
-						if (bValid && (min_ang >= direction - fovRad && min_ang <= direction + fovRad)) // Add intersection point to visibility polygon perimeter
-							vecVisibilityPolygonPoints.push_back({ min_ang, min_px, min_py });
-					}
-					else
-					{
-						if (bValid) // Add intersection point to visibility polygon perimeter
-							vecVisibilityPolygonPoints.push_back({ min_ang, min_px, min_py });
-					}
-
+					if (bValid) // Add intersection point to visibility polygon perimeter
+						vecVisibilityPolygonPoints.push_back({ min_ang, min_px, min_py });
+					
 				}
 			}
 		}
@@ -440,14 +412,6 @@ private:
 		{
 			return get<0>(t1) < get<0>(t2);
 		});
-
-		// unless we have 360 degree vision, we need to add a point in the mouse position
-		// to the back of the array
-		if (fovRad > 0.0f)
-		{
-			vecVisibilityPolygonPoints.push_back({ 0.0f, GetMouseX(), GetMouseY() });
-		}
-
 
 	}
 
@@ -465,8 +429,8 @@ private:
 			for (int i = 0; i < 2; i++)
 			{
 				float raydx, raydy;
-				raydx = (i == 0 ? edge1.sx : edge1.ex) - ox;
-				raydy = (i == 0 ? edge1.sy : edge1.ey) - oy;
+				raydx = (i == 0 ? edge1.start.x : edge1.end.x) - ox;
+				raydy = (i == 0 ? edge1.start.y : edge1.end.y) - oy;
 
 				float base_ang = atan2f(raydy, raydx);
 				
@@ -491,16 +455,16 @@ private:
 						raydy = radius * sinf(ang);
 
 						// Create line segment vector
-						float segmentdx = edge2.ex - edge2.sx;
-						float segmentdy = edge2.ey - edge2.sy;
+						float segmentdx = edge2.end.x - edge2.start.x;
+						float segmentdy = edge2.end.y - edge2.start.y;
 
 						// check that ray is not colinear with edge
 						if (fabs(segmentdx - raydx) > 0.0f && fabs(segmentdy - raydy) > 0.0f)
 						{
 							// t2 is normalised distance from line segment start to line segment end of intersect point - distance along the edge
-							float t2 = (raydx * (edge2.sy - oy) + (raydy * (ox - edge2.sx))) / (segmentdx * raydy - segmentdy * raydx);
+							float t2 = (raydx * (edge2.start.y - oy) + (raydy * (ox - edge2.start.x))) / (segmentdx * raydy - segmentdy * raydx);
 							// t1 is normalised distance from source along ray to ray length of intersect point - distance along the ray
-							float t1 = (edge2.sx + segmentdx * t2 - ox) / raydx;
+							float t1 = (edge2.start.x + segmentdx * t2 - ox) / raydx;
 
 							// If intersect point exists along ray, and along line 
 							// segment then intersect point is valid
@@ -666,7 +630,9 @@ public:
 
 		if (GetMouse(1).bHeld)
 		{
-			CalculateVisibilityPolygon(fSourceX, fSourceY, 1000.0f, 0.0f);
+		
+				MyCalculateVisibilityPolygon(fSourceX, fSourceY, 1000.0f, 0.0f);
+			
 		}
 
 		// Add "enemy" with A-key
@@ -714,9 +680,9 @@ public:
 		// Draw Edges from PolyMap
 		for (auto &e : vecEdges)
 		{
-			DrawLine(e.sx, e.sy, e.ex, e.ey, olc::DARK_RED);
-			FillCircle(e.sx, e.sy, 3, olc::RED);
-			FillCircle(e.ex, e.ey, 3, olc::RED);
+			DrawLine(e.start.x, e.start.y, e.end.x, e.end.y, olc::DARK_RED);
+			FillCircle(e.start.x, e.start.y, 3, olc::RED);
+			FillCircle(e.end.x, e.end.y, 3, olc::RED);
 		}
 
 
