@@ -1,5 +1,6 @@
 #define OLC_PGE_APPLICATION
 #include "olcPixelGameEngine.h"
+
 #include <vector>
 #include <string>
 
@@ -8,47 +9,12 @@ struct sVec2
 	float x, y;
 };
 
-struct sEdge
+struct sRadarPoint
 {
-	sVec2 start;
-	sVec2 end;
-	int id;
+	float px, py;
+	float radius;
+	float lifetime = 2.0f;
 };
-
-bool checkEdgeIntersection(sVec2* point, const sEdge& e1, const sEdge& e2)
-{
-	// Source: http://www.cs.swan.ac.uk/~cssimon/line_intersection.html
-	// calculate t1 and t2 where t1 is 
-
-	
-
-	// calculate denominator 
-	float denominator = (e2.end.x - e2.start.x)*(e1.start.y - e1.end.y) - (e1.start.x - e1.end.x)*(e2.end.y - e2.start.y);
-
-	// check for division by zero error
-	if (denominator != 0.0f)
-	{
-		// calculate t1 and t2 values
-		float t1 = ((e2.start.y - e2.end.y)*(e1.start.x - e2.start.x) + (e2.end.x - e2.start.x)*(e1.start.y - e2.start.y))
-					/ denominator;
-
-		float t2 = ((e1.start.y - e1.end.y)*(e1.start.x - e2.start.x) + (e1.end.x - e1.start.x)*(e1.start.y - e2.start.y))
-					/ denominator;
-
-		if ((t1 >= 0.0f && t1 <= 1.0f) && (t2 >= 0.0f && t2 <= 1.0f)) // line segments are intersecting if true
-		{
-			if (point != nullptr)
-			{
-				// calculate intersection point
-				point->x = e1.start.x + t1 * (e1.end.x - e1.start.x);
-				point->y = e1.start.y + t1 * (e1.end.y - e1.start.y);
-			}
-			return true;
-		}
-	}
-	
-	return false; // no intersection was found
-}
 
 class Example : public olc::PixelGameEngine
 {
@@ -65,59 +31,70 @@ public:
 
 		srand(time(NULL));
 
-		// create a number of edges
-		const unsigned int NUM_EDGES = 50;
-		int id = 0;
-		for (int i = 0; i < NUM_EDGES; i++)
-		{
-			sVec2 s = {rand() % ScreenWidth(), rand() % ScreenHeight()};
-			sVec2 e = {rand() % ScreenWidth(), rand() % ScreenHeight() };
-			vecEdges.push_back({ s, e , id++});
-		}
-
-		for (auto &edge1 : vecEdges)
-		{
-			// check each edge against other edge
-			for (auto edge2 : vecEdges)
-			{
-				// filter out self checking
-				if (edge1.id == edge2.id)
-				{
-					continue;
-				}
-				
-				sVec2 point;
-
-				if (checkEdgeIntersection(&point, edge1, edge2))
-				{
-					vecPoints.push_back(point);
-				}
-			}
-		}
-
 		return true;
 	}
 
-	bool OnUserUpdate(float fElapsedTime) override
+	bool OnUserUpdate(float fElapsedTime)
 	{
-		// draw Edges
-		for (auto& edge : vecEdges)
+		SetPixelMode(olc::Pixel::NORMAL);
+		Clear(olc::BLACK);
+
+		const float PI = 3.14159265359f;
+		const float RADIUS = 200.0f;
+		const float CX = ScreenWidth() / 2.0f;
+		const float CY = ScreenHeight() / 2.0f;
+		const float MAX_TIME = 5.0f;
+		const float ANG_STEP = 0.05f;
+
+		static float delta = 0.0f;
+		static float ang = 0.0f;
+		delta += fElapsedTime;
+		nextPing -= fElapsedTime;
+		
+		static sVec2 prevP;
+
+		float i = 0;
+		for (ang = delta; ang <= 2*PI + delta; ang += ANG_STEP)
 		{
-			DrawLine(edge.start.x, edge.start.y, edge.end.x, edge.end.y, olc::DARK_CYAN);
+			FillTriangle(CX, CY, cosf(ang) * RADIUS + CX, sinf(ang) * RADIUS + CY, prevP.x, prevP.y, olc::Pixel(0, (fmod(ang - delta, 2*PI) / (2*PI))*255, 0));
+			//DrawLine(CX, CY, cosf(ang) * RADIUS + CX, sinf(ang) * RADIUS + CY, olc::Pixel(0, (int)i % 255, 0));
+			prevP = { cosf(ang) * RADIUS + CX , sinf(ang) * RADIUS + CY };
+		
 		}
-		// draw Intersection points
-		for (auto& point : vecPoints)
+
+		if (nextPing < 0.0f)
 		{
-			DrawCircle(point.x, point.y, 2, olc::MAGENTA);
+			// new dot
+			// random range along line
+			float t = (rand() % 100)*0.01f;
+			float sizeT = (rand() % 100)*0.01f;
+			vecRadarPoints.push_back({cosf(ang - ANG_STEP) * (RADIUS*t) + CX, sinf(ang - ANG_STEP) * (RADIUS*t) + CY, 10.0f*sizeT+3.0f, 2.0f });
+			// reset time
+			nextPing = ((rand() % 100)*0.01f) * MAX_TIME;
 		}
+
+		// Update dots
+		for (auto& point : vecRadarPoints)
+		{
+			point.lifetime = point.lifetime - fElapsedTime;
+		}
+
+		// remove all dots with ended lifetime
+		vecRadarPoints.erase(std::remove_if(vecRadarPoints.begin(), vecRadarPoints.end(),
+			[](sRadarPoint p) { return p.lifetime < 0.0f;  }), vecRadarPoints.end());
+
+		// Draw dots
+		SetPixelMode(olc::Pixel::ALPHA);
+
+		for (auto point : vecRadarPoints)
+			FillCircle(point.px, point.py, point.radius, olc::Pixel(255, 0, 0, (int)(127*point.lifetime)));
 
 		return true;
 	}
 
 	// Member variables
-	std::vector<sEdge> vecEdges;
-	std::vector<sVec2> vecPoints;
-
+	std::vector<sRadarPoint> vecRadarPoints;
+	float nextPing = 0.0f;
 };
 
 

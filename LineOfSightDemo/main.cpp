@@ -146,6 +146,8 @@ private:
 	int nWorldWidth = 40;
 	int nWorldHeight = 30;
 
+	float lightAngle = 0.0f;
+
 	olc::Sprite *sprLightCast;
 	olc::Sprite *buffLightRay;
 	olc::Sprite *buffLightTex;
@@ -341,10 +343,14 @@ private:
 	};
 
 
-	void MyCalculateVisibilityPolygon(float ox, float oy, float radius, float direction, float fovRad = 0.0f) // fovRad = 0.0 is 360 vision
+	void CalculateVisibilityPolygon(float ox, float oy, float radius, float direction, float fovRad = 0.0f) // fovRad = 0.0 is 360 vision
 	{
+		
+
 		// Get rid of existing polygon
 		vecVisibilityPolygonPoints.clear();
+
+		// clamp the direction to between 0 - 2*pi
 
 		// For each edge in PolyMap
 		for (auto &edge1 : vecEdges)
@@ -395,11 +401,102 @@ private:
 							}
 						}
 					}
-
-					if (bValid) // Add intersection point to visibility polygon perimeter
+					if (fovRad > 0.0f)
+					{
+						if (bValid && (min_ang >= direction - fovRad && min_ang <= direction + fovRad)) // Add intersection point to visibility polygon perimeter
+							vecVisibilityPolygonPoints.push_back({ min_ang, min_px, min_py });
+					}
+					else if (bValid) // Add intersection point to visibility polygon perimeter
+					{
 						vecVisibilityPolygonPoints.push_back({ min_ang, min_px, min_py });
+					}
 					
 				}
+			}
+		}
+
+		
+
+		// SHOOT THE EXTRA RAYS IF NECESSARY
+		// shoot left ray
+		if (fovRad > 0.0f)
+		{
+			float dirRad = direction - fovRad;
+
+
+			vec2d rayS = { ox, oy };
+			vec2d rayE = { radius * cosf(dirRad) + ox, radius * sinf(dirRad) + oy };
+
+			sEdge ray = { rayS, rayE };
+
+			float min_t1 = INFINITY;
+			float min_px = 0, min_py = 0, min_ang = 0;
+			bool bValid = false;
+
+			// Check for ray intersection with all edges
+			for (auto &edge : vecEdges)
+			{
+
+				sIntersectResult result;
+
+				if (checkLineIntersection(&result, ray, edge))
+				{
+					if (result.t < min_t1)
+					{
+						min_t1 = result.t;
+						min_px = result.px;
+						min_py = result.py;
+						min_ang = atan2f(min_py - oy, min_px - ox);
+						bValid = true;
+
+					}
+				}
+			}
+
+			if (bValid)
+			{
+				vecVisibilityPolygonPoints.push_back({ min_ang, min_px, min_py });
+			}
+		}
+
+		
+
+		// shoot right ray
+		if (fovRad > 0.0f)
+		{
+			float dirRad = direction + fovRad;
+
+			vec2d rayS = { ox, oy };
+			vec2d rayE = { radius * cosf(dirRad) + ox, radius * sinf(dirRad) + oy };
+
+			sEdge ray = { rayS, rayE };
+
+			float min_t1 = INFINITY;
+			float min_px = 0, min_py = 0, min_ang = 0;
+			bool bValid = false;
+
+			// Check for ray intersection with all edges
+			for (auto &edge : vecEdges)
+			{
+				sIntersectResult result;
+
+				if (checkLineIntersection(&result, ray, edge))
+				{
+					if (result.t < min_t1)
+					{
+						min_t1 = result.t;
+						min_px = result.px;
+						min_py = result.py;
+						min_ang = atan2f(min_py - oy, min_px - ox);
+						bValid = true;
+
+					}
+				}
+			}
+
+			if (bValid)
+			{
+				vecVisibilityPolygonPoints.push_back({ min_ang, min_px, min_py });
 			}
 		}
 
@@ -413,9 +510,15 @@ private:
 			return get<0>(t1) < get<0>(t2);
 		});
 
+		// unless we have 360 degree vision, we need to add a point in the mouse position
+		// to the back of the array
+		if (fovRad > 0.0f)
+		{
+			vecVisibilityPolygonPoints.push_back({ 0.0f, ox, oy });
+		}
 	}
 
-
+	/*
 	void CalculateVisibilityPolygon(float ox, float oy, float radius, float direction, float fovRad = 0.0f) // fovRad = 0.0 is 360 vision
 	{
 		// Get rid of existing polygon
@@ -517,6 +620,7 @@ private:
 		}
 
 	}
+	*/
 
 
 	bool checkIfEnemyIsVisible(float ox, float oy, float radius, int &retCount)
@@ -596,6 +700,9 @@ public:
 
 	bool OnUserUpdate(float fElapsedTime) override
 	{
+		lightAngle += fElapsedTime;
+
+
 		float fBlockWidth = 16.0f;
 		float fSourceX = GetMouseX();
 		float fSourceY = GetMouseY();
@@ -617,7 +724,7 @@ public:
 		if (GetMouse(1).bHeld)
 		{
 		
-				MyCalculateVisibilityPolygon(fSourceX, fSourceY, 1000.0f, 0.0f);
+			CalculateVisibilityPolygon(fSourceX, fSourceY, 1000.0f, atan2f(cosf(lightAngle), sinf(lightAngle)), 0.6f);
 			
 		}
 
@@ -652,7 +759,7 @@ public:
 		vecVisibilityPolygonPoints.resize(distance(vecVisibilityPolygonPoints.begin(), it));
 
 		int nRaysCast2 = vecVisibilityPolygonPoints.size();
-		DrawString(4, 4, "Rays Cast: " + to_string(nRaysCast) + " Rays Drawn: " + to_string(nRaysCast2));
+		DrawString(4, 4, "Rays Cast: " + to_string(nRaysCast) + " Rays Drawn: " + to_string(nRaysCast2) + " Ray Angle: " + to_string(atan2f(cosf(lightAngle), sinf(lightAngle))));
 
 
 		// Draw Blocks from TileMap
@@ -773,6 +880,12 @@ public:
 				FillCircle(enemy.x, enemy.y, 6.0f, olc::CYAN);
 			}
 		}
+
+		// Draw direction ray
+		float ang2draw = atan2f(cosf(lightAngle), sinf(lightAngle));
+		DrawLine(fSourceX, fSourceY, 100.0f*cosf(ang2draw) + fSourceX, 100.0f*sinf(ang2draw) + fSourceY, olc::MAGENTA);
+		DrawLine(fSourceX, fSourceY, -100.0f + fSourceX, fSourceY, olc::MAGENTA); // left
+		
 
 		// exit with Escape
 		if (GetKey(olc::ESCAPE).bReleased)
