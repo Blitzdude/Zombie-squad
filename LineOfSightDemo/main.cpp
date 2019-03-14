@@ -502,13 +502,26 @@ private:
 
 		// Sort perimeter points by angle from source. This will allow
 		// us to draw a triangle fan.
-		sort(
-			vecVisibilityPolygonPoints.begin(),
-			vecVisibilityPolygonPoints.end(),
-			[&](const tuple<float, float, float> &t1, const tuple<float, float, float> &t2)
+		if (fovRad == 0.0f)
 		{
-			return get<0>(t1) < get<0>(t2);
-		});
+			sort(
+				vecVisibilityPolygonPoints.begin(),
+				vecVisibilityPolygonPoints.end(),
+				[&](const tuple<float, float, float> &t1, const tuple<float, float, float> &t2)
+			{
+				return get<0>(t1) < get<0>(t2);
+			});
+		}
+		else
+		{
+			sort(
+				vecVisibilityPolygonPoints.begin(),
+				vecVisibilityPolygonPoints.end(),
+				[&](const tuple<float, float, float> &t1, const tuple<float, float, float> &t2)
+			{
+				return get<0>(t1) < get<0>(t2);
+			});
+		}
 
 		// unless we have 360 degree vision, we need to add a point in the mouse position
 		// to the back of the array
