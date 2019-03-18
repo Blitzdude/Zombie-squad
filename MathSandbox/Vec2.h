@@ -24,13 +24,15 @@ public: // methods
 	// return length squared
 	T sqLength() const
 	{
-		return square(*this);
+		T ret = (this->x*this->x + this->y*this->y);
+		return ret;
 	}
 
 	// return the vector length
 	T length() const
 	{
-		return sqrt(sqLength());
+		T ret = sqrt(sqLength());
+		return ret;
 	}
 
 	// Normalize the vector
@@ -60,17 +62,36 @@ public: // methods
 	// returns the dot product between 2 vectors
 	static T DotProduct(const Vec2<T> &v1, const Vec2<T> &v2)
 	{
-		return (v1.x * v2.x) + (v1.y + v2.y);
+		T ret = (v1.x * v2.x) + (v1.y * v2.y);
+		return ret;
 	}
 
 	// returns the angle between 2d vectors
 	static T AngleBetween(const Vec2<T> &v1, const Vec2<T> &v2)
 	{
-		T ret = DotProduct(v1, v2) / (v1.length * v2.length);
+		
+		//T ret = DotProduct(v1, v2) / ((v1.length() * v2.length()));
 
-		return acos(ret);
+		T dot = DotProduct(v1, v2);
+		T det = v1.x*v2.y - v1.y*v2.x;
+		T ret = std::atan2(det, dot);
+
+		return ret;
 	}
 
+	// returns the angle between 2d vectors
+	static T PolarAngle(const Vec2<T> &v1)
+	{
+		// reference is unit vector along x- axis
+		Vec2<T> ref(1.0f, 0.0f);
+
+		T dot = DotProduct(v1, ref);
+		T det = v1.x*ref.y - v1.y*ref.x;
+		T ret = std::atan2(det, dot);
+		if (ret < 0.0f)
+			ret = (PI + ret) + PI; // ret is negative
+		return ret;
+	}
 
 	/****************************************************************/
 
@@ -172,3 +193,4 @@ public: // attributes
 	T y;
 };
 
+typedef Vec2<float> Vec2f;
