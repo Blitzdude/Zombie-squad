@@ -22,23 +22,23 @@ public: // methods
 	///////////////////////////////////////////////////////////////////
 
 	// return length squared
-	T sqLength() const
+	T SqLength() const
 	{
 		T ret = (this->x*this->x + this->y*this->y);
 		return ret;
 	}
 
 	// return the vector length
-	T length() const
+	T Length() const
 	{
-		T ret = sqrt(sqLength());
+		T ret = sqrt(SqLength());
 		return ret;
 	}
 
 	// Normalize the vector
 	Vec2& Normalize()
 	{
-		const T len = this->length();
+		const T len = this->Length();
 		x /= len;
 		y /= len;
 		return *this;

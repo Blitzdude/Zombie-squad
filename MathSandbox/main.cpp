@@ -5,13 +5,36 @@
 #include <vector>
 #include <string>
 
-struct sLines
+struct sLine
 {
-	sLines(const Vec2f &v1, const Vec2f &v2)
-		: s(v1), e(v2) {};
+	sLine(const Vec2f &v1, float len, float ang)
+		: s(v1), length(len), angle(ang)
+	{
+		// calculate the endpoint from length and angle
+		Vec2f v(cosf(angle), sinf(angle));
+		e = v.GetNormalized() * length + s;
+	};
+
+
+	sLine(const Vec2f &v1, const Vec2f &v2)
+		: s(v1), e(v2) 
+	{
+		length = (s - e).Length();
+		angle = Vec2f::AngleBetween((s - e), { 1.0f, 0.0f });
+	};
+
+	void Rotate(float val)
+	{
+		angle += val;
+		// calculate new end point
+		Vec2f v(cosf(angle), sinf(angle));
+		e = v.GetNormalized() * length + s;
+	}
 
 	Vec2f s;
 	Vec2f e;
+	float length;
+	float angle;
 };
 
 // GLOBAL Constants
@@ -29,11 +52,10 @@ public:
 
 public:
 
-	void DrawVecLine(const Vec2f& start, const Vec2f& end)
+	void DrawClockLine(const sLine& l)
 	{
-		DrawCircle(start.x, start.y, 3.0f, olc::RED);
-		DrawCircle(end.x, end.y, 3.0f, olc::BLUE);
-		DrawLine(start.x, start.y, end.x, end.y);
+		DrawCircle(l.e.x, l.e.y, 3.0f, olc::BLUE);
+		DrawLine(l.s.x, l.s.y, l.e.x, l.e.y);
 	}
 
 	bool OnUserCreate() override
@@ -41,11 +63,14 @@ public:
 		// Called once at the start, so create things here
 		Vec2f center(ScreenWidth() / 2.0f, ScreenHeight() / 2.0f);
 
-		for (int i = 0; i < NUM_LINES; i++)
-		{
-			vecLines.push_back({center, { center.x + RADIUS + 10.0f * i, center.y }});
-		}
+		Vec2f vec1S(center);
+		Vec2f vec1E(center.x + RADIUS, center.y);
+		vecLines.emplace_back(vec1S, vec1E);
 
+		Vec2f vec2S(center);
+		vecLines.emplace_back(vec2S, RADIUS, 1.4f);
+
+		
 		return true;
 	}
 
@@ -59,52 +84,39 @@ public:
 		Clear(olc::BLACK);
 
 		Vec2f center(ScreenWidth() / 2.0f, ScreenHeight() / 2.0f);
+		Vec2f vecRef(1.0f, 0.0f);
 
 		// update rotating vectors
-
-		
-		Vec2f vec1S(center);
-		Vec2f vecRef(1.0f, 0.0f);
-		Vec2f vec1E(cosf(totalTime / 2.0f)*RADIUS + vec1S.x, sinf(totalTime / 2.0f)*RADIUS + vec1S.y);
-		Vec2f vec1Dir(vec1E - vec1S);
-		
-		Vec2f vec2S(center);
-		Vec2f vec2E(cosf(totalTime / 2.0f)*(RADIUS / 2.0f) + vec2S.x, sinf(totalTime / 2.0f)*(RADIUS / 2.0f) + vec2S.y);
-		Vec2f vec2Dir(vec2E - vec2S);
-
-		float angle1 = Vec2f::PolarAngle(vec1Dir);
-		float angle2 = Vec2f::PolarAngle(vec2Dir);
-
-		float degrees = Rad2Degrees(angle1);
-
-
-		// DRAWING
-	
-
-		for (float i = 2*PI - angle1; i > 0.0f ; i -= 0.01f)
+		for (int i = 0; i < vecLines.size(); i++)
 		{
-
-			float dx = cosf(i)*vecRef.x - sinf(i)*vecRef.y;
-			float dy = sinf(i)*vecRef.x + cosf(i)*vecRef.y;
-
-			Draw(dx*(RADIUS / 2.0f) + vec1S.x, dy*(RADIUS / 2.0f) + vec1S.y, olc::GREEN);
+			vecLines[i].Rotate(fElapsedTime);
 		}
 		
-		for (float i = 2 * PI - angle2; i > 0.0f; i -= 0.01f)
+		for (auto line : vecLines)
 		{
-			float dx = cosf(i)*vecRef.x - sinf(i)*vecRef.y;
-			float dy = sinf(i)*vecRef.x + cosf(i)*vecRef.y;
+			float angle = Vec2f::PolarAngle(line.e - line.s);
 
-			Draw(dx*(RADIUS / 3.0f) + vec2S.x, dy*(RADIUS / 3.0f) + vec2S.y, olc::MAGENTA);
+			// DRAWING
+			for (float i = 2*PI - angle; i > 0.0f ; i -= 0.01f)
+			{
+
+				float dx = cosf(i)*vecRef.x - sinf(i)*vecRef.y;
+				float dy = sinf(i)*vecRef.x + cosf(i)*vecRef.y;
+
+				Draw(dx*(RADIUS / 2.0f) + line.s.x, dy*(RADIUS / 2.0f) + line.s.y, olc::GREEN);
+			}
 		}
 
-		DrawString(10, 10, "angle: " + std::to_string(degrees));
-		
+		for (auto itr : vecLines)
+		{
+			DrawClockLine(itr);
+		}
 
+		
 		return true;	
 	}
 
-	std::vector<sLines> vecLines;
+	std::vector<sLine> vecLines;
 	float totalTime = 0.0f;
 };
 
