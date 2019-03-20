@@ -38,6 +38,19 @@ public:
 	float GetLength() const { return length; }
 	float GetAngle() const { return angle; }
 
+	// Setters
+	void SetStart(const Vec2f& v) 
+	{
+		// creates a new line and replaces the old one
+		*this = sLine(v, this->length, this->angle);
+	};
+	void SetEnd(const Vec2f& v) 
+	{
+		// Creates a new Line and replaces the old one
+		*this = sLine(this->s, v);
+	};
+
+
 private:
 	Vec2f s;
 	Vec2f e;
@@ -58,56 +71,80 @@ public:
 	void DrawClockLine(const sLine& l)
 	{
 		DrawCircle(l.GetEnd().x, l.GetEnd().y, 3.0f, olc::BLUE);
-		DrawLine(l.GetStart().x, l.GetStart().y, l.GetEnd().x, l.GetEnd().y);
+		DrawLine(l.GetStart().x, l.GetStart().y, l.GetEnd().x, l.GetEnd().y, olc::MAGENTA);
 	}
 
 	bool OnUserCreate() override
 	{
 		// Called once at the start, so create things here
 		const int NUM_LINES = 10;
-		const float RADIUS = 20.0f;
+		const float RADIUS = 30.0f;
 
 		Vec2f center(ScreenWidth() / 2.0f, ScreenHeight() / 2.0f);
 
 		for (int i = 0; i < NUM_LINES; i++) // add lines to vector
 		{
-			vecLines.push_back({center, RADIUS * i + 50.0f, 0.0f});
+			vecLines.push_back({center, RADIUS, 0.0f});
 		}
 
+		// update the positions of the vectors 
+		// update rotating vectors
+		for (int i = 0; i < vecLines.size(); i++)
+		{
+			// Rotate the current point
+			// set the start of the next point as the end of the last one.
+			if (i != vecLines.size() - 1) // not the last element
+			{
+				vecLines[i + 1].SetStart(vecLines[i].GetEnd());
+			}
+		}
+
+		// Create stencil texture target
+		stencil = new olc::Sprite(ScreenWidth(), ScreenHeight());
+
+		prevPos = vecLines.back().GetEnd();
 		return true;
 	}
 
 	bool OnUserUpdate(float fElapsedTime)
 	{
+		// clamp elapsed time to 60 fps
+		
 		totalTime += fElapsedTime;
 
 		// Clear the screen
 		SetPixelMode(olc::Pixel::NORMAL);
 		Clear(olc::BLACK);
 
-
 		// update rotating vectors
 		for (int i = 0; i < vecLines.size(); i++)
 		{
-			vecLines[i].Rotate(fElapsedTime * (3.0f / (i+1)) ); // DO NOT DIVIDE BY ZERO!
-		}
-
-		
-		// for each line, draw an arc according to its polar angle (angle relative to x-axis)
-		for (auto line : vecLines)
-		{
-			float ang = Vec2f::PolarAngle(line.GetEnd() - line.GetStart());
-
-			Vec2f vecRef(1.0f, 0.0f);	// x-axis unit vector
-
-			for (float i = 2*PI - ang; i > 0.0f; i -= 0.01f)
+			// Rotate the current point
+			vecLines[i].Rotate(fElapsedTime * 3.0f / (i+1) ); // DO NOT DIVIDE BY ZERO!
+			// set the start of the next point as the end of the last one.
+			if (i != vecLines.size() - 1) // not the last element
 			{
-				float dx = cosf(i)*vecRef.x - sinf(i)*vecRef.y;
-				float dy = sinf(i)*vecRef.x + cosf(i)*vecRef.y;
-
-				Draw(dx*(line.GetLength() - 20.0f) + line.GetStart().x, dy*(line.GetLength() - 20.0f) + line.GetStart().y, olc::GREEN);
+				vecLines[i + 1].SetStart(vecLines[i].GetEnd());
 			}
 		}
+
+		// set the draw target to another texture
+		SetDrawTarget(stencil);
+
+		// at the start the elapsed time is large, this check stops it from drawing
+		// a nasty straight line
+		if ((prevPos - vecLines.back().GetEnd()).Length() < 10.0f) // magic number, adjust if stops drawing
+		{
+		// draw a pixel at the last point in the texture
+			DrawLine(vecLines.back().GetEnd().x, vecLines.back().GetEnd().y, 
+					 prevPos.x, prevPos.y);
+		}
+		prevPos = vecLines.back().GetEnd();
+
+		// change draw target to visible screen
+		SetDrawTarget(nullptr);
+		// draw the stencil
+		DrawSprite(0, 0, stencil);
 		
 		// Draw the lines
 		for (auto itr : vecLines)
@@ -118,8 +155,10 @@ public:
 		return true;	
 	}
 
+	olc::Sprite* stencil;
 	std::vector<sLine> vecLines;
 	float totalTime = 0.0f;
+	Vec2f prevPos;
 };
 
 
