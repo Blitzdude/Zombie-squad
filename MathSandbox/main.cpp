@@ -77,14 +77,14 @@ public:
 	bool OnUserCreate() override
 	{
 		// Called once at the start, so create things here
-		const int NUM_LINES = 10;
-		const float RADIUS = 30.0f;
+		const int NUM_LINES = 8;
+		const float RADIUS = 10.0f;
 
 		Vec2f center(ScreenWidth() / 2.0f, ScreenHeight() / 2.0f);
 
 		for (int i = 0; i < NUM_LINES; i++) // add lines to vector
 		{
-			vecLines.push_back({center, RADIUS, 0.0f});
+			vecLines.push_back({center, RADIUS * i + RADIUS, 0.0f});
 		}
 
 		// update the positions of the vectors 
@@ -119,8 +119,9 @@ public:
 		// update rotating vectors
 		for (int i = 0; i < vecLines.size(); i++)
 		{
+			float count = i % 2 == 0 ? -1.0f : 1.0f;
 			// Rotate the current point
-			vecLines[i].Rotate(fElapsedTime * 3.0f / (i+1) ); // DO NOT DIVIDE BY ZERO!
+			vecLines[i].Rotate(fElapsedTime * 3.0f / (count*i+1) ); // DO NOT DIVIDE BY ZERO!
 			// set the start of the next point as the end of the last one.
 			if (i != vecLines.size() - 1) // not the last element
 			{
