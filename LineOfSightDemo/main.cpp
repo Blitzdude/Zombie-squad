@@ -77,6 +77,7 @@ using namespace std;
 
 #define OLC_PGE_APPLICATION
 #include "olcPixelGameEngine.h"
+#include "Vec2.h"
 
 
 // TODO: World class
@@ -86,6 +87,7 @@ using namespace std;
 	GetCell()
 	Clear()
 	CreatePolymap()
+	ShootRay() - would be better as function
 	
 */
 
@@ -345,12 +347,10 @@ private:
 
 	void CalculateVisibilityPolygon(float ox, float oy, float radius, float direction, float fovRad = 0.0f) // fovRad = 0.0 is 360 vision
 	{
-		
-
 		// Get rid of existing polygon
 		vecVisibilityPolygonPoints.clear();
 
-		// clamp the direction to between 0 - 2*pi
+		float dirPolar = Vec2f::PolarAngle({ cosf(direction), sinf(direction) });
 
 		// For each edge in PolyMap
 		for (auto &edge1 : vecEdges)
@@ -395,7 +395,8 @@ private:
 								min_t1 = result.t;
 								min_px = result.px;
 								min_py = result.py;
-								min_ang = atan2f(min_py - oy, min_px - ox);
+								min_ang = Vec2f::PolarAngle({ min_px - ox, min_py - oy });
+								//min_ang = atan2f(min_py - oy, min_px - ox);
 								bValid = true;
 
 							}
@@ -403,8 +404,16 @@ private:
 					}
 					if (fovRad > 0.0f)
 					{
-						if (bValid && (min_ang >= direction - fovRad && min_ang <= direction + fovRad)) // Add intersection point to visibility polygon perimeter
+						// source: https://gamedev.stackexchange.com/questions/100504/how-do-i-optimize-2d-visibility-cone-calculations
+						// TODO: use cross product instead of angles
+						// Vec2f::IsLeft({ ox,oy }, { cosf(direction - fovRad), sinf(direction - fovRad) }, { min_px, min_py });
+						
+						if (bValid)
+						{
+							if (Vec2f::IsLeft({ ox,oy }, { cosf(direction - fovRad) + ox, sinf(direction - fovRad) + oy }, { min_px, min_py })
+								&& !Vec2f::IsLeft({ ox,oy }, { cosf(direction + fovRad) + ox, sinf(direction + fovRad) + oy }, { min_px, min_py }))
 							vecVisibilityPolygonPoints.push_back({ min_ang, min_px, min_py });
+						}
 					}
 					else if (bValid) // Add intersection point to visibility polygon perimeter
 					{
@@ -414,8 +423,6 @@ private:
 				}
 			}
 		}
-
-		
 
 		// SHOOT THE EXTRA RAYS IF NECESSARY
 		// shoot left ray
@@ -446,7 +453,8 @@ private:
 						min_t1 = result.t;
 						min_px = result.px;
 						min_py = result.py;
-						min_ang = atan2f(min_py - oy, min_px - ox);
+						min_ang = Vec2f::PolarAngle({ min_px - ox, min_py - oy });
+						//min_ang = atan2f(min_py - oy, min_px - ox);
 						bValid = true;
 
 					}
@@ -487,7 +495,8 @@ private:
 						min_t1 = result.t;
 						min_px = result.px;
 						min_py = result.py;
-						min_ang = atan2f(min_py - oy, min_px - ox);
+						min_ang = Vec2f::PolarAngle({ min_px - ox, min_py - oy });
+						//min_ang = atan2f(min_py - oy, min_px - ox);
 						bValid = true;
 
 					}
@@ -502,121 +511,7 @@ private:
 
 		// Sort perimeter points by angle from source. This will allow
 		// us to draw a triangle fan.
-		if (fovRad == 0.0f)
-		{
-			sort(
-				vecVisibilityPolygonPoints.begin(),
-				vecVisibilityPolygonPoints.end(),
-				[&](const tuple<float, float, float> &t1, const tuple<float, float, float> &t2)
-			{
-				return get<0>(t1) < get<0>(t2);
-			});
-		}
-		else
-		{
-			sort(
-				vecVisibilityPolygonPoints.begin(),
-				vecVisibilityPolygonPoints.end(),
-				[&](const tuple<float, float, float> &t1, const tuple<float, float, float> &t2)
-			{
-				return get<0>(t1) < get<0>(t2);
-			});
-		}
-
-		// unless we have 360 degree vision, we need to add a point in the mouse position
-		// to the back of the array
-		if (fovRad > 0.0f)
-		{
-			vecVisibilityPolygonPoints.push_back({ 0.0f, ox, oy });
-		}
-	}
-
-	/*
-	void CalculateVisibilityPolygon(float ox, float oy, float radius, float direction, float fovRad = 0.0f) // fovRad = 0.0 is 360 vision
-	{
-		// Get rid of existing polygon
-		vecVisibilityPolygonPoints.clear();
-
-		// For each edge in PolyMap
-		for (auto &edge1 : vecEdges)
-		{
-			// Take the start point, then the end point (we could use a pool of
-			// non-duplicated points here, it would be more optimal)
-			for (int i = 0; i < 2; i++)
-			{
-				float raydx, raydy;
-				raydx = (i == 0 ? edge1.start.x : edge1.end.x) - ox;
-				raydy = (i == 0 ? edge1.start.y : edge1.end.y) - oy;
-
-				float base_ang = atan2f(raydy, raydx);
-				
-				float ang = 0;
-				// For each point, cast 3 rays, 1 directly at point
-				// and 1 a little bit either side
-				for (int j = 0; j < 3; j++)
-				{
-					if (j == 0)	ang = base_ang - 0.0001f;
-					if (j == 1)	ang = base_ang;
-					if (j == 2)	ang = base_ang + 0.0001f;
-
-					float min_t1 = INFINITY;
-					float min_px = 0, min_py = 0, min_ang = 0;
-					bool bValid = false;
-
-					// Check for ray intersection with all edges
-					for (auto &edge2 : vecEdges)
-					{
-						// Create ray along angle for required distance
-						raydx = radius * cosf(ang);
-						raydy = radius * sinf(ang);
-
-						// Create line segment vector
-						float segmentdx = edge2.end.x - edge2.start.x;
-						float segmentdy = edge2.end.y - edge2.start.y;
-
-						// check that ray is not colinear with edge
-						if (fabs(segmentdx - raydx) > 0.0f && fabs(segmentdy - raydy) > 0.0f)
-						{
-							// t2 is normalised distance from line segment start to line segment end of intersect point - distance along the edge
-							float t2 = (raydx * (edge2.start.y - oy) + (raydy * (ox - edge2.start.x))) / (segmentdx * raydy - segmentdy * raydx);
-							// t1 is normalised distance from source along ray to ray length of intersect point - distance along the ray
-							float t1 = (edge2.start.x + segmentdx * t2 - ox) / raydx;
-
-							// If intersect point exists along ray, and along line 
-							// segment then intersect point is valid
-							if (t1 > 0 && t2 >= 0 && t2 <= 1.0f)
-							{
-								// Check if this intersect point is closest to source. If
-								// it is, then store this point and reject others
-								if (t1 < min_t1)
-								{
-									min_t1 = t1;
-									min_px = ox + raydx * t1;
-									min_py = oy + raydy * t1;
-									min_ang = atan2f(min_py - oy, min_px - ox);
-									bValid = true;
-								}
-							}
-						}
-					}
-
-					if (fovRad > 0.0f)
-					{
-						if (bValid && (min_ang >= direction - fovRad && min_ang <= direction + fovRad)) // Add intersection point to visibility polygon perimeter
-							vecVisibilityPolygonPoints.push_back({ min_ang, min_px, min_py });
-					}
-					else
-					{
-						if (bValid) // Add intersection point to visibility polygon perimeter
-							vecVisibilityPolygonPoints.push_back({ min_ang, min_px, min_py });
-					}
-
-				}
-			}
-		}
-
-		// Sort perimeter points by angle from source. This will allow
-		// us to draw a triangle fan.
+		
 		sort(
 			vecVisibilityPolygonPoints.begin(),
 			vecVisibilityPolygonPoints.end(),
@@ -624,16 +519,17 @@ private:
 		{
 			return get<0>(t1) < get<0>(t2);
 		});
+		
 
 		// unless we have 360 degree vision, we need to add a point in the mouse position
 		// to the back of the array
+		
 		if (fovRad > 0.0f)
 		{
-			vecVisibilityPolygonPoints.push_back({ 0.0f, GetMouseX(), GetMouseY() });
+			vecVisibilityPolygonPoints.push_back({ Vec2f::PolarAngle({cosf(direction) + ox, sinf(direction) + oy }), ox, oy});
 		}
-
+		
 	}
-	*/
 
 
 	bool checkIfEnemyIsVisible(float ox, float oy, float radius, int &retCount)
@@ -713,8 +609,8 @@ public:
 
 	bool OnUserUpdate(float fElapsedTime) override
 	{
-		lightAngle += fElapsedTime;
-
+		lightAngle += fElapsedTime / 3.0f;
+		// lightAngle = PI / 2.0f;
 
 		float fBlockWidth = 16.0f;
 		float fSourceX = GetMouseX();
@@ -820,7 +716,11 @@ public:
 					get<1>(vecVisibilityPolygonPoints[i + 1]),
 					get<2>(vecVisibilityPolygonPoints[i + 1]));
 
+				
+
 			}
+
+
 
 			// Fan will have one open edge, so draw last point of fan to first
 			FillTriangle(
@@ -860,7 +760,16 @@ public:
 				get<2>(vecVisibilityPolygonPoints[0]),
 				olc::MAGENTA
 			);
+
+			// Draw polar angles text
+			for (auto edge : vecVisibilityPolygonPoints)
+			{
+				// Draw a text with polar angle
+				DrawString(get<1>(edge), get<2>(edge), to_string(get<0>(edge)), olc::GREEN);
+			}
+
 		}
+		
 
 		// Draw Enemies
 		
@@ -884,7 +793,6 @@ public:
 				}
 			}
 		}
-		
 		else if ( vecEnemies.size() > 0 )
 		{
 			// Draw all enemies regardless
