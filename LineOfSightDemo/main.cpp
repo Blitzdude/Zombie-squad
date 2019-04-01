@@ -73,6 +73,7 @@
 */
 #include <iostream>
 #include <algorithm>
+#include <sstream>
 using namespace std;
 
 #define OLC_PGE_APPLICATION
@@ -160,6 +161,53 @@ private:
 
 	//			angle	x	   y
 	vector<tuple<float, float, float>> vecVisibilityPolygonPoints;
+
+	void LoadLevel(string filepath)
+	{
+		// open the file
+		ifstream input(filepath);
+		if (!input)
+		{
+			cout << "Error: " << filepath << " Not found\n";
+		}
+		// read first line as width and height
+
+		string line;
+		getline(input, line);
+		istringstream iss(line);
+		if (!(iss >> nWorldWidth >> nWorldHeight)) { cout << "error reading file"; };
+		cout << line;
+		world = new sCell[nWorldWidth * nWorldHeight];
+		
+		// read following lines char by char
+		char data;
+		int x = 0, y = 0;
+		while (!input.eof())
+		{
+
+		input >> data;
+			switch (data)
+			{
+			case 'C':
+			case 'c':
+				world[x + y * nWorldWidth].exist = true;
+				break;
+			default:
+				break;
+			}
+			if (x >= nWorldWidth - 1)
+			{
+				x = 0; y++;
+			}
+			else
+			{
+				x++;
+			}
+		}
+		// switch char: cell is live or not
+		// close the file
+		input.close();
+	}
 
 	void ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float fBlockWidth, int pitch)
 	{
@@ -404,12 +452,11 @@ private:
 					}
 					if (fovRad > 0.0f)
 					{
-						// source: https://gamedev.stackexchange.com/questions/100504/how-do-i-optimize-2d-visibility-cone-calculations
-						// TODO: use cross product instead of angles
-						// Vec2f::IsLeft({ ox,oy }, { cosf(direction - fovRad), sinf(direction - fovRad) }, { min_px, min_py });
 						
 						if (bValid)
 						{
+							// source: https://gamedev.stackexchange.com/questions/100504/how-do-i-optimize-2d-visibility-cone-calculations
+							// Use cross product to determine if, point is within the are 
 							if (Vec2f::IsLeft({ ox,oy }, { cosf(direction - fovRad) + ox, sinf(direction - fovRad) + oy }, { min_px, min_py })
 								&& !Vec2f::IsLeft({ ox,oy }, { cosf(direction + fovRad) + ox, sinf(direction + fovRad) + oy }, { min_px, min_py }))
 							vecVisibilityPolygonPoints.push_back({ min_ang, min_px, min_py });
@@ -584,6 +631,10 @@ private:
 public:
 	bool OnUserCreate() override
 	{
+		LoadLevel("level1.txt");
+
+		// REPLACE WITH LoadLevel --------------------- //
+		/*
 		world = new sCell[nWorldWidth * nWorldHeight];
 
 		// Add a boundary to the world
@@ -598,7 +649,8 @@ public:
 			world[x * nWorldWidth + 1].exist = true;
 			world[x * nWorldWidth + (nWorldWidth - 2)].exist = true;
 		}
-
+		*/
+		// ------------------------------------------ // 
 		sprLightCast = new olc::Sprite("light_cast.png");
 
 		// Create some screen-sized off-screen buffers for lighting effect
@@ -716,8 +768,6 @@ public:
 					get<1>(vecVisibilityPolygonPoints[i + 1]),
 					get<2>(vecVisibilityPolygonPoints[i + 1]));
 
-				
-
 			}
 
 
@@ -770,7 +820,6 @@ public:
 
 		}
 		
-
 		// Draw Enemies
 		
 		if (GetMouse(1).bHeld && vecEnemies.size() > 0)
