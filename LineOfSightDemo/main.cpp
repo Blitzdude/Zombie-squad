@@ -105,16 +105,18 @@ struct sIntersectResult
 	float t;
 };
 
+/*
 struct vec2d
 {
 	float x, y;
 };
+*/
 
 // TODO: Add normals to this?, so if we a ball is overlapping, we can push it away
 struct sEdge
 {
-	vec2d start;
-	vec2d end;
+	Vec2f start;
+	Vec2f end;
 };
 
 struct sCell
@@ -392,13 +394,16 @@ private:
 		return false; // no intersection was found
 	};
 
-
-	void CalculateVisibilityPolygon(float ox, float oy, float radius, float direction, float fovRad = 0.0f) // fovRad = 0.0 is 360 vision
+	// for fov < 360
+	void CalculateVisibilityPolygon(float ox, float oy, float radius, float direction, float fovRad) // fovRad = 0.0 is 360 vision
 	{
 		// Get rid of existing polygon
 		vecVisibilityPolygonPoints.clear();
 
-		float dirPolar = Vec2f::PolarAngle({ cosf(direction), sinf(direction) });
+		// float dirPolar = Vec2f::PolarAngle({ cosf(direction), sinf(direction) });
+		// reference vector will be used for sorting, we just need the direction
+		Vec2f rayRef = {cosf(direction - fovRad), sinf(direction - fovRad)};
+
 
 		// For each edge in PolyMap
 		for (auto &edge1 : vecEdges)
@@ -422,8 +427,143 @@ private:
 					if (j == 1)	ang = base_ang;
 					if (j == 2)	ang = base_ang + 0.0001f;
 
-					vec2d rayS = { ox, oy };
-					vec2d rayE = { radius * cosf(ang) + ox, radius * sinf(ang) + oy };
+					Vec2f rayS = { ox, oy };
+					Vec2f rayE = { radius * cosf(ang) + ox, radius * sinf(ang) + oy };
+
+					sEdge ray = { rayS, rayE };
+
+					float min_t1 = INFINITY;
+					float min_px = 0, min_py = 0, min_ang = 0;
+					bool bValid = false;
+
+					// Check for ray intersection with all edges
+					for (auto &edge2 : vecEdges)
+					{
+						sIntersectResult result;
+
+						if (checkLineIntersection(&result, ray, edge2))
+						{
+							if (result.t < min_t1)
+							{
+								min_t1 = result.t;
+								min_px = result.px;
+								min_py = result.py;
+								// angle relative to left ray
+								min_ang = Vec2f::AngleBetween(rayRef, { min_px - ox, min_py - oy });
+
+								// min_ang = Vec2f::PolarAngle({ min_px - ox, min_py - oy });
+								//min_ang = atan2f(min_py - oy, min_px - ox);
+								bValid = true;
+
+							}
+						}
+					}
+					
+					if (bValid)
+					{
+						// source: https://gamedev.stackexchange.com/questions/100504/how-do-i-optimize-2d-visibility-cone-calculations
+						// Use cross product to determine if, point is within the are 
+						if (Vec2f::IsLeft({ ox,oy }, { cosf(direction - fovRad) + ox, sinf(direction - fovRad) + oy }, { min_px, min_py })
+							&& !Vec2f::IsLeft({ ox,oy }, { cosf(direction + fovRad) + ox, sinf(direction + fovRad) + oy }, { min_px, min_py }))
+						vecVisibilityPolygonPoints.push_back({ min_ang, min_px, min_py });
+					}
+					
+				}
+			}
+		}
+
+		// SHOOT THE EXTRA RAYS
+		for (int i = 0; i < 2; i++)
+		{
+			// if i == 0, shoot left, if i == 1, shoot right
+			float dirRad = i % 2 == 0 ? direction - fovRad : direction + fovRad;
+
+			Vec2f rayS = { ox, oy };
+			Vec2f rayE = { radius * cosf(dirRad) + ox, radius * sinf(dirRad) + oy };
+
+			sEdge ray = { rayS, rayE };
+
+			float min_t1 = INFINITY;
+			float min_px = 0, min_py = 0, min_ang = 0;
+			bool bValid = false;
+
+			// Check for ray intersection with all edges
+			for (auto &edge : vecEdges)
+			{
+				sIntersectResult result;
+
+				if (checkLineIntersection(&result, ray, edge))
+				{
+					if (result.t < min_t1)
+					{
+						min_t1 = result.t;
+						min_px = result.px;
+						min_py = result.py;
+						min_ang = Vec2f::AngleBetween(rayRef, { min_px - ox, min_py - oy });
+
+						//min_ang = Vec2f::PolarAngle({ min_px - ox, min_py - oy });
+						//min_ang = atan2f(min_py - oy, min_px - ox);
+						bValid = true;
+					}
+				}
+			}
+
+			if (bValid)
+			{
+				vecVisibilityPolygonPoints.push_back({ min_ang, min_px, min_py });
+			}
+		}
+	
+		// Sort perimeter points by angle from source. This will allow
+		// us to draw a triangle fan.
+		// when dealing with conical vision, we must sort relative to the left ray
+		
+
+		sort(
+			vecVisibilityPolygonPoints.begin(),
+			vecVisibilityPolygonPoints.end(),
+			[&](const tuple<float, float, float> &t1, const tuple<float, float, float> &t2)
+		{
+			return get<0>(t1) < get<0>(t2);
+		});
+
+		
+		// unless we have 360 degree vision, we need to add a point in the mouse position
+		// to the back of the array
+		vecVisibilityPolygonPoints.push_back({ Vec2f::PolarAngle({cosf(direction) + ox, sinf(direction) + oy }), ox, oy });
+		
+	}
+
+	// for 360 vision
+	void CalculateVisibilityPolygon(float ox, float oy, float radius) // fovRad = 0.0 is 360 vision
+	{
+		// Get rid of existing polygon
+		vecVisibilityPolygonPoints.clear();
+
+		// For each edge in PolyMap
+		for (auto &edge1 : vecEdges)
+		{
+			// Take the start point, then the end point (we could use a pool of
+			// non-duplicated points here, it would be more optimal)
+			for (int i = 0; i < 2; i++)
+			{
+				float raydx, raydy;
+				raydx = (i == 0 ? edge1.start.x : edge1.end.x) - ox;
+				raydy = (i == 0 ? edge1.start.y : edge1.end.y) - oy;
+
+				float base_ang = atan2f(raydy, raydx);
+
+				float ang = 0;
+				// For each point, cast 3 rays, 1 directly at point
+				// and 1 a little bit either side
+				for (int j = 0; j < 3; j++)
+				{
+					if (j == 0)	ang = base_ang - 0.0001f;
+					if (j == 1)	ang = base_ang;
+					if (j == 2)	ang = base_ang + 0.0001f;
+
+					Vec2f rayS = { ox, oy };
+					Vec2f rayE = { radius * cosf(ang) + ox, radius * sinf(ang) + oy };
 
 					sEdge ray = { rayS, rayE };
 
@@ -450,115 +590,19 @@ private:
 							}
 						}
 					}
-					if (fovRad > 0.0f)
-					{
-						
-						if (bValid)
-						{
-							// source: https://gamedev.stackexchange.com/questions/100504/how-do-i-optimize-2d-visibility-cone-calculations
-							// Use cross product to determine if, point is within the are 
-							if (Vec2f::IsLeft({ ox,oy }, { cosf(direction - fovRad) + ox, sinf(direction - fovRad) + oy }, { min_px, min_py })
-								&& !Vec2f::IsLeft({ ox,oy }, { cosf(direction + fovRad) + ox, sinf(direction + fovRad) + oy }, { min_px, min_py }))
-							vecVisibilityPolygonPoints.push_back({ min_ang, min_px, min_py });
-						}
-					}
-					else if (bValid) // Add intersection point to visibility polygon perimeter
+					if (bValid) // Add intersection point to visibility polygon perimeter
 					{
 						vecVisibilityPolygonPoints.push_back({ min_ang, min_px, min_py });
 					}
-					
+
 				}
 			}
 		}
 
-		// SHOOT THE EXTRA RAYS IF NECESSARY
-		// shoot left ray
-		if (fovRad > 0.0f)
-		{
-			float dirRad = direction - fovRad;
-
-
-			vec2d rayS = { ox, oy };
-			vec2d rayE = { radius * cosf(dirRad) + ox, radius * sinf(dirRad) + oy };
-
-			sEdge ray = { rayS, rayE };
-
-			float min_t1 = INFINITY;
-			float min_px = 0, min_py = 0, min_ang = 0;
-			bool bValid = false;
-
-			// Check for ray intersection with all edges
-			for (auto &edge : vecEdges)
-			{
-
-				sIntersectResult result;
-
-				if (checkLineIntersection(&result, ray, edge))
-				{
-					if (result.t < min_t1)
-					{
-						min_t1 = result.t;
-						min_px = result.px;
-						min_py = result.py;
-						min_ang = Vec2f::PolarAngle({ min_px - ox, min_py - oy });
-						//min_ang = atan2f(min_py - oy, min_px - ox);
-						bValid = true;
-
-					}
-				}
-			}
-
-			if (bValid)
-			{
-				vecVisibilityPolygonPoints.push_back({ min_ang, min_px, min_py });
-			}
-		}
-
-		
-
-		// shoot right ray
-		if (fovRad > 0.0f)
-		{
-			float dirRad = direction + fovRad;
-
-			vec2d rayS = { ox, oy };
-			vec2d rayE = { radius * cosf(dirRad) + ox, radius * sinf(dirRad) + oy };
-
-			sEdge ray = { rayS, rayE };
-
-			float min_t1 = INFINITY;
-			float min_px = 0, min_py = 0, min_ang = 0;
-			bool bValid = false;
-
-			// Check for ray intersection with all edges
-			for (auto &edge : vecEdges)
-			{
-				sIntersectResult result;
-
-				if (checkLineIntersection(&result, ray, edge))
-				{
-					if (result.t < min_t1)
-					{
-						min_t1 = result.t;
-						min_px = result.px;
-						min_py = result.py;
-						min_ang = Vec2f::PolarAngle({ min_px - ox, min_py - oy });
-						//min_ang = atan2f(min_py - oy, min_px - ox);
-						bValid = true;
-
-					}
-				}
-			}
-
-			if (bValid)
-			{
-				vecVisibilityPolygonPoints.push_back({ min_ang, min_px, min_py });
-			}
-		}
 
 		// Sort perimeter points by angle from source. This will allow
 		// us to draw a triangle fan.
-		
+
 		sort(
 			vecVisibilityPolygonPoints.begin(),
 			vecVisibilityPolygonPoints.end(),
@@ -566,22 +610,13 @@ private:
 		{
 			return get<0>(t1) < get<0>(t2);
 		});
-		
 
-		// unless we have 360 degree vision, we need to add a point in the mouse position
-		// to the back of the array
-		
-		if (fovRad > 0.0f)
-		{
-			vecVisibilityPolygonPoints.push_back({ Vec2f::PolarAngle({cosf(direction) + ox, sinf(direction) + oy }), ox, oy});
-		}
-		
 	}
 
 
 	bool checkIfEnemyIsVisible(float ox, float oy, float radius, int &retCount)
 	{
-		sEdge ray = { ox, oy, radius, 0.0f };
+		sEdge ray = { {ox, oy}, {radius, 0.0f} };
 
 		// count for the number of intersections
 		int count = 0;
@@ -589,7 +624,6 @@ private:
 		// For each edge in PolyMap
 		for (int i = 0; i < vecVisibilityPolygonPoints.size(); i++)
 		{
-			
 			sEdge edge;
 
 			if (i == vecVisibilityPolygonPoints.size() - 1)
@@ -617,7 +651,6 @@ private:
 			{
 				count++;
 			}
-
 		}
 
 		// returns true if odd, false for even
@@ -633,24 +666,6 @@ public:
 	{
 		LoadLevel("level1.txt");
 
-		// REPLACE WITH LoadLevel --------------------- //
-		/*
-		world = new sCell[nWorldWidth * nWorldHeight];
-
-		// Add a boundary to the world
-		for (int x = 1; x < (nWorldWidth - 1); x++)
-		{
-			world[1 * nWorldWidth + x].exist = true;
-			world[(nWorldHeight - 2) * nWorldWidth + x].exist = true;
-		}
-
-		for (int x = 1; x < (nWorldHeight - 1); x++)
-		{
-			world[x * nWorldWidth + 1].exist = true;
-			world[x * nWorldWidth + (nWorldWidth - 2)].exist = true;
-		}
-		*/
-		// ------------------------------------------ // 
 		sprLightCast = new olc::Sprite("light_cast.png");
 
 		// Create some screen-sized off-screen buffers for lighting effect
@@ -685,8 +700,8 @@ public:
 		if (GetMouse(1).bHeld)
 		{
 		
-			CalculateVisibilityPolygon(fSourceX, fSourceY, 1000.0f, atan2f(cosf(lightAngle), sinf(lightAngle)), 0.6f);
-			
+			CalculateVisibilityPolygon(fSourceX, fSourceY, 1000.0f, atan2f(cosf(lightAngle), sinf(lightAngle)), Deg2Radians(40.0f));
+			// CalculateVisibilityPolygon(fSourceX, fSourceY, 1000.0f);
 		}
 
 		// Add "enemy" with A-key
@@ -812,16 +827,22 @@ public:
 			);
 
 			// Draw polar angles text
+			/*
 			for (auto edge : vecVisibilityPolygonPoints)
 			{
-				// Draw a text with polar angle
 				DrawString(get<1>(edge), get<2>(edge), to_string(get<0>(edge)), olc::GREEN);
+			}
+			*/
+
+			// draw the the order of the points
+			for (int i = 0; i < vecVisibilityPolygonPoints.size() - 1; i++)
+			{
+				DrawString(get<1>(vecVisibilityPolygonPoints[i]), get<2>(vecVisibilityPolygonPoints[i]), to_string(i), olc::GREEN);
 			}
 
 		}
 		
 		// Draw Enemies
-		
 		if (GetMouse(1).bHeld && vecEnemies.size() > 0)
 		{
 			// check if enemy should be visible
@@ -854,7 +875,7 @@ public:
 		// Draw direction ray
 		float ang2draw = atan2f(cosf(lightAngle), sinf(lightAngle));
 		DrawLine(fSourceX, fSourceY, 100.0f*cosf(ang2draw) + fSourceX, 100.0f*sinf(ang2draw) + fSourceY, olc::MAGENTA);
-		DrawLine(fSourceX, fSourceY, -100.0f + fSourceX, fSourceY, olc::MAGENTA); // left
+		DrawLine(fSourceX, fSourceY, 100.0f + fSourceX, fSourceY, olc::MAGENTA); // right
 		
 
 		// exit with Escape
