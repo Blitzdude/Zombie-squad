@@ -105,13 +105,6 @@ struct sIntersectResult
 	float t;
 };
 
-/*
-struct vec2d
-{
-	float x, y;
-};
-*/
-
 // TODO: Add normals to this?, so if we a ball is overlapping, we can push it away
 struct sEdge
 {
@@ -148,8 +141,8 @@ public:
 
 private:
 	sCell* world;
-	int nWorldWidth = 40;
-	int nWorldHeight = 30;
+	int nWorldWidth = 0;
+	int nWorldHeight = 0;
 
 	float lightAngle = 0.0f;
 
@@ -164,51 +157,55 @@ private:
 	//			angle	x	   y
 	vector<tuple<float, float, float>> vecVisibilityPolygonPoints;
 
-	void LoadLevel(string filepath)
+	bool LoadLevel(string filepath)
 	{
 		// open the file
 		ifstream input(filepath);
-		if (!input)
+		if (!input.is_open())
 		{
 			cout << "Error: " << filepath << " Not found\n";
+			input.close();
+			return false;
 		}
 		// read first line as width and height
 
 		string line;
 		getline(input, line);
 		istringstream iss(line);
-		if (!(iss >> nWorldWidth >> nWorldHeight)) { cout << "error reading file"; };
+		if (!(iss >> nWorldWidth >> nWorldHeight)) 
+		{
+			cout << "error reading file"; 
+			return false;
+		};
 		cout << line;
 		world = new sCell[nWorldWidth * nWorldHeight];
 		
 		// read following lines char by char
 		char data;
-		int x = 0, y = 0;
-		while (!input.eof())
+		for (int y = 0; y < nWorldHeight; y++)
 		{
+			for (int x = 0; x < nWorldWidth; x++)
 
-		input >> data;
-			switch (data)
 			{
-			case 'C':
-			case 'c':
-				world[x + y * nWorldWidth].exist = true;
-				break;
-			default:
-				break;
-			}
-			if (x >= nWorldWidth - 1)
-			{
-				x = 0; y++;
-			}
-			else
-			{
-				x++;
+				if (!input.eof())
+				{
+					input >> data;
+					switch (data)
+					{
+					case 'C':
+					case 'c':
+						world[x + y * nWorldWidth].exist = true;
+						break;
+					default:
+						break;
+					}
+				}
 			}
 		}
-		// switch char: cell is live or not
+
 		// close the file
 		input.close();
+		return true;
 	}
 
 	void ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float fBlockWidth, int pitch)
@@ -660,11 +657,14 @@ private:
 		return ret;
 	}
 
-
 public:
 	bool OnUserCreate() override
 	{
-		LoadLevel("level1.txt");
+		if (!LoadLevel("level3.txt"))
+		{
+			cout << "Level load failed!";
+			return false;
+		}
 
 		sprLightCast = new olc::Sprite("light_cast.png");
 
@@ -676,7 +676,7 @@ public:
 
 	bool OnUserUpdate(float fElapsedTime) override
 	{
-		lightAngle += fElapsedTime / 3.0f;
+		// lightAngle += fElapsedTime / 3.0f;
 		// lightAngle = PI / 2.0f;
 
 		float fBlockWidth = 16.0f;
@@ -691,21 +691,28 @@ public:
 			world[i].exist = !world[i].exist;
 		}
 
+		// change look direction with scroll wheel
+		if (GetMouseWheel() > 0)
+		{
+			lightAngle += 0.1f;
+		}
+		else if (GetMouseWheel() < 0)
+		{
+			lightAngle -= 0.1f;
+		}
+		
 		// Take a region of "TileMap" and convert it to "PolyMap" - This is done
 		// every frame here, but could be a pre-processing stage depending on 
 		// how your final application interacts with tilemaps
-		ConvertTileMapToPolyMap(0, 0, 40, 30, fBlockWidth, nWorldWidth);
-
+		ConvertTileMapToPolyMap(0, 0, nWorldWidth, nWorldHeight, fBlockWidth, nWorldWidth);
 
 		if (GetMouse(1).bHeld)
 		{
-		
 			CalculateVisibilityPolygon(fSourceX, fSourceY, 1000.0f, atan2f(cosf(lightAngle), sinf(lightAngle)), Deg2Radians(40.0f));
-			// CalculateVisibilityPolygon(fSourceX, fSourceY, 1000.0f);
 		}
 
 		// Add "enemy" with A-key
-		if (GetKey(olc::A).bPressed)
+		if (GetKey(olc::E).bPressed)
 		{
 			// add enemy to vector
 			vecEnemies.push_back({ fSourceX, fSourceY, false, 0 });
@@ -735,23 +742,24 @@ public:
 		vecVisibilityPolygonPoints.resize(distance(vecVisibilityPolygonPoints.begin(), it));
 
 		int nRaysCast2 = vecVisibilityPolygonPoints.size();
-		DrawString(4, 4, "Rays Cast: " + to_string(nRaysCast) + " Rays Drawn: " + to_string(nRaysCast2) + " Ray Angle: " + to_string(atan2f(cosf(lightAngle), sinf(lightAngle))));
-
+		DrawString(2, ScreenHeight() - 20, "Rays Cast: " + to_string(nRaysCast) + " Rays Drawn: " + to_string(nRaysCast2) + " Ray Angle: " + to_string(atan2f(cosf(lightAngle), sinf(lightAngle))));
 
 		// Draw Blocks from TileMap
 		for (int x = 0; x < nWorldWidth; x++)
 			for (int y = 0; y < nWorldHeight; y++)
 			{
 				if (world[y * nWorldWidth + x].exist)
+				{
 					FillRect(x * fBlockWidth, y * fBlockWidth, fBlockWidth, fBlockWidth, olc::BLUE);
+				}
 			}
 
 		// Draw Edges from PolyMap
 		for (auto &e : vecEdges)
 		{
 			DrawLine(e.start.x, e.start.y, e.end.x, e.end.y, olc::DARK_RED);
-			FillCircle(e.start.x, e.start.y, 3, olc::RED);
-			FillCircle(e.end.x, e.end.y, 3, olc::RED);
+			FillCircle(e.start.x, e.start.y, 2.0f, olc::RED);
+			FillCircle(e.end.x, e.end.y, 2.0f, olc::RED);
 		}
 
 
@@ -826,13 +834,6 @@ public:
 				olc::MAGENTA
 			);
 
-			// Draw polar angles text
-			/*
-			for (auto edge : vecVisibilityPolygonPoints)
-			{
-				DrawString(get<1>(edge), get<2>(edge), to_string(get<0>(edge)), olc::GREEN);
-			}
-			*/
 
 			// draw the the order of the points
 			for (int i = 0; i < vecVisibilityPolygonPoints.size() - 1; i++)
@@ -858,7 +859,7 @@ public:
 			{
 				if (enemy.visible)
 				{
-					FillCircle(enemy.x, enemy.y, 6.0f, olc::DARK_CYAN);
+					FillCircle(enemy.x, enemy.y, 3.0f, olc::DARK_CYAN);
 					DrawString(enemy.x - 1, enemy.y - 1, to_string(enemy.count));
 				}
 			}
@@ -868,7 +869,7 @@ public:
 			// Draw all enemies regardless
 			for (auto &enemy : vecEnemies)
 			{
-				FillCircle(enemy.x, enemy.y, 6.0f, olc::CYAN);
+				FillCircle(enemy.x, enemy.y, 3.0f, olc::CYAN);
 			}
 		}
 
@@ -889,6 +890,6 @@ public:
 int main()
 {
 	ShadowCasting2D demo;
-	if (demo.Construct(640, 480, 2, 2))
+	if (demo.Construct(1280, 900, 1, 1))
 		demo.Start();
 }
