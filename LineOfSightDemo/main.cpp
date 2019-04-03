@@ -143,7 +143,8 @@ private:
 	sCell* world;
 	int nWorldWidth = 0;
 	int nWorldHeight = 0;
-
+	
+	float fBlockWidth = 0.0f;
 	float lightAngle = 0.0f;
 
 	olc::Sprite *sprLightCast;
@@ -172,7 +173,7 @@ private:
 		string line;
 		getline(input, line);
 		istringstream iss(line);
-		if (!(iss >> nWorldWidth >> nWorldHeight)) 
+		if (!(iss >> nWorldWidth >> nWorldHeight >> fBlockWidth)) 
 		{
 			cout << "error reading file"; 
 			return false;
@@ -660,7 +661,7 @@ private:
 public:
 	bool OnUserCreate() override
 	{
-		if (!LoadLevel("level3.txt"))
+		if (!LoadLevel("level2.txt"))
 		{
 			cout << "Level load failed!";
 			return false;
@@ -679,7 +680,7 @@ public:
 		// lightAngle += fElapsedTime / 3.0f;
 		// lightAngle = PI / 2.0f;
 
-		float fBlockWidth = 16.0f;
+		
 		float fSourceX = GetMouseX();
 		float fSourceY = GetMouseY();
 
@@ -708,7 +709,7 @@ public:
 
 		if (GetMouse(1).bHeld)
 		{
-			CalculateVisibilityPolygon(fSourceX, fSourceY, 1000.0f, atan2f(cosf(lightAngle), sinf(lightAngle)), Deg2Radians(40.0f));
+			CalculateVisibilityPolygon(fSourceX, fSourceY, 1000.0f, atan2f(cosf(lightAngle), sinf(lightAngle)), Deg2Radians(60.0f));
 		}
 
 		// Add "enemy" with A-key

@@ -1,4 +1,4 @@
-80 54
+80 54 16
 ................................................................................
 .CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC.
 .C..............C.....................C.......................................C.
