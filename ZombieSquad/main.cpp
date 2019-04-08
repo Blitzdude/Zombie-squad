@@ -1,5 +1,31 @@
 #define OLC_PGE_APPLICATION
 #include "olcPixelGameEngine.h"
+#include "PlayerHandler.h"
+#include "Player.h"
+#include "Command.h"
+
+#include <vector>
+
+/*
+ZombieSquad - Project by Joel Känsälä. Public license.
+
+*/
+
+/* STYLE GUIDE
+types: (struct, class etc)
+	- TypeName
+methods, functions: 
+	- FunctionName()
+variables:
+	- type_variableNameAbc
+	- type : tells which type the variable is
+	- m_=member, c_=constants
+multiple types:
+	- mc_= member constant etc.
+global constants/Defines:
+	- ALL_UPPER_CASE
+	
+*/
 
 // CLASSES
 /*
@@ -33,7 +59,6 @@ State
 	- has entry, current and leave actions
 */
 
-
 /*
 Handler::Input, ZombieAI, CharacterAI
 	- Input: send commands based on input.
@@ -43,8 +68,11 @@ Handler::Input, ZombieAI, CharacterAI
 
 class ZombieSquad : public olc::PixelGameEngine
 {
+
+
 public:
 	ZombieSquad()
+		: m_playerHandler(*this)
 	{
 		sAppName = "ZombieSquad";
 	}
@@ -69,28 +97,26 @@ public:
 			Set size
 			Give control to player
 		*/
+		vecActors.push_back(new Player(100.0f, 100.0f));
+		m_player = vecActors.back();
+
 
 		// Populate Level with zombies
 		/*
 			For each open cell far enough away from start
 			- Add zombies to unoccupied cells
 		*/
+
 		return true;
 	}
 
 	bool OnUserUpdate(float fElapsedTime) override
 	{
-
+		DoInput(fElapsedTime);
 		// Check input
-		/*
-			Check player inputs
-			- Keyboard:
-			- W/S - Move forward/back
-			- A/D - Turn left/right
-			- 1,2,3,4 - switch characters
-			- Space - fire gun -> create bullets
-		*/
+		
 
+		DoUpdate(fElapsedTime);
 		// Update 
 		/*
 			Check victory condition
@@ -106,8 +132,11 @@ public:
 			
 		*/
 
+		DoDraw();
 		// Drawing
 		/*
+			Clear the screen
+
 			Draw tiles
 			Draw visibility
 			Draw Actors (if in polygon)
@@ -115,8 +144,42 @@ public:
 		return true;
 	}
 
-private:
+	void DoInput(float fElapsedTime)
+	{
+		/*
+		Check player inputs
+		- Keyboard:
+		- W/S - Move forward/back
+		- A/D - Turn left/right
+		- 1,2,3,4 - switch characters
+		- Space - fire gun -> create bullets
+		*/
+		Command* command = m_playerHandler.handleInput();
+		if (command)
+			command->execute(*m_player, fElapsedTime);
 
+	}
+
+	void DoUpdate(float fElapsedTime)
+	{
+		
+	}
+
+	void DoDraw()
+	{
+		Clear(olc::BLACK);
+
+		for (auto & itr : vecActors)
+		{
+			itr->Draw(*this);
+		}
+	}
+
+
+private:
+	PlayerHandler m_playerHandler;
+	Actor* m_player;
+	std::vector<Actor*> vecActors;
 };
 
 

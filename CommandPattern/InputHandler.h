@@ -11,8 +11,8 @@ public:
     ~InputHandler();
 
     Command* handleInput();
-
     void bindButtons();
+
 private:
     Command* buttonW;
     Command* buttonA;
