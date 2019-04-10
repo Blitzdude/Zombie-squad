@@ -2,6 +2,8 @@
 #include "Vec2.h"
 #include "olcPixelGameEngine.h"
 #include <string>
+#include <map>
+#include <array>
 
 /*
 Level
@@ -11,6 +13,13 @@ Level
 	- Handles pathfindng from one point to another (A* star)
 	- map of sprites needed to draw <id, olc::sprite>
 */
+
+enum class SpriteId
+{
+	ROAD = 0,
+	BUILDING,
+	COUNT
+};
 
 struct Cell
 {
@@ -22,7 +31,7 @@ struct Cell
 	int x;
 	int y;
 	bool walkable;
-	// id of the sprite to draw
+	SpriteId sprId;
 };
 
 struct Edge
@@ -42,16 +51,23 @@ public:
 	// edge array
 	// visibility polygon calculation
 	// A* pathfinding routines
+	Level();
+	Level(std::string path);
+	~Level();
+
 	bool LoadLevel(std::string filepath);
+	bool loadTextures();
 	void ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float fBlockWidth, int pitch);
 	void CalculateVisibilityPolygon(float ox, float oy, float radius, float direction, float fovRad);
 	bool checkIfVisible(float ox, float oy, float radius);
+	void DrawLevel(olc::PixelGameEngine& engine);
 
-
-	Level();
-	~Level();
 private:
 	int m_mapWidth;
 	int m_mapHeight;
+	float m_cellSize;
+	Cell* m_map;
+	std::array<olc::Sprite*, (size_t)SpriteId::COUNT> m_sprites;
+	//std::map<SpriteId, olc::Sprite*> m_sprites;
 };
 

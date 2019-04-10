@@ -3,6 +3,7 @@
 #include "PlayerHandler.h"
 #include "Player.h"
 #include "Command.h"
+#include "Level.h"
 
 #include <vector>
 
@@ -104,6 +105,8 @@ public:
 			goal location
 		*/
 
+		m_currentLevel = new Level("level3.txt");
+
 		// Generate Edge data from tile map
 		/*
 			see lineOfSight demo
@@ -149,14 +152,7 @@ public:
 		*/
 
 		DoDraw();
-		// Drawing
-		/*
-			Clear the screen
-
-			Draw tiles
-			Draw visibility
-			Draw Actors (if in polygon)
-		*/
+		
 		return true;
 	}
 
@@ -183,7 +179,18 @@ public:
 
 	void DoDraw()
 	{
+		// Drawing
+		/*
+			Clear the screen
+
+			Draw tiles
+			Draw visibility
+			Draw Actors (if in polygon)
+		*/
+
 		Clear(olc::BLACK);
+
+		m_currentLevel->DrawLevel(*this);
 
 		for (auto & itr : vecActors)
 		{
@@ -196,6 +203,7 @@ private:
 	PlayerHandler m_playerHandler;
 	Actor* m_player;
 	std::vector<Actor*> vecActors;
+	Level* m_currentLevel;
 };
 
 
