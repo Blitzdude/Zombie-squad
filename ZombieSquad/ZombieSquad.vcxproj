@@ -117,12 +117,16 @@
   <ItemGroup>
     <ClInclude Include="Actor.h" />
     <ClInclude Include="Command.h" />
+    <ClInclude Include="Level.h" />
+    <ClInclude Include="mathUtil.h" />
     <ClInclude Include="olcPixelGameEngine.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerHandler.h" />
+    <ClInclude Include="Vec2.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="Level.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerHandler.cpp" />

@@ -8,7 +8,6 @@
 
 /*
 ZombieSquad - Project by Joel Känsälä. Public license.
-
 */
 
 /* STYLE GUIDE
@@ -19,7 +18,7 @@ methods, functions:
 variables:
 	- type_variableNameAbc
 	- type : tells which type the variable is
-	- m_=member, c_=constants
+	- m_=member, c_=constants, p_=parameter
 multiple types:
 	- mc_= member constant etc.
 global constants/Defines:
@@ -39,7 +38,7 @@ Level
 /*
 Command
 	- part of command pattern
-	- command object given
+	- command object given to actors
 	- execute()
 */
 
@@ -47,6 +46,7 @@ Command
 Actors::Player, Zombie, Bullet
 	- position
 	- direction
+	- speed
 	- attack()
 	- move()
 	- have states
@@ -65,6 +65,24 @@ Handler::Input, ZombieAI, CharacterAI
 	- ZombieAI: tell zombies to do stuff
 	- CharacterAI: tell characters not beign controlled to do stuff
 */
+
+/*
+Physics
+	- list of bodies (if necessary)
+	- collision detection
+	- collision resolution
+		- circle vs circle
+		- circle vs edge
+	- raycasting
+		- raycast result struct
+*/
+// OTHER
+/*
+	Math
+	- utility 
+	- vec2
+*/
+
 
 class ZombieSquad : public olc::PixelGameEngine
 {
@@ -127,8 +145,6 @@ public:
 			- destroy bullets, when they touch something
 			Move Actors (zombies, characters, bullets)
 			Calculate visibility polygons
-
-			
 			
 		*/
 

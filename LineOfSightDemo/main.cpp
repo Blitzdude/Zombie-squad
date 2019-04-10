@@ -393,7 +393,7 @@ private:
 	};
 
 	// for fov < 360
-	void CalculateVisibilityPolygon(float ox, float oy, float radius, float direction, float fovRad) // fovRad = 0.0 is 360 vision
+	void CalculateVisibilityPolygon(float ox, float oy, float radius, float direction, float fovRad)
 	{
 		// Get rid of existing polygon
 		vecVisibilityPolygonPoints.clear();
