@@ -50,10 +50,10 @@ void Player::MoveBack(float fElapsedTime)
 
 void Player::TurnRight(float fElapsedTime)
 {
-	SetDirection(GetDirection() + 10.0f*fElapsedTime);
+	SetDirection(GetDirection() + 2.0f*fElapsedTime);
 }
 
 void Player::TurnLeft(float fElapsedTime)
 {
-	SetDirection(GetDirection() - 10.0f*fElapsedTime);
+	SetDirection(GetDirection() - 2.0f*fElapsedTime);
 }

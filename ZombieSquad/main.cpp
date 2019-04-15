@@ -190,8 +190,8 @@ public:
 
 		Clear(olc::BLACK);
 
-		m_currentLevel->DrawLevel(*this);
-
+		// m_currentLevel->DrawLevel(*this);
+		m_currentLevel->DrawPolyMap(*this);
 		for (auto & itr : vecActors)
 		{
 			itr->Draw(*this);

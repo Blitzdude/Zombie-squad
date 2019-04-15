@@ -1,5 +1,6 @@
 #pragma once
 #include "Vec2.h"
+#include "StructCollection.h"
 #include "olcPixelGameEngine.h"
 #include <string>
 #include <map>
@@ -14,6 +15,7 @@ Level
 	- map of sprites needed to draw <id, olc::sprite>
 */
 
+
 enum class SpriteId
 {
 	ROAD = 0,
@@ -23,23 +25,21 @@ enum class SpriteId
 
 struct Cell
 {
-	Cell() // default constructor
-		: x(0), y(0), walkable(false) {}
-	Cell(int p_x, int p_y, bool p_walkable)
-		: x(p_x), y(p_y), walkable(p_walkable) {}
-	// position in array
-	int x;
-	int y;
-	bool walkable;
+	
+	int edge_id[4];
+	bool edge_exist[4];
+	bool obstacle = false;
 	SpriteId sprId;
 };
 
+/*
 struct Edge
 {
 	Vec2f start;
 	Vec2f end;
 	Vec2f normal;
 };
+*/
 
 class Level
 {
@@ -56,8 +56,9 @@ public:
 	~Level();
 
 	bool LoadLevel(std::string filepath);
-	bool loadTextures();
+	bool LoadTextures();
 	void ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float fBlockWidth, int pitch);
+	void DrawPolyMap(olc::PixelGameEngine& engine);
 	void CalculateVisibilityPolygon(float ox, float oy, float radius, float direction, float fovRad);
 	bool checkIfVisible(float ox, float oy, float radius);
 	void DrawLevel(olc::PixelGameEngine& engine);
@@ -68,6 +69,6 @@ private:
 	float m_cellSize;
 	Cell* m_map;
 	std::array<olc::Sprite*, (size_t)SpriteId::COUNT> m_sprites;
-	//std::map<SpriteId, olc::Sprite*> m_sprites;
+	std::vector<Edge> vec_edges;
 };
 

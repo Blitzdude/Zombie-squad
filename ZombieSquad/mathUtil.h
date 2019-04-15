@@ -24,3 +24,4 @@ inline auto Rad2Degrees(const T& d)
 {
 	return d * 180 / PI;
 }
+
