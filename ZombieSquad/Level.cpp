@@ -144,6 +144,9 @@ void Level::ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float fBlockWi
 						Edge edge;
 						edge.start.x = (sx + x) * fBlockWidth; edge.start.y = (sy + y) * fBlockWidth;
 						edge.end.x = edge.start.x; edge.end.y = edge.start.y + fBlockWidth;
+						// the normal of the edge needs to point west
+						edge.normal.x = -1.0f;
+						edge.normal.y = 0.0f;
 
 						// Add edge to Polygon Pool
 						int edge_id = vec_edges.size();
@@ -173,6 +176,9 @@ void Level::ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float fBlockWi
 						Edge edge;
 						edge.start.x = (sx + x + 1) * fBlockWidth; edge.start.y = (sy + y) * fBlockWidth;
 						edge.end.x = edge.start.x; edge.end.y = edge.start.y + fBlockWidth;
+						// Normal of the edge needs to point east
+						edge.normal.x = 1.0f;
+						edge.normal.y = 0.0f;
 
 						// Add edge to Polygon Pool
 						int edge_id = vec_edges.size();
@@ -202,6 +208,9 @@ void Level::ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float fBlockWi
 						Edge edge;
 						edge.start.x = (sx + x) * fBlockWidth; edge.start.y = (sy + y) * fBlockWidth;
 						edge.end.x = edge.start.x + fBlockWidth; edge.end.y = edge.start.y;
+						// Normal of the edge needs to point north
+						edge.normal.x = 0.0f;
+						edge.normal.y = -1.0f;
 
 						// Add edge to Polygon Pool
 						int edge_id = vec_edges.size();
@@ -231,6 +240,9 @@ void Level::ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float fBlockWi
 						Edge edge;
 						edge.start.x = (sx + x) * fBlockWidth; edge.start.y = (sy + y + 1) * fBlockWidth;
 						edge.end.x = edge.start.x + fBlockWidth; edge.end.y = edge.start.y;
+						// Normal of the edge needs to point north
+						edge.normal.x = 0.0f;
+						edge.normal.y = 1.0f;
 
 						// Add edge to Polygon Pool
 						int edge_id = vec_edges.size();
@@ -254,6 +266,10 @@ void Level::DrawPolyMap(olc::PixelGameEngine & engine)
 		engine.DrawLine(e.start.x, e.start.y, e.end.x, e.end.y, olc::RED);
 		engine.FillCircle(e.start.x, e.start.y, 3, olc::RED);
 		engine.FillCircle(e.end.x, e.end.y, 3, olc::RED);
+		// Draw the normal
+		Vec2f edgeCenter = { e.start.x + (e.end.x - e.start.x)*0.5f, e.start.y + (e.end.y-e.start.y)*0.5f };
+		engine.FillCircle(edgeCenter.x, edgeCenter.y, 3, olc::BLUE);
+		engine.DrawLine(edgeCenter.x, edgeCenter.y, edgeCenter.x + e.normal.x*100.0f, edgeCenter.y + e.normal.y*100.0f, olc::BLUE);
 
 	}
 }

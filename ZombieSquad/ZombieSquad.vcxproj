@@ -120,6 +120,7 @@
     <ClInclude Include="Level.h" />
     <ClInclude Include="mathUtil.h" />
     <ClInclude Include="olcPixelGameEngine.h" />
+    <ClInclude Include="Physics.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerHandler.h" />
     <ClInclude Include="StructCollection.h" />
@@ -129,6 +130,7 @@
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerHandler.cpp" />
   </ItemGroup>
