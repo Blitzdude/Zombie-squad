@@ -269,7 +269,7 @@ void Level::DrawPolyMap(olc::PixelGameEngine & engine)
 		// Draw the normal
 		Vec2f edgeCenter = { e.start.x + (e.end.x - e.start.x)*0.5f, e.start.y + (e.end.y-e.start.y)*0.5f };
 		engine.FillCircle(edgeCenter.x, edgeCenter.y, 3, olc::BLUE);
-		engine.DrawLine(edgeCenter.x, edgeCenter.y, edgeCenter.x + e.normal.x*100.0f, edgeCenter.y + e.normal.y*100.0f, olc::BLUE);
+		engine.DrawLine(edgeCenter.x, edgeCenter.y, edgeCenter.x + e.normal.x*10.0f, edgeCenter.y + e.normal.y*10.0f, olc::BLUE);
 
 	}
 }
@@ -280,10 +280,8 @@ void Level::DrawLevel(olc::PixelGameEngine & engine)
 	for (int x = 0; x < m_mapWidth; x++)
 		for (int y = 0; y < m_mapHeight; y++)
 		{
-
 			engine.DrawSprite(x * m_cellSize, y * m_cellSize,
 				m_sprites[(size_t)m_map[y * m_mapWidth + x].sprId]);
-			
 		}
 }
 

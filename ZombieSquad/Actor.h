@@ -26,6 +26,7 @@ public:
 	float GetX()		 const { return m_x; }
 	float GetY()		 const { return m_y; }
 	float GetDirection() const { return m_dir; }
+	Vec2f GetPosition()  const { return Vec2f( m_x, m_y); }
 
 	void SetX(float x)			 { m_x = x; }
 	void SetY(float y)			 { m_y = y; }
