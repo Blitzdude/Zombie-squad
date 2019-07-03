@@ -26,13 +26,20 @@ inline auto Rad2Degrees(const T& d)
 }
 
 template <typename T>
-inline auto Clamp(const T& min, const T& max, const T& value)
+inline auto ZClamp(const T& min, const T& max, const T& value)
 {
 	if (value <= min)
+	{
 		return min;
+	}
 	else if (value >= max)
-		return max
+	{
+		return max;
+	}
 	else
+	{
 		return value;
+	}
+	
 }
 

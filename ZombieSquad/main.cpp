@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Command.h"
 #include "Level.h"
+#include "Physics.h"
 
 #include <vector>
 
@@ -174,7 +175,19 @@ public:
 
 	void DoUpdate(float fElapsedTime)
 	{
-		
+		m_isColliding = false;
+		for (auto& itr : vecActors)
+		{
+			// if actor is colliding with edge, draw a circle around it
+			for (auto& edge : m_currentLevel->GetEdges())
+			{
+				if (m_physics.isColliding(*itr, edge))
+				{
+					m_isColliding = true;
+				}
+
+			}
+		}
 	}
 
 	void DoDraw()
@@ -192,10 +205,18 @@ public:
 
 		// m_currentLevel->DrawLevel(*this);
 		m_currentLevel->DrawPolyMap(*this);
+
 		for (auto & itr : vecActors)
 		{
 			itr->Draw(*this);
+			// if actor is colliding with edge, draw a circle around it
+			if (m_isColliding)
+			{
+				FillCircle(itr->GetX(), itr->GetY(), itr->GetRadius(), olc::MAGENTA);
+			}
 		}
+
+		
 	}
 
 
@@ -204,6 +225,9 @@ private:
 	Actor* m_player;
 	std::vector<Actor*> vecActors;
 	Level* m_currentLevel;
+	Physics m_physics;
+
+	bool m_isColliding = false;
 };
 
 

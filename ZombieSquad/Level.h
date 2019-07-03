@@ -63,6 +63,9 @@ public:
 	bool checkIfVisible(float ox, float oy, float radius);
 	void DrawLevel(olc::PixelGameEngine& engine);
 
+	// Getters
+	std::vector<Edge> const GetEdges() { return vec_edges; }
+
 private:
 	int m_mapWidth;
 	int m_mapHeight;

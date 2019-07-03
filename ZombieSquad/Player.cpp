@@ -1,16 +1,23 @@
 #include "Player.h"
 #include <iostream>
+
+
 Player::Player()
 {
+	const float PLAYER_SIZE = 10.0f;
+
 	SetX(0.0f);
 	SetY(0.0f);
+	SetRadius(PLAYER_SIZE);
 	SetDirection(0.0f);
 }
 
 Player::Player(float x, float y)
 {
+	const float PLAYER_SIZE = 10.0f;
 	SetX(x); 
 	SetY(y);
+	SetRadius(PLAYER_SIZE);
 	SetDirection(0.0f);
 	std::cout << "Player created\n";
 
@@ -24,14 +31,13 @@ Player::~Player()
 
 void Player::Draw(olc::PixelGameEngine& game)
 {
-	const float PLAYER_SIZE = 10.0f;
 
 	// TODO: Size should be a variable, static maybe? 
-	game.FillCircle((int32_t)GetX(), (int32_t)GetY(), (int32_t)PLAYER_SIZE);
+	game.FillCircle((int32_t)GetX(), (int32_t)GetY(), (int32_t)GetRadius());
 
 	game.DrawLine((int32_t)GetX(), (int32_t)GetY(),
-		(int32_t)(GetX() + cosf(GetDirection())*PLAYER_SIZE),
-		(int32_t)(GetY() + sinf(GetDirection())*PLAYER_SIZE),
+		(int32_t)(GetX() + cosf(GetDirection())*GetRadius()),
+		(int32_t)(GetY() + sinf(GetDirection())*GetRadius()),
 		olc::BLUE);
 
 }
