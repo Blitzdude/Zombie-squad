@@ -34,6 +34,8 @@ public:
 	void SetY(float y)			 { m_y = y; }
 	void SetDirection(float dir) { m_dir = dir; }
 	void SetRadius(float r)		 { m_radius = r; }
+	void SetPosition(const Vec2f& pos) { m_x = pos.x, m_y = pos.y; }
+	void SetPosition(float x, float y) { m_x = x, m_y = y; }
 
 
 	bool m_colliding = false;

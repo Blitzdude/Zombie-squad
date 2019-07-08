@@ -9,7 +9,7 @@ public:
 	~Physics();
 
 	float isColliding(const Actor &pos, const Edge &edge);
-	void resolveEdgeCircle(Actor& pos, Vec2f normal, float distToMove);
+	void resolveEdgeCircle(Actor* act, Vec2f normal, float distToMove);
 
 
 

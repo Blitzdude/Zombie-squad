@@ -7,11 +7,6 @@
 #define EAST 2
 #define WEST 3
 
-Level::Level()
-{
-}
-
-
 Level::~Level()
 {
 }
@@ -263,9 +258,9 @@ void Level::DrawPolyMap(olc::PixelGameEngine & engine)
 {
 	for (auto e : vec_edges)
 	{
-		engine.DrawLine(e.start.x, e.start.y, e.end.x, e.end.y, olc::RED);
-		engine.FillCircle(e.start.x, e.start.y, 3, olc::RED);
-		engine.FillCircle(e.end.x, e.end.y, 3, olc::RED);
+		engine.DrawLine(e.start.x, e.start.y, e.end.x, e.end.y, olc::DARK_RED);
+		engine.FillCircle(e.start.x, e.start.y, 3, olc::GREEN);
+		engine.FillCircle(e.end.x, e.end.y, 5, olc::RED);
 		// Draw the normal
 		Vec2f edgeCenter = { e.start.x + (e.end.x - e.start.x)*0.5f, e.start.y + (e.end.y-e.start.y)*0.5f };
 		engine.FillCircle(edgeCenter.x, edgeCenter.y, 3, olc::BLUE);

@@ -5,7 +5,11 @@
 template <class T>
 class Vec2 {
 public: // methods
-	Vec2() {}
+	Vec2()
+		: 
+		x(0), 
+		y(0)
+	{}
 	Vec2(T _x, T _y)
 		:
 		x(_x),
@@ -24,7 +28,7 @@ public: // methods
 	// return length squared
 	T SqLength() const
 	{
-		T ret = (this->x*this->x + this->y*this->y);
+		T ret = (this->x * this->x + this->y * this->y);
 		return ret;
 	}
 

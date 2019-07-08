@@ -26,8 +26,8 @@ enum class SpriteId
 struct Cell
 {
 	
-	int edge_id[4];
-	bool edge_exist[4];
+	int edge_id[4] = {-1, -1, -1, -1};
+	bool edge_exist[4] = {false, false, false, false};
 	bool obstacle = false;
 	SpriteId sprId;
 };

@@ -7,6 +7,7 @@
 #include "Physics.h"
 
 #include <vector>
+#include <iostream>
 
 /*
 ZombieSquad - Project by Joel Känsälä. Public license.
@@ -175,19 +176,28 @@ public:
 
 	void DoUpdate(float fElapsedTime)
 	{
+		std::vector<std::pair<Actor*, Edge*>> vec_collidingActors; // Container to hold colliding actors and edges
 		m_isColliding = false;
 		for (auto& itr : vecActors)
 		{
 			// if actor is colliding with edge, draw a circle around it
 			for (auto& edge : m_currentLevel->GetEdges())
 			{
-				if (m_physics.isColliding(*itr, edge))
+				if (m_physics.isColliding(*itr, edge) > 0.0f)
 				{
+					vec_collidingActors.emplace_back(itr, new Edge(edge));
 					m_isColliding = true;
 				}
 
 			}
 		}
+
+		// For each item in CollidingActors- vector container, resolve collisions
+		for (auto p : vec_collidingActors)
+		{
+			m_physics.resolveEdgeCircle(p.first, p.second->normal, 0.1f);
+		}
+		vec_collidingActors.clear();
 	}
 
 	void DoDraw()
@@ -200,8 +210,36 @@ public:
 			Draw visibility
 			Draw Actors (if in polygon)
 		*/
-
 		Clear(olc::BLACK);
+
+
+		// Debug: Draw the perpendicular distances from actor to edges
+		for (auto& act : vecActors)
+		{
+			for (auto& edge : m_currentLevel->GetEdges())
+			{
+				// Check that line formed by velocity vector, intersects with line segment
+				float fLineX1 = edge.end.x - edge.start.x;
+				float fLineY1 = edge.end.y - edge.start.y;
+
+				float fLineX2 = act->GetX() - edge.start.x;
+				float fLineY2 = act->GetY() - edge.start.y;
+
+				float fEdgeLength = fLineX1 * fLineX1 + fLineY1 * fLineY1;
+
+				// This is nifty - It uses the DP of the line segment vs the line to the object, to work out
+				// how much of the segment is in the "shadow" of the object vector. The min and max clamp
+				// this to lie between 0 and the line segment length, which is then normalised. We can
+				// use this to calculate the closest point on the line segment
+				float t = std::max(0.0f, std::min(fEdgeLength, (fLineX1 * fLineX2 + fLineY1 * fLineY2))) / fEdgeLength;
+
+				// Which we do here
+				float fClosestPointX = edge.start.x + t * fLineX1;
+				float fClosestPointY = edge.start.y + t * fLineY1;
+				DrawLine(act->GetX(), act->GetY(), fClosestPointX, fClosestPointY, olc::MAGENTA, 0xFF00FF00);
+				FillCircle(fClosestPointX, fClosestPointY, 3, olc::MAGENTA);
+			}
+		}
 
 		// m_currentLevel->DrawLevel(*this);
 		m_currentLevel->DrawPolyMap(*this);
@@ -212,7 +250,7 @@ public:
 			// if actor is colliding with edge, draw a circle around it
 			if (m_isColliding)
 			{
-				FillCircle(itr->GetX(), itr->GetY(), itr->GetRadius(), olc::MAGENTA);
+				DrawCircle(itr->GetX(), itr->GetY(), itr->GetRadius() + 2, olc::CYAN);
 			}
 		}
 
