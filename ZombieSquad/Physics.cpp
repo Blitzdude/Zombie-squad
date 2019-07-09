@@ -40,6 +40,22 @@ float Physics::isColliding(const Actor& act, const Edge& edge)
 
 }
 
+float Physics::isColliding(const Actor& lhs, const Actor& rhs)
+{
+	// Vector from lhs to rhs
+	Vec2f vecLR(rhs.GetPosition() - lhs.GetPosition());
+	float length = vecLR.Length();
+	// if length of this vector is less then radius of both -> circles are collidign
+	if (rhs.GetRadius() + lhs.GetRadius() >= length)
+	{
+		// if they are, calculate absolute overlap and return it
+		float ret = fabs(vecLR.Length() - rhs.GetRadius() - lhs.GetRadius());
+		return ret;
+	}
+	// otherwise return 0 for no overlap
+	return 0.0f;
+}
+
 
 void Physics::resolveEdgeCircle(Actor* act, Vec2f normal, float distToMove)
 {
@@ -47,5 +63,17 @@ void Physics::resolveEdgeCircle(Actor* act, Vec2f normal, float distToMove)
 	act->SetPosition(act->GetPosition() + normal * distToMove);
 	// calculate the movement vector
 	// add the movement vector to the position of the Actor
+
+}
+
+void Physics::resolveCircleCircle(Actor* lhs, Actor* rhs, float overlap)
+{
+	// determine the vector from lhs to rhs
+	Vec2f direction(rhs->GetPosition() - lhs->GetPosition());
+	// normalize it
+	direction.Normalize();
+	// move lhs in negative direction half way and rhs the other way
+	lhs->SetPosition(lhs->GetPosition() - direction * overlap);
+	rhs->SetPosition(rhs->GetPosition() + direction * overlap);
 
 }

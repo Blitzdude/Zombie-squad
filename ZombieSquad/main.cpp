@@ -2,6 +2,7 @@
 #include "olcPixelGameEngine.h"
 #include "PlayerHandler.h"
 #include "Player.h"
+#include "Zombie.h"
 #include "Command.h"
 #include "Level.h"
 #include "Physics.h"
@@ -122,6 +123,9 @@ public:
 		*/
 		vecActors.push_back(new Player(100.0f, 100.0f));
 		m_player = vecActors.back();
+		vecActors.push_back(new Zombie(300.0f, 100.0f));
+
+		
 
 
 		// Populate Level with zombies
@@ -176,7 +180,9 @@ public:
 
 	void DoUpdate(float fElapsedTime)
 	{
-		std::vector<CECollision> vec_collidingActors; // Container to hold colliding actors and edges
+		std::vector<CECollision> vec_circleEdgeColliders; // Container to hold colliding actors and edges
+		std::vector<CCCollision> vec_circleCircleColliders; // Container to hold colliding actors and edges
+
 		m_isColliding = false;
 		for (auto& itr : vecActors)
 		{
@@ -186,19 +192,42 @@ public:
 				float overlap = m_physics.isColliding(*itr, edge);
 				if (overlap > 0.0f)
 				{
-					vec_collidingActors.emplace_back(itr, edge.normal, overlap);
+					vec_circleEdgeColliders.emplace_back(itr, edge.normal, overlap);
 					m_isColliding = true;
 				}
 
 			}
+			// check collision with other actors
+			for (auto& other : vecActors)
+			{
+				// avoid self checking
+				if (itr->m_id == other->m_id)
+				{
+					continue;
+				}
+				float overlap = m_physics.isColliding(*itr, *other);
+				if (overlap > 0.0f)
+				{
+					// actors are colliding
+					vec_circleCircleColliders.emplace_back(itr, other, overlap);
+				}
+			}
+
 		}
 
 		// For each item in CollidingActors- vector container, resolve collisions
-		for (auto p : vec_collidingActors)
+		for (auto p : vec_circleEdgeColliders)
 		{
 			m_physics.resolveEdgeCircle(p.actor, p.normal, p.distance);
 		}
-		vec_collidingActors.clear();
+		// for each item in circle-circle collisions container, resolve collision
+		for (auto p : vec_circleCircleColliders)
+		{
+			m_physics.resolveCircleCircle(p.lhs, p.rhs, p.overlap);
+		}
+
+		vec_circleEdgeColliders.clear();
+		vec_circleCircleColliders.clear();
 	}
 
 	void DoDraw()

@@ -23,3 +23,13 @@ struct CECollision
 	Vec2f normal; // direction in which to move
 	float distance; // distance to move
 };
+
+struct CCCollision
+{
+	CCCollision(Actor* l, Actor* r, float o)
+		: lhs(l), rhs(r), overlap(o)
+	{}
+	Actor* lhs; // Actor to move
+	Actor* rhs; // direction in which to move
+	float overlap; // distance to move
+};

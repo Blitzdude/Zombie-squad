@@ -38,6 +38,8 @@ public:
 	void SetPosition(float x, float y) { m_x = x, m_y = y; }
 
 
+	static unsigned int m_objectCount;
+	unsigned int m_id;
 	bool m_colliding = false;
 
 private:
