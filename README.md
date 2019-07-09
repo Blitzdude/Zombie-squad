@@ -1,0 +1,1 @@
+https://stackoverflow.com/questions/1073336/circle-line-segment-collision-detection-algorithm
