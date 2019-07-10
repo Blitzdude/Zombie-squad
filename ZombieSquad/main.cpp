@@ -108,7 +108,7 @@ public:
 			goal location
 		*/
 
-		m_currentLevel = new Level("level3.txt");
+		m_currentLevel = new Level("level4.txt");
 
 		// Generate Edge data from tile map
 		/*
@@ -159,7 +159,7 @@ public:
 
 		DoDraw();
 		
-		return true;
+		return m_isRunning;
 	}
 
 	void DoInput(float fElapsedTime)
@@ -176,6 +176,11 @@ public:
 		if (command)
 			command->execute(*m_player, fElapsedTime);
 
+		if (GetKey(olc::ESCAPE).bReleased)
+		{
+			m_isRunning = false;
+		}
+
 	}
 
 	void DoUpdate(float fElapsedTime)
@@ -183,7 +188,7 @@ public:
 		std::vector<CECollision> vec_circleEdgeColliders; // Container to hold colliding actors and edges
 		std::vector<CCCollision> vec_circleCircleColliders; // Container to hold colliding actors and edges
 
-		m_isColliding = false;
+
 		for (auto& itr : vecActors)
 		{
 			// if actor is colliding with edge, draw a circle around it
@@ -193,7 +198,6 @@ public:
 				if (overlap > 0.0f)
 				{
 					vec_circleEdgeColliders.emplace_back(itr, edge.normal, overlap);
-					m_isColliding = true;
 				}
 
 			}
@@ -242,17 +246,12 @@ public:
 		*/
 		Clear(olc::BLACK);
 
-		// m_currentLevel->DrawLevel(*this);
+		m_currentLevel->DrawLevel(*this);
 		m_currentLevel->DrawPolyMap(*this);
 
 		for (auto & itr : vecActors)
 		{
 			itr->Draw(*this);
-			// if actor is colliding with edge, draw a circle around it
-			if (m_isColliding)
-			{
-				DrawCircle(itr->GetX(), itr->GetY(), itr->GetRadius() + 2, olc::CYAN);
-			}
 		}
 	}
 
@@ -264,7 +263,7 @@ private:
 	Level* m_currentLevel;
 	Physics m_physics;
 
-	bool m_isColliding = false;
+	bool m_isRunning = true;
 };
 
 

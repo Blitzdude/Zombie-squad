@@ -73,7 +73,6 @@ void Physics::resolveCircleCircle(Actor* lhs, Actor* rhs, float overlap)
 	// normalize it
 	direction.Normalize();
 	// move lhs in negative direction half way and rhs the other way
-	lhs->SetPosition(lhs->GetPosition() - direction * overlap);
-	rhs->SetPosition(rhs->GetPosition() + direction * overlap);
-
+	lhs->SetPosition(lhs->GetPosition() - direction * (overlap / 2.0f));
+	rhs->SetPosition(rhs->GetPosition() + direction * (overlap / 2.0f));
 }

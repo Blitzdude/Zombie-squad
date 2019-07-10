@@ -51,7 +51,7 @@ public:
 	// edge array
 	// visibility polygon calculation
 	// A* pathfinding routines
-	Level();
+
 	Level(std::string path);
 	~Level();
 
