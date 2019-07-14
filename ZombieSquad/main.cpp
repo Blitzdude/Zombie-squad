@@ -121,7 +121,7 @@ public:
 			Set size
 			Give control to player
 		*/
-		vecActors.push_back(new Player(100.0f, 100.0f));
+		vecActors.push_back(new Player(m_currentLevel->GetStart().x, m_currentLevel->GetStart().y));
 		m_player = vecActors.back();
 		vecActors.push_back(new Zombie(300.0f, 100.0f));
 
@@ -185,9 +185,14 @@ public:
 
 	void DoUpdate(float fElapsedTime)
 	{
+		if (m_currentLevel->CheckVictory(m_player))
+		{
+			// DrawString(1, 1, "You Win!", olc::WHITE, 2U);
+			std::cout << "You Win! Yattaa!\n";
+		}
+
 		std::vector<CECollision> vec_circleEdgeColliders; // Container to hold colliding actors and edges
 		std::vector<CCCollision> vec_circleCircleColliders; // Container to hold colliding actors and edges
-
 
 		for (auto& itr : vecActors)
 		{

@@ -12,10 +12,12 @@ Level::~Level()
 }
 
 Level::Level(std::string path)
+	: m_startPosition(0.0f, 0.0f)
 {
 	LoadTextures();
 	LoadLevel(path);
-	ConvertTileMapToPolyMap(0, 0, m_mapWidth, m_mapHeight, m_cellSize, m_mapWidth);
+	ConvertTileMapToPolyMap(0, 0, m_mapCellWidth, m_mapCellHeight, m_cellSize, m_mapCellWidth);
+
 	
 	// m_sprites.insert(std::pair<SpriteId, olc::Sprite*>(SpriteId::ROAD, new olc::Sprite("resources/road.png")));
 	// m_sprites.insert(std::pair<SpriteId, olc::Sprite*>(SpriteId::BUILDING, new olc::Sprite("resources/building.png")));
@@ -36,19 +38,20 @@ bool Level::LoadLevel(std::string filepath)
 	std::string line;
 	std::getline(input, line);
 	std::istringstream iss(line);
-	if (!(iss >> m_mapWidth >> m_mapHeight >> m_cellSize))
+	if (!(iss >> m_mapCellWidth >> m_mapCellHeight >> m_cellSize))
 	{
 		std::cout << "error reading file";
 		return false;
 	};
 	std::cout << line;
-	m_map = new Cell[m_mapWidth * m_mapHeight];
+	// create the map array
+	m_map = new Cell[m_mapCellWidth * m_mapCellHeight];
 
 	// read following lines char by char
 	char data;
-	for (int y = 0; y < m_mapHeight; y++)
+	for (int y = 0; y < m_mapCellHeight; y++)
 	{
-		for (int x = 0; x < m_mapWidth; x++)
+		for (int x = 0; x < m_mapCellWidth; x++)
 
 		{
 			if (!input.eof())
@@ -58,13 +61,21 @@ bool Level::LoadLevel(std::string filepath)
 				{
 				case 'C':
 				case 'c':
-					m_map[x + y * m_mapWidth].obstacle = true;
-					m_map[x + y * m_mapWidth].sprId = SpriteId::BUILDING;
+					m_map[x + y * m_mapCellWidth].obstacle = true;
+					m_map[x + y * m_mapCellWidth].sprId = SpriteId::BUILDING;
+					break;
+				case 'S':
+				case 's':
+					GetCell(x, y)->isStart = true;
+					// m_startPosition = Vec2f(x * m_cellSize + (m_cellSize / 2), y * m_cellSize + (m_cellSize / 2));
+					break;
+				case 'E':
+				case 'e':
+					GetCell(x, y)->isGoal = true;
 					break;
 				default:
-					m_map[x + y * m_mapWidth].obstacle = false;
-					m_map[x + y * m_mapWidth].sprId = SpriteId::ROAD;
-
+					m_map[x + y * m_mapCellWidth].obstacle = false;
+					m_map[x + y * m_mapCellWidth].sprId = SpriteId::ROAD;
 					break;
 				}
 			}
@@ -123,11 +134,11 @@ void Level::ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float fBlockWi
 			int west = (y + sy) * pitch + (x + sx - 1);	// Western Neighbour
 			int east = (y + sy) * pitch + (x + sx + 1);	// Eastern Neighbour
 			// Bools for if neighbors are inside the array
-			bool i_isBoundary = x == 0 || x + 1 == m_mapWidth || y == 0 || y + 1 == m_mapHeight;
+			bool i_isBoundary = x == 0 || x + 1 == m_mapCellWidth || y == 0 || y + 1 == m_mapCellHeight;
 			bool north_in = y > 0;
-			bool south_in = y + 1 < m_mapHeight;
+			bool south_in = y + 1 < m_mapCellHeight;
 			bool west_in  = x > 0;
-			bool east_in  = x + 1 < m_mapWidth;
+			bool east_in  = x + 1 < m_mapCellWidth;
 
 			// Whenever we check if a cell has a neighbor, we need to check, if we are checking outside
 			// the level bounds. The conditions for, if nswe-neighbors are outside/inside the level (i.e. don't exist) are as follows:
@@ -275,28 +286,28 @@ void Level::ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float fBlockWi
 	// left
 	Edge left;
 	left.start.x = sx; left.start.y = sy;
-	left.end.x = sx; left.end.y = (sy + m_mapHeight) * fBlockWidth;
+	left.end.x = sx; left.end.y = (sy + m_mapCellHeight) * fBlockWidth;
 	left.normal.x = 1.0f; left.normal.y = 0.0f;
 	vec_edges.push_back(left);
 
 	// right
 	Edge right;
-	right.start.x = (sx + m_mapWidth) * fBlockWidth; right.start.y = sy;
-	right.end.x = (sx + m_mapWidth) * fBlockWidth; right.end.y = (sy + m_mapHeight) * fBlockWidth;
+	right.start.x = (sx + m_mapCellWidth) * fBlockWidth; right.start.y = sy;
+	right.end.x = (sx + m_mapCellWidth) * fBlockWidth; right.end.y = (sy + m_mapCellHeight) * fBlockWidth;
 	right.normal.x = -1.0f; right.normal.y = 0.0f;
 	vec_edges.push_back(right);
 
 	// top
 	Edge top;
 	top.start.x = sx; top.start.y = sy;
-	top.end.x = (sx + m_mapWidth) * fBlockWidth; top.end.y = sy;
+	top.end.x = (sx + m_mapCellWidth) * fBlockWidth; top.end.y = sy;
 	top.normal.x = 0.0f; top.normal.y = 1.0f;
 	vec_edges.push_back(top);
 	
 	// bottom
 	Edge bottom;
-	bottom.start.x = sx; bottom.start.y = (sy + m_mapHeight) * fBlockWidth;
-	bottom.end.x = (sx + m_mapWidth) * fBlockWidth; bottom.end.y = (sy + m_mapHeight) * fBlockWidth;
+	bottom.start.x = sx; bottom.start.y = (sy + m_mapCellHeight) * fBlockWidth;
+	bottom.end.x = (sx + m_mapCellWidth) * fBlockWidth; bottom.end.y = (sy + m_mapCellHeight) * fBlockWidth;
 	bottom.normal.x = 0.0f; bottom.normal.y = -1.0f;
 	vec_edges.push_back(bottom);
 }
@@ -306,8 +317,8 @@ void Level::DrawPolyMap(olc::PixelGameEngine & engine)
 	for (auto e : vec_edges)
 	{
 		engine.DrawLine(e.start.x, e.start.y, e.end.x, e.end.y, olc::DARK_RED);
-		engine.FillCircle(e.start.x, e.start.y, 3, olc::GREEN);
-		engine.FillCircle(e.end.x, e.end.y, 5, olc::RED);
+		engine.DrawCircle(e.start.x, e.start.y, 5, olc::GREEN);
+		engine.FillCircle(e.end.x, e.end.y, 3, olc::RED);
 		// Draw the normal
 		Vec2f edgeCenter = { e.start.x + (e.end.x - e.start.x)*0.5f, e.start.y + (e.end.y-e.start.y)*0.5f };
 		engine.FillCircle(edgeCenter.x, edgeCenter.y, 3, olc::BLUE);
@@ -319,11 +330,51 @@ void Level::DrawPolyMap(olc::PixelGameEngine & engine)
 void Level::DrawLevel(olc::PixelGameEngine & engine)
 {
 	// Draw Blocks from TileMap
-	for (int x = 0; x < m_mapWidth; x++)
-		for (int y = 0; y < m_mapHeight; y++)
+	for (int x = 0; x < m_mapCellWidth; x++)
+	{
+		for (int y = 0; y < m_mapCellHeight; y++)
 		{
 			engine.DrawSprite(x * m_cellSize, y * m_cellSize,
-				m_sprites[(size_t)m_map[y * m_mapWidth + x].sprId]);
+				m_sprites[(size_t)m_map[y * m_mapCellWidth + x].sprId]);
+
+			if (GetCell(x, y)->isStart)
+			{
+				engine.DrawString(x * m_cellSize, y * m_cellSize, "Start", olc::BLUE);
+			}
+			if (GetCell(x, y)->isGoal)
+			{
+				engine.DrawString(x * m_cellSize, y * m_cellSize, "End", olc::BLUE);
+			}
 		}
+	}
 }
 
+bool Level::CheckVictory(Actor* m_player)
+{
+	if (GetCell(m_player->GetPosition())->isGoal)
+	{
+		return true;
+	}
+	else 
+	{
+		return false;
+	}
+}
+
+Cell* Level::GetCell(int x, int y)
+{
+	if (x < 0) x = 0;
+	if (x >= m_mapCellWidth) x = m_mapCellWidth - 1;
+	if (y < 0) y = 0;
+	if (y >= m_mapCellHeight) y = m_mapCellHeight - 1;
+
+	return &m_map[y * m_mapCellWidth + x];
+}
+
+Cell* Level::GetCell(Vec2f pos)
+{
+	int CellX = (int)(pos.x / m_cellSize);
+	int CellY = (int)(pos.y / m_cellSize);
+
+	return GetCell(CellX, CellY);
+}
