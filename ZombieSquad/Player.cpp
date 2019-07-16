@@ -4,7 +4,7 @@
 
 Player::Player()
 {
-	const float PLAYER_SIZE = 10.0f;
+	const float PLAYER_SIZE = 6.0f;
 
 	SetX(0.0f);
 	SetY(0.0f);
@@ -14,7 +14,7 @@ Player::Player()
 
 Player::Player(float x, float y)
 {
-	const float PLAYER_SIZE = 10.0f;
+	const float PLAYER_SIZE = 6.0f;
 	SetX(x); 
 	SetY(y);
 	SetRadius(PLAYER_SIZE);

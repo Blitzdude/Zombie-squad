@@ -121,10 +121,32 @@ public:
 			Set size
 			Give control to player
 		*/
+		// Player 1
 		vecActors.push_back(new Player(m_currentLevel->GetStart().x, m_currentLevel->GetStart().y));
-		m_player = vecActors.back();
-		vecActors.push_back(new Zombie(300.0f, 100.0f));
+		m_selectedPlayer = vecActors.back();
+		m_playerHandler.addPlayer(vecActors.back());
+		// Player 2
 
+		// Player 3
+
+		const int MINIMUM_DISTANCE = 5;
+
+		// For each cell, see if it's far enough from start and spawn zombies there
+		for (int y = 0; y < m_currentLevel->GetNumCellsY(); y++)
+		{
+			for (int x = 0; x < m_currentLevel->GetNumCellsX(); x++)
+			{
+				int distance = ManhattanDistance(m_currentLevel->GetStartX(), m_currentLevel->GetStartY(), x, y);
+				if ( distance > MINIMUM_DISTANCE && m_currentLevel->GetCell(x, y)->obstacle == false )
+				{
+					int numZombies = rand() % 3;
+					for (int i = 0; i <= numZombies; i++)
+					{
+						SpawnZombie(x, y, i * 0.5f);
+					}
+				}
+			}
+		}
 		
 
 
@@ -172,9 +194,13 @@ public:
 		- 1,2,3,4 - switch characters
 		- Space - fire gun -> create bullets
 		*/
+		
+		// TODO: move player command execution to inside player handler
 		Command* command = m_playerHandler.handleInput();
 		if (command)
-			command->execute(*m_player, fElapsedTime);
+		{
+			command->execute(*m_selectedPlayer, fElapsedTime);
+		}
 
 		if (GetKey(olc::ESCAPE).bReleased)
 		{
@@ -185,11 +211,13 @@ public:
 
 	void DoUpdate(float fElapsedTime)
 	{
-		if (m_currentLevel->CheckVictory(m_player))
+		/* REMOVED: until can check vectors of Player-pointers
+		if (m_currentLevel->CheckVictory(m_selectedPlayer))
 		{
 			// DrawString(1, 1, "You Win!", olc::WHITE, 2U);
 			std::cout << "You Win! Yattaa!\n";
 		}
+		*/
 
 		std::vector<CECollision> vec_circleEdgeColliders; // Container to hold colliding actors and edges
 		std::vector<CCCollision> vec_circleCircleColliders; // Container to hold colliding actors and edges
@@ -260,10 +288,18 @@ public:
 		}
 	}
 
+	void SpawnZombie(int x, int y, float offset = 0.0f)
+	{
+		float size = m_currentLevel->GetCellSize();
+		float xPos = (x * size) + (size / 2.0f) + offset;
+		float yPos = (y * size) + (size / 2.0f);
+		vecActors.push_back(new Zombie(xPos, yPos));
+	}
 
 private:
 	PlayerHandler m_playerHandler;
-	Actor* m_player;
+	// std::vector<Actor*> m_players; // Moved to player handler
+	// Actor* m_selectedPlayer; // Moved to player handler
 	std::vector<Actor*> vecActors;
 	Level* m_currentLevel;
 	Physics m_physics;

@@ -1,6 +1,6 @@
 #pragma once
 #include "olcPixelGameEngine.h"
-
+#include "Player.h"
 class Command; // Forward declaration
 
 class PlayerHandler
@@ -11,6 +11,7 @@ public:
 
 	Command* handleInput();
 	void bindButtons();
+	void addPlayer(Player* player);
 
 private:
 	Command* buttonW;
@@ -20,5 +21,7 @@ private:
 	// Command* buttonSpace;
 
 	olc::PixelGameEngine* m_engine;
+	std::vector<Player*> m_players;
+	Player* m_selectedPlayer;
 };
 

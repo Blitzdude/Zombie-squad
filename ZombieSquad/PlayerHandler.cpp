@@ -2,7 +2,7 @@
 #include "Command.h"
 
 PlayerHandler::PlayerHandler(olc::PixelGameEngine & engine)
-	: m_engine(&engine)
+	: m_engine(&engine), m_selectedPlayer(nullptr)
 {
 	bindButtons();
 }
@@ -23,6 +23,11 @@ Command * PlayerHandler::handleInput()
 	if (m_engine->GetKey(olc::S).bHeld) return buttonS;
 	if (m_engine->GetKey(olc::D).bHeld) return buttonD;
 
+	if (m_engine->GetKey(olc::K1).bReleased) return new ChangePlayer(1);
+	if (m_engine->GetKey(olc::K2).bReleased) return new ChangePlayer(2);
+	if (m_engine->GetKey(olc::K3).bReleased) return new ChangePlayer(3);
+
+
 	return nullptr;
 }
 
@@ -32,4 +37,13 @@ void PlayerHandler::bindButtons()
 	buttonA = new TurnLeft();
 	buttonS = new MoveBack();
 	buttonD = new TurnRight();
+}
+
+void PlayerHandler::addPlayer(Player* player)
+{
+	m_players.push_back(player);
+	if (m_selectedPlayer == nullptr)
+	{
+		m_selectedPlayer = m_players.back();
+	}
 }

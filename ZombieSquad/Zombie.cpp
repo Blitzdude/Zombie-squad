@@ -2,7 +2,7 @@
 
 Zombie::Zombie()
 {
-	const float ZOMBIE_SIZE = 10.0f;
+	const float ZOMBIE_SIZE = 6.0f;
 
 	SetX(0.0f);
 	SetY(0.0f);
@@ -12,7 +12,7 @@ Zombie::Zombie()
 
 Zombie::Zombie(float x, float y)
 {
-	const float ZOMBIE_SIZE = 10.0f;
+	const float ZOMBIE_SIZE = 6.0f;
 	SetX(x);
 	SetY(y);
 	SetRadius(ZOMBIE_SIZE);
@@ -31,7 +31,7 @@ void Zombie::Draw(olc::PixelGameEngine& game)
 {
 
 	// TODO: Size should be a variable, static maybe? 
-	game.FillCircle((int32_t)GetX(), (int32_t)GetY(), (int32_t)GetRadius(), olc::RED);
+	game.FillCircle((int32_t)GetX(), (int32_t)GetY(), (int32_t)GetRadius(), olc::DARK_GREEN);
 
 	game.DrawLine((int32_t)GetX(), (int32_t)GetY(),
 		(int32_t)(GetX() + cosf(GetDirection()) * GetRadius()),

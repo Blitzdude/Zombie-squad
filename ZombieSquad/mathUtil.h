@@ -43,3 +43,9 @@ inline auto ZClamp(const T& min, const T& max, const T& value)
 	
 }
 
+template <typename T>
+inline auto ManhattanDistance(const T& x1, const T& y1, const T& x2, const T& y2)
+{
+	return abs(x1 - x2) + abs(y1 - y2);
+}
+

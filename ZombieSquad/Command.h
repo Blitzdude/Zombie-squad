@@ -53,3 +53,18 @@ public:
 		actor.TurnLeft(deltaTime);
 	}
 };
+
+class ChangePlayer : public Command
+{
+public:
+	ChangePlayer(int num) 
+		: number(num)
+	{};
+
+	virtual void execute(Actor& actor, float deltaTime) override
+	{
+		actor.ChangePlayer(number);
+	}
+
+	int number;
+};

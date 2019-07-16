@@ -24,15 +24,13 @@ enum class SpriteId
 };
 
 struct Cell
-{
-	
+{	
 	int edge_id[4] = {-1, -1, -1, -1};
 	bool edge_exist[4] = {false, false, false, false};
 	bool obstacle = false;
 	bool isStart = false;
 	bool isGoal = false;
 	SpriteId sprId;
-	
 };
 
 class Level
@@ -52,6 +50,7 @@ public:
 	bool LoadLevel(std::string filepath);
 	bool LoadTextures();
 	void ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float fBlockWidth, int pitch);
+
 	void DrawPolyMap(olc::PixelGameEngine& engine);
 	void CalculateVisibilityPolygon(float ox, float oy, float radius, float direction, float fovRad); // Not Implemented
 	bool checkIfVisible(float ox, float oy, float radius); // Not implemented
@@ -59,8 +58,14 @@ public:
 	bool CheckVictory(Actor* m_player); // TODO: change to use list of player-characters as parameter.
 
 	// Getters
+	float GetCellSize() { return m_cellSize; }
 	std::vector<Edge> const GetEdges() { return vec_edges; }
 	const Vec2f& const GetStart() { return m_startPosition; }
+	int GetStartX() { return (int)(m_startPosition.x / m_cellSize); }
+	int GetStartY() { return (int)(m_startPosition.y / m_cellSize); }
+
+	int GetNumCellsX() { return m_mapCellWidth; }
+	int GetNumCellsY() { return m_mapCellHeight; }
 	Cell* GetCell(int x, int y);
 	Cell* GetCell(Vec2f pos);
 	

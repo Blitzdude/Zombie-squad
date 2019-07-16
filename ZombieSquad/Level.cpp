@@ -67,11 +67,15 @@ bool Level::LoadLevel(std::string filepath)
 				case 'S':
 				case 's':
 					GetCell(x, y)->isStart = true;
-					// m_startPosition = Vec2f(x * m_cellSize + (m_cellSize / 2), y * m_cellSize + (m_cellSize / 2));
+					m_startPosition = Vec2f(x * m_cellSize + (m_cellSize / 2), y * m_cellSize + (m_cellSize / 2));
+					m_map[x + y * m_mapCellWidth].obstacle = false;
+					m_map[x + y * m_mapCellWidth].sprId = SpriteId::ROAD;
 					break;
 				case 'E':
 				case 'e':
 					GetCell(x, y)->isGoal = true;
+					m_map[x + y * m_mapCellWidth].obstacle = false;
+					m_map[x + y * m_mapCellWidth].sprId = SpriteId::ROAD;
 					break;
 				default:
 					m_map[x + y * m_mapCellWidth].obstacle = false;
@@ -311,6 +315,7 @@ void Level::ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float fBlockWi
 	bottom.normal.x = 0.0f; bottom.normal.y = -1.0f;
 	vec_edges.push_back(bottom);
 }
+
 
 void Level::DrawPolyMap(olc::PixelGameEngine & engine)
 {
