@@ -10,6 +10,7 @@ public:
 	~PlayerHandler();
 
 	Command* handleInput();
+	void HandlePlayers(float fElapsedTime);
 	void bindButtons();
 	void addPlayer(Player* player);
 
@@ -18,6 +19,12 @@ private:
 	Command* buttonA;
 	Command* buttonS;
 	Command* buttonD;
+	
+	Command* buttonKey1;
+	Command* buttonKey2;
+	Command* buttonKey3;
+
+
 	// Command* buttonSpace;
 
 	olc::PixelGameEngine* m_engine;

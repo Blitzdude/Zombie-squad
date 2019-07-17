@@ -122,12 +122,18 @@ public:
 			Give control to player
 		*/
 		// Player 1
-		vecActors.push_back(new Player(m_currentLevel->GetStart().x, m_currentLevel->GetStart().y));
-		m_selectedPlayer = vecActors.back();
-		m_playerHandler.addPlayer(vecActors.back());
-		// Player 2
 
+		Player* player1 = new Player(m_currentLevel->GetStart().x, m_currentLevel->GetStart().y);
+		vecActors.push_back(player1);
+		m_playerHandler.addPlayer(player1);
+		// Player 2
+		Player* player2 = new Player(m_currentLevel->GetStart().x + 2.0f, m_currentLevel->GetStart().y);
+		vecActors.push_back(player2);
+		m_playerHandler.addPlayer(player2);
 		// Player 3
+		Player* player3 = new Player(m_currentLevel->GetStart().x + 4.0f, m_currentLevel->GetStart().y);
+		vecActors.push_back(player3);
+		m_playerHandler.addPlayer(player3);
 
 		const int MINIMUM_DISTANCE = 5;
 
@@ -196,11 +202,15 @@ public:
 		*/
 		
 		// TODO: move player command execution to inside player handler
+
+		m_playerHandler.HandlePlayers(fElapsedTime);
+		/*
 		Command* command = m_playerHandler.handleInput();
 		if (command)
 		{
 			command->execute(*m_selectedPlayer, fElapsedTime);
 		}
+		*/
 
 		if (GetKey(olc::ESCAPE).bReleased)
 		{

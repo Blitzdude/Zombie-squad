@@ -23,12 +23,32 @@ Command * PlayerHandler::handleInput()
 	if (m_engine->GetKey(olc::S).bHeld) return buttonS;
 	if (m_engine->GetKey(olc::D).bHeld) return buttonD;
 
-	if (m_engine->GetKey(olc::K1).bReleased) return new ChangePlayer(1);
-	if (m_engine->GetKey(olc::K2).bReleased) return new ChangePlayer(2);
-	if (m_engine->GetKey(olc::K3).bReleased) return new ChangePlayer(3);
-
+	if (m_engine->GetKey(olc::K1).bReleased)
+	{
+		m_selectedPlayer = m_players[0];
+		return buttonKey1;
+	}
+	if (m_engine->GetKey(olc::K2).bReleased)
+	{
+		m_selectedPlayer = m_players[1];
+		return buttonKey2;
+	}
+	if (m_engine->GetKey(olc::K3).bReleased)
+	{
+		m_selectedPlayer = m_players[2];
+		return buttonKey3;
+	}
 
 	return nullptr;
+}
+
+void PlayerHandler::HandlePlayers(float fElapsedTime)
+{
+	Command* command = handleInput();
+	if (command)
+	{
+		command->execute(*m_selectedPlayer, fElapsedTime);
+	}
 }
 
 void PlayerHandler::bindButtons()
@@ -37,6 +57,10 @@ void PlayerHandler::bindButtons()
 	buttonA = new TurnLeft();
 	buttonS = new MoveBack();
 	buttonD = new TurnRight();
+
+	buttonKey1 = new ChangePlayer(1);
+	buttonKey2 = new ChangePlayer(2);
+	buttonKey3 = new ChangePlayer(3);
 }
 
 void PlayerHandler::addPlayer(Player* player)
