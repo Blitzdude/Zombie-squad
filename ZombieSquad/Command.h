@@ -57,14 +57,11 @@ public:
 class ChangePlayer : public Command
 {
 public:
-	ChangePlayer(int num) 
-		: number(num)
-	{};
+	ChangePlayer() {};
 
 	virtual void execute(Actor& actor, float deltaTime) override
 	{
-		actor.ChangePlayer(number);
+		actor.ChangePlayer();
 	}
 
-	int number;
 };

@@ -1,5 +1,6 @@
 #include "PlayerHandler.h"
 #include "Command.h"
+#include <assert.h>
 
 PlayerHandler::PlayerHandler(olc::PixelGameEngine & engine)
 	: m_engine(&engine), m_selectedPlayer(nullptr)
@@ -58,16 +59,17 @@ void PlayerHandler::bindButtons()
 	buttonS = new MoveBack();
 	buttonD = new TurnRight();
 
-	buttonKey1 = new ChangePlayer(1);
-	buttonKey2 = new ChangePlayer(2);
-	buttonKey3 = new ChangePlayer(3);
+	buttonKey1 = new ChangePlayer(); // TODO: We only need one
+	buttonKey2 = new ChangePlayer();
+	buttonKey3 = new ChangePlayer();
 }
 
-void PlayerHandler::addPlayer(Player* player)
+void PlayerHandler::addPlayer(Player* player, int index)
 {
-	m_players.push_back(player);
+	assert(index < 3);
+	m_players[index] = player;
 	if (m_selectedPlayer == nullptr)
 	{
-		m_selectedPlayer = m_players.back();
+		m_selectedPlayer = m_players[index];
 	}
 }

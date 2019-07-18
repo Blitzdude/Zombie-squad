@@ -3,6 +3,7 @@
 #include "PlayerHandler.h"
 #include "Player.h"
 #include "Zombie.h"
+#include "Bullet.h"
 #include "Command.h"
 #include "Level.h"
 #include "Physics.h"
@@ -122,18 +123,17 @@ public:
 			Give control to player
 		*/
 		// Player 1
-
 		Player* player1 = new Player(m_currentLevel->GetStart().x, m_currentLevel->GetStart().y);
 		vecActors.push_back(player1);
-		m_playerHandler.addPlayer(player1);
+		m_playerHandler.addPlayer(player1, 0);
 		// Player 2
 		Player* player2 = new Player(m_currentLevel->GetStart().x + 2.0f, m_currentLevel->GetStart().y);
 		vecActors.push_back(player2);
-		m_playerHandler.addPlayer(player2);
+		m_playerHandler.addPlayer(player2, 1);
 		// Player 3
-		Player* player3 = new Player(m_currentLevel->GetStart().x + 4.0f, m_currentLevel->GetStart().y);
+		Player* player3 = new Player(m_currentLevel->GetStart().x, m_currentLevel->GetStart().y + 2.0f);
 		vecActors.push_back(player3);
-		m_playerHandler.addPlayer(player3);
+		m_playerHandler.addPlayer(player3, 2);
 
 		const int MINIMUM_DISTANCE = 5;
 
@@ -306,6 +306,11 @@ public:
 		vecActors.push_back(new Zombie(xPos, yPos));
 	}
 
+	void SpawnBullet(const Vec2f& pos, float dir, float lifetime)
+	{
+		const float BULLET_SIZE = 5.0f;
+		vecActors.push_back(new Bullet(pos, dir, lifetime));
+	}
 private:
 	PlayerHandler m_playerHandler;
 	// std::vector<Actor*> m_players; // Moved to player handler

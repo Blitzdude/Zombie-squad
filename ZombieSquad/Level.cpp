@@ -17,10 +17,6 @@ Level::Level(std::string path)
 	LoadTextures();
 	LoadLevel(path);
 	ConvertTileMapToPolyMap(0, 0, m_mapCellWidth, m_mapCellHeight, m_cellSize, m_mapCellWidth);
-
-	
-	// m_sprites.insert(std::pair<SpriteId, olc::Sprite*>(SpriteId::ROAD, new olc::Sprite("resources/road.png")));
-	// m_sprites.insert(std::pair<SpriteId, olc::Sprite*>(SpriteId::BUILDING, new olc::Sprite("resources/building.png")));
 }
 
 bool Level::LoadLevel(std::string filepath)

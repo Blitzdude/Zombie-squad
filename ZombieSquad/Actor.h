@@ -20,7 +20,7 @@ public:
 	virtual void MoveBack(float fElapsedTime)	{};
 	virtual void TurnRight(float fElapsedTime)  {};
 	virtual void TurnLeft(float fElapsedTime)   {};
-	virtual void ChangePlayer(int num) {};
+	virtual void ChangePlayer() {};
 
 	// Zombie commands
 
