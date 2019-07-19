@@ -124,6 +124,7 @@
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerHandler.h" />
+    <ClInclude Include="State.h" />
     <ClInclude Include="StructCollection.h" />
     <ClInclude Include="Vec2.h" />
     <ClInclude Include="Zombie.h" />
@@ -136,6 +137,7 @@
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerHandler.cpp" />
+    <ClCompile Include="State.cpp" />
     <ClCompile Include="Zombie.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
