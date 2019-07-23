@@ -1,7 +1,9 @@
 #include "Player.h"
+#include "ZombieSquad.h"
+#include "Bullet.h"
 #include <iostream>
 
-
+/* DELETED
 Player::Player()
 {
 	const float PLAYER_SIZE = 6.0f;
@@ -11,14 +13,16 @@ Player::Player()
 	SetRadius(PLAYER_SIZE);
 	SetDirection(0.0f);
 }
+*/
 
-Player::Player(float x, float y)
+Player::Player(float x, float y, float dir, ZombieSquad& game)
+	: m_game(&game)
 {
 	const float PLAYER_SIZE = 6.0f;
 	SetX(x); 
 	SetY(y);
 	SetRadius(PLAYER_SIZE);
-	SetDirection(0.0f);
+	SetDirection(dir);
 	std::cout << "Player created\n";
 
 }
@@ -26,6 +30,8 @@ Player::Player(float x, float y)
 Player::~Player()
 {
 	std::cout << "Player destroyed\n";
+	// Free pointers
+
 }
 
 

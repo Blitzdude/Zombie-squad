@@ -1,8 +1,9 @@
 #include "PlayerHandler.h"
 #include "Command.h"
+#include "Player.h"
 #include <assert.h>
 
-PlayerHandler::PlayerHandler(olc::PixelGameEngine & engine)
+PlayerHandler::PlayerHandler(olc::PixelGameEngine& engine)
 	: m_engine(&engine), m_selectedPlayer(nullptr)
 {
 	bindButtons();

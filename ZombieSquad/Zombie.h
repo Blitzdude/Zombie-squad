@@ -9,5 +9,6 @@ public:
 
 	virtual void Draw(olc::PixelGameEngine& game) override;
 private:
+	// ZombieState* m_currentState // Not Implemented
 };
 

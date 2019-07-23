@@ -21,6 +21,7 @@ public:
 	virtual void TurnRight(float fElapsedTime)  {};
 	virtual void TurnLeft(float fElapsedTime)   {};
 	virtual void ChangePlayer() {};
+	virtual void Attack(float fElapsedTime) {};
 
 	// Zombie commands
 
