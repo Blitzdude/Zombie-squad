@@ -16,7 +16,7 @@ public:
 	virtual void MoveBack(float fElapsedTime)	 override;
 	virtual void TurnRight(float fElapsedTime)	 override;
 	virtual void TurnLeft(float fElapsedTime)	 override;
-	// virtual void Attack(float fElapsedTime)		 override;
+	virtual void Attack(float fElapsedTime)		 override;
 
 private:
 	ZombieSquad* m_game; // Needed for bullet spawning

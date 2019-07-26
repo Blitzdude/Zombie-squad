@@ -7,6 +7,13 @@
 Actor is an abstract base class, that holds all common functionality for
 Actors within the game.
 */
+
+enum class ActorTag {
+	PLAYER,
+	ZOMBIE,
+	BULLET,
+	NONE
+};
 class Actor
 {
 public:
@@ -49,4 +56,5 @@ private:
 	float m_y;
 	float m_dir;
 	float m_radius;
+	
 };

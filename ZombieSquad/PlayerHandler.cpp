@@ -16,6 +16,7 @@ PlayerHandler::~PlayerHandler()
 	delete buttonA; buttonA = nullptr;
 	delete buttonS; buttonS = nullptr;
 	delete buttonD; buttonD = nullptr;
+	delete buttonSpace; buttonSpace = nullptr;
 }
 
 Command * PlayerHandler::handleInput()
@@ -24,6 +25,7 @@ Command * PlayerHandler::handleInput()
 	if (m_engine->GetKey(olc::A).bHeld) return buttonA;
 	if (m_engine->GetKey(olc::S).bHeld) return buttonS;
 	if (m_engine->GetKey(olc::D).bHeld) return buttonD;
+	if (m_engine->GetKey(olc::SPACE).bReleased) return buttonSpace;
 
 	if (m_engine->GetKey(olc::K1).bReleased)
 	{
@@ -63,6 +65,8 @@ void PlayerHandler::bindButtons()
 	buttonKey1 = new ChangePlayer(); // TODO: We only need one
 	buttonKey2 = new ChangePlayer();
 	buttonKey3 = new ChangePlayer();
+
+	buttonSpace = new Attack();
 }
 
 void PlayerHandler::addPlayer(Player* player, int index)

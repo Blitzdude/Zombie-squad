@@ -65,3 +65,14 @@ public:
 	}
 
 };
+
+class Attack : public Command
+{
+public: 
+	Attack() {};
+
+	virtual void execute(Actor& actor, float deltaTime) override
+	{
+		actor.Attack(deltaTime);
+	}
+};

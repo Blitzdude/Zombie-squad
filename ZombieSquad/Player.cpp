@@ -31,6 +31,8 @@ Player::~Player()
 {
 	std::cout << "Player destroyed\n";
 	// Free pointers
+	m_game = nullptr;
+	
 
 }
 
@@ -68,4 +70,11 @@ void Player::TurnRight(float fElapsedTime)
 void Player::TurnLeft(float fElapsedTime)
 {
 	SetDirection(GetDirection() - 2.0f*fElapsedTime);
+}
+
+void Player::Attack(float fElapsedTime)
+{	// if cooldown and bullets -> fire shot
+	// calculate bullet spawn point.
+	Vec2f bulletSpawnPoint = GetPosition() + Vec2f(cosf(GetDirection()), sinf(GetDirection())) * (GetRadius() + 2.0f);
+	m_game->SpawnBullet(bulletSpawnPoint, GetDirection(), 5.0f);
 }
