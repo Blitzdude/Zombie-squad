@@ -23,6 +23,7 @@ Player::Player(float x, float y, float dir, ZombieSquad& game)
 	SetY(y);
 	SetRadius(PLAYER_SIZE);
 	SetDirection(dir);
+	SetTag(ActorTag::PLAYER);
 	std::cout << "Player created\n";
 
 }

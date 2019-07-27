@@ -1,5 +1,6 @@
 #include "Zombie.h"
 
+/*
 Zombie::Zombie()
 {
 	const float ZOMBIE_SIZE = 6.0f;
@@ -9,6 +10,7 @@ Zombie::Zombie()
 	SetRadius(ZOMBIE_SIZE);
 	SetDirection(0.0f);
 }
+*/
 
 Zombie::Zombie(float x, float y)
 {
@@ -17,8 +19,8 @@ Zombie::Zombie(float x, float y)
 	SetY(y);
 	SetRadius(ZOMBIE_SIZE);
 	SetDirection(0.0f);
+	SetTag(ActorTag::ZOMBIE);
 	std::cout << "Zombie created\n";
-
 }
 
 Zombie::~Zombie()

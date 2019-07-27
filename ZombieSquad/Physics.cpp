@@ -12,6 +12,7 @@ Physics::~Physics()
 {
 }
 
+// Function returns the amount of overlap for circle and edge. if they are not colliding, function returns 0.0f
 float Physics::isColliding(const Actor& act, const Edge& edge)
 {
 	// Check that line formed by velocity vector, intersects with line segment
@@ -59,20 +60,50 @@ float Physics::isColliding(const Actor& lhs, const Actor& rhs)
 
 void Physics::resolveEdgeCircle(Actor* act, Vec2f normal, float distToMove)
 {
-	// move the actor in the direction of the normal
-	act->SetPosition(act->GetPosition() + normal * distToMove);
-	// calculate the movement vector
-	// add the movement vector to the position of the Actor
+	// TODO: Add checking for tags. 
+	// If actor is bullet, destroy bullet.
+	if (act->GetTag() == ActorTag::BULLET)
+	{
+		// for now do nothing, so actors can pass through.
+	}
+	else {
+		// move the actor in the direction of the normal
+		act->SetPosition(act->GetPosition() + normal * distToMove);
+		// calculate the movement vector
+		// add the movement vector to the position of the Actor
+	}
 
 }
 
 void Physics::resolveCircleCircle(Actor* lhs, Actor* rhs, float overlap)
 {
-	// determine the vector from lhs to rhs
-	Vec2f direction(rhs->GetPosition() - lhs->GetPosition());
-	// normalize it
-	direction.Normalize();
-	// move lhs in negative direction half way and rhs the other way
-	lhs->SetPosition(lhs->GetPosition() - direction * (overlap / 2.0f));
-	rhs->SetPosition(rhs->GetPosition() + direction * (overlap / 2.0f));
+
+	// TODO: Add checking for tags
+	if (lhs->GetTag() == ActorTag::BULLET)
+	{
+		// TODO: Do nothing for now, so bullets do not cause actors to move
+		if (rhs->GetTag() == ActorTag::ZOMBIE)
+		{
+			// if Bullet hit a zombie, kill it. 
+		}
+	}
+	else if (rhs->GetTag() == ActorTag::BULLET)
+	{
+		// TODO: Do nothing for now, so bullet doens't cause actors to move
+		if (lhs->GetTag() == ActorTag::ZOMBIE)
+		{
+			// If bullet hits zombie, kill it
+		}
+	}
+	else {
+		// Actors are zombies or players. 
+
+		// determine the vector from lhs to rhs
+		Vec2f direction(rhs->GetPosition() - lhs->GetPosition());
+		// normalize it
+		direction.Normalize();
+		// move lhs in negative direction half way and rhs the other way
+		lhs->SetPosition(lhs->GetPosition() - direction * (overlap / 2.0f));
+		rhs->SetPosition(rhs->GetPosition() + direction * (overlap / 2.0f));
+	}
 }

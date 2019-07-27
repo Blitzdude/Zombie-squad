@@ -7,7 +7,6 @@ class Bullet;
 class Player : public Actor
 {
 public:
-	// Player();
 	Player(float x, float y, float dir, ZombieSquad& game);
 	~Player();
 	virtual void Draw(olc::PixelGameEngine& game) override;

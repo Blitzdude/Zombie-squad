@@ -9,10 +9,10 @@ Actors within the game.
 */
 
 enum class ActorTag {
+	NONE = 0,
 	PLAYER,
 	ZOMBIE,
-	BULLET,
-	NONE
+	BULLET
 };
 class Actor
 {
@@ -33,11 +33,12 @@ public:
 	// Zombie commands
 
 	// Setters/Getters
-	float GetX()		 const { return m_x; }
-	float GetY()		 const { return m_y; }
-	float GetDirection() const { return m_dir; }
-	Vec2f GetPosition()  const { return Vec2f( m_x, m_y); }
-	float GetRadius()	 const { return m_radius; }
+	float GetX()			 const { return m_x; }
+	float GetY()			 const { return m_y; }
+	float GetDirection()	 const { return m_dir; }
+	Vec2f GetPosition()		 const { return Vec2f( m_x, m_y); }
+	float GetRadius()		 const { return m_radius; }
+	const ActorTag& GetTag() const { return m_tag; }
 
 	void SetX(float x)			 { m_x = x; }
 	void SetY(float y)			 { m_y = y; }
@@ -45,16 +46,16 @@ public:
 	void SetRadius(float r)		 { m_radius = r; }
 	void SetPosition(const Vec2f& pos) { m_x = pos.x, m_y = pos.y; }
 	void SetPosition(float x, float y) { m_x = x, m_y = y; }
-
+	void SetTag(ActorTag tag) { m_tag = tag; }
 
 	static unsigned int m_objectCount;
 	unsigned int m_id;
-	bool m_colliding = false;
+	bool m_hit = false;
 
 private:
 	float m_x;
 	float m_y;
 	float m_dir;
 	float m_radius;
-	
+	ActorTag m_tag;
 };

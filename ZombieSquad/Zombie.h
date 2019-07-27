@@ -3,7 +3,7 @@
 class Zombie : public Actor
 {
 public:
-	Zombie();
+	// Zombie();
 	Zombie(float x, float y);
 	~Zombie();
 
