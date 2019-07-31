@@ -19,13 +19,14 @@ Player::Player(float x, float y, float dir, ZombieSquad& game)
 	: m_game(&game)
 {
 	const float PLAYER_SIZE = 6.0f;
+	SetDestroyed(false);
 	SetX(x); 
 	SetY(y);
 	SetRadius(PLAYER_SIZE);
 	SetDirection(dir);
 	SetTag(ActorTag::PLAYER);
+	m_currentState = new Overwatch();
 	std::cout << "Player created\n";
-
 }
 
 Player::~Player()
@@ -33,14 +34,13 @@ Player::~Player()
 	std::cout << "Player destroyed\n";
 	// Free pointers
 	m_game = nullptr;
-	
+	delete m_currentState;
+	m_currentState = nullptr;
 
 }
 
-
 void Player::Draw(olc::PixelGameEngine& game)
 {
-
 	// TODO: Size should be a variable, static maybe? 
 	game.FillCircle((int32_t)GetX(), (int32_t)GetY(), (int32_t)GetRadius());
 
@@ -48,7 +48,12 @@ void Player::Draw(olc::PixelGameEngine& game)
 		(int32_t)(GetX() + cosf(GetDirection())*GetRadius()),
 		(int32_t)(GetY() + sinf(GetDirection())*GetRadius()),
 		olc::BLUE);
+}
 
+void Player::Update(float fElapsedTime)
+{
+	// Update the current Player state
+	// m_currentState->Update(*this, fElapsedTime);
 }
 
 void Player::MoveForward(float fElapsedTime)

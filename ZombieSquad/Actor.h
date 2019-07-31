@@ -21,6 +21,8 @@ public:
 	virtual ~Actor();
 
 	virtual void Draw(olc::PixelGameEngine& game) = 0;
+	virtual void Update(float fElapsedTime) = 0;
+	
 
 	// Player commands
 	virtual void MoveForward(float fElapsedTime){};
@@ -39,6 +41,7 @@ public:
 	Vec2f GetPosition()		 const { return Vec2f( m_x, m_y); }
 	float GetRadius()		 const { return m_radius; }
 	const ActorTag& GetTag() const { return m_tag; }
+	bool GetDestroyed()		 const { return m_destroyed; }
 
 	void SetX(float x)			 { m_x = x; }
 	void SetY(float y)			 { m_y = y; }
@@ -47,12 +50,14 @@ public:
 	void SetPosition(const Vec2f& pos) { m_x = pos.x, m_y = pos.y; }
 	void SetPosition(float x, float y) { m_x = x, m_y = y; }
 	void SetTag(ActorTag tag) { m_tag = tag; }
+	void SetDestroyed(bool truth) { m_destroyed = truth; }
 
 	static unsigned int m_objectCount;
 	unsigned int m_id;
-	bool m_hit = false;
+	// bool m_hit = false;
 
 private:
+	bool m_destroyed;
 	float m_x;
 	float m_y;
 	float m_dir;

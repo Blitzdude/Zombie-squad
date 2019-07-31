@@ -13,6 +13,4 @@ public:
 	void resolveEdgeCircle(Actor* act, Vec2f normal, float distToMove);
 	void resolveCircleCircle(Actor* lhs, Actor* rhs, float overlap);
 
-
-
 };

@@ -14,7 +14,9 @@ Zombie::Zombie()
 
 Zombie::Zombie(float x, float y)
 {
+	m_currentState = new Chase();
 	const float ZOMBIE_SIZE = 6.0f;
+	SetDestroyed(false);
 	SetX(x);
 	SetY(y);
 	SetRadius(ZOMBIE_SIZE);
@@ -40,4 +42,9 @@ void Zombie::Draw(olc::PixelGameEngine& game)
 		(int32_t)(GetY() + sinf(GetDirection()) * GetRadius()),
 		olc::RED);
 
+}
+
+void Zombie::Update(float fElapsedTime)
+{
+	// TODO: Update Actor state here
 }

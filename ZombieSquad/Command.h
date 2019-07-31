@@ -5,7 +5,6 @@
 class Command
 {
 public:
-public:
 	virtual ~Command() {}
 	virtual void execute(Actor& actor, float deltaTime) = 0;
 };

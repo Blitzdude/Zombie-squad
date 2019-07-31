@@ -1,4 +1,6 @@
 #include "ZombieSquad.h"
+#include <algorithm>
+#include <functional>
 
 ZombieSquad::ZombieSquad() 
 	: m_playerHandler(*this)
@@ -138,6 +140,12 @@ void ZombieSquad::DoUpdate(float fElapsedTime)
 	}
 	*/
 
+	// update actors
+	for (auto& itr : vecActors)
+	{
+		itr->Update(fElapsedTime);
+	}
+
 	std::vector<CECollision> vec_circleEdgeColliders; // Container to hold colliding actors and edges
 	std::vector<CCCollision> vec_circleCircleColliders; // Container to hold colliding actors and edges
 
@@ -184,6 +192,24 @@ void ZombieSquad::DoUpdate(float fElapsedTime)
 
 	vec_circleEdgeColliders.clear();
 	vec_circleCircleColliders.clear();
+
+	// DELETE ACTORS END
+	// Remove destroyed actors (Bullets mostly)
+	// https://stackoverflow.com/questions/991335/how-to-erase-delete-pointers-to-objects-stored-in-a-vector rlbond's answer
+	// Apply a deleting function to each element. (call the destructor and make the pointer null)
+	std::for_each(vecActors.begin(), vecActors.end(), [](Actor*& e)
+		{
+			if (e->GetDestroyed())
+			{
+				delete e;
+				e = nullptr;
+			}
+		});
+	// remove re-orders the vector, so removed elements are at the back of the container
+	std::vector<Actor*>::iterator newEnd = std::remove(vecActors.begin(), vecActors.end(), static_cast<Actor*>(nullptr));
+	// erase the elements from the vector
+	vecActors.erase(newEnd, vecActors.end());
+	// DELETE ACTORS END
 }
 
 void ZombieSquad::DoDraw()
@@ -217,6 +243,5 @@ void ZombieSquad::SpawnZombie(int x, int y, float offset)
 
 void ZombieSquad::SpawnBullet(const Vec2f& pos, float dir, float lifetime)
 {
-	const float BULLET_SIZE = 5.0f;
 	vecActors.push_back(new Bullet(pos, dir, lifetime));
 }

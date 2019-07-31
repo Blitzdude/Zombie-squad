@@ -1,5 +1,7 @@
 #pragma once
 #include "Actor.h"
+#include "State.h"
+
 class Zombie : public Actor
 {
 public:
@@ -8,7 +10,8 @@ public:
 	~Zombie();
 
 	virtual void Draw(olc::PixelGameEngine& game) override;
+	virtual void Update(float fElapsedTime) override;
 private:
-	// ZombieState* m_currentState // Not Implemented
+	ZombieState* m_currentState; // Not Implemented
 };
 
