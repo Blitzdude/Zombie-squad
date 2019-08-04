@@ -11,7 +11,13 @@ public:
 
 	virtual void Draw(olc::PixelGameEngine& game) override;
 	virtual void Update(float fElapsedTime) override;
+
+	void doMove(float dt);
+
+	// Setters
+	void SetTarget(const Vec2f& newTarget) { m_target = newTarget; }
 private:
 	ZombieState* m_currentState; // Not Implemented
+	Vec2f m_target;
 };
 

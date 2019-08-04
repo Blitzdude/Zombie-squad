@@ -8,6 +8,8 @@ Actor is an abstract base class, that holds all common functionality for
 Actors within the game.
 */
 
+class Player;
+
 enum class ActorTag {
 	NONE = 0,
 	PLAYER,
@@ -33,6 +35,9 @@ public:
 	virtual void Attack(float fElapsedTime) {};
 
 	// Zombie commands
+	virtual void Chase(const Player& player) {};
+	
+	Vec2f GetDirectionVector();
 
 	// Setters/Getters
 	float GetX()			 const { return m_x; }

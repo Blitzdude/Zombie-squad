@@ -74,8 +74,6 @@ public: // methods
 	static T AngleBetween(const Vec2<T> &v1, const Vec2<T> &v2)
 	{
 
-		//T ret = DotProduct(v1, v2) / ((v1.length() * v2.length()));
-
 		T dot = DotProduct(v1, v2);
 		T det = v1.x*v2.y - v1.y*v2.x;
 		T ret = std::atan2(det, dot);
@@ -101,6 +99,13 @@ public: // methods
 	{
 		// return CrossProduct(b - a, c - a) > 0;
 		return ((b.x - a.x)*(c.y - a.y) - (b.y - a.y)*(c.x - a.x)) > 0;
+	}
+
+	// returns the distance between 2d points
+	static T DistanceBetween(const Vec2<T>& a, const Vec2<T>& b)
+	{
+		return sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
+
 	}
 	/****************************************************************/
 

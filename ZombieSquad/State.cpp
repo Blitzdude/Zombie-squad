@@ -31,3 +31,22 @@ void Flying::Update(Bullet& actor, float dt)
 		actor.SetDestroyed(true);
 	}
 }
+
+void Roam::Update(Zombie& actor, float dt)
+{
+	// add to timer
+	m_timer += dt;
+	static const float TIME_UNTIL_CHANGE_DIR = 3.0f;
+	if (m_timer >= TIME_UNTIL_CHANGE_DIR)
+	{
+		m_timer = 0.0f;
+		// randomize direction
+		float rX = ((rand() % (2 * 100)) - 100) / 100.0f; // returns value between -1.0f / 1.0f 
+		float rY = ((rand() % (2 * 100)) - 100) / 100.0f; // returns value between -1.0f / 1.0f
+		Vec2f r(rX, rY);
+		
+		actor.SetTarget(actor.GetPosition() + r * 100.0f);
+	}
+
+	actor.doMove(dt);
+}

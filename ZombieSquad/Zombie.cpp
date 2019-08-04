@@ -1,24 +1,15 @@
 #include "Zombie.h"
-
-/*
-Zombie::Zombie()
-{
-	const float ZOMBIE_SIZE = 6.0f;
-
-	SetX(0.0f);
-	SetY(0.0f);
-	SetRadius(ZOMBIE_SIZE);
-	SetDirection(0.0f);
-}
-*/
+#include "State.h"
 
 Zombie::Zombie(float x, float y)
 {
-	m_currentState = new Chase();
+	
+	m_currentState = new Roam();
 	const float ZOMBIE_SIZE = 6.0f;
 	SetDestroyed(false);
 	SetX(x);
 	SetY(y);
+	m_target = GetPosition();
 	SetRadius(ZOMBIE_SIZE);
 	SetDirection(0.0f);
 	SetTag(ActorTag::ZOMBIE);
@@ -46,5 +37,20 @@ void Zombie::Draw(olc::PixelGameEngine& game)
 
 void Zombie::Update(float fElapsedTime)
 {
-	// TODO: Update Actor state here
+	m_currentState->Update(*this, fElapsedTime);
+}
+
+void Zombie::doMove(float dt)
+{
+	// get vector to target
+	Vec2f vec = m_target - GetPosition();
+	
+	// normalize vector
+	vec.Normalize();
+
+	if (Vec2f::DistanceBetween(GetPosition(), m_target) > 1.0f)
+	{
+		SetPosition(GetPosition() + vec * 50.0f * dt); // Zombie speed = 50
+		SetDirection(Vec2f::AngleBetween(Vec2f(1.0f, 0.0f), vec));
+	}
 }

@@ -101,6 +101,26 @@ private:
 
 };
 
+class Roam : public ZombieState
+{
+public:
+	Roam()
+		: m_id(StateID::ZOMBIE_ROAM), m_timer(0.0f)
+	{}
+
+	virtual ~Roam() {};
+
+	virtual void Enter(Zombie& actor) {};	// Not implemented
+	virtual void Update(Zombie& actor, float dt);
+	// virtual void Exit(Zombie& player) {}; // Not Implemented
+
+	const StateID& getStateID() const { return m_id; };
+private:
+	StateID m_id;
+	float m_timer;
+
+};
+
 class Flying : public BulletState
 {
 public:

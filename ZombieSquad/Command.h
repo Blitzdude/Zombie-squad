@@ -75,3 +75,18 @@ public:
 		actor.Attack(deltaTime);
 	}
 };
+
+class ChasePlayer : public Command
+{
+public: 
+	ChasePlayer(const Player* player) 
+		: m_player(player)
+	{};
+
+	virtual void execute(Actor& actor, float deltaTime) override
+	{
+		actor.Chase(*m_player);
+	}
+private:
+	const Player* m_player;
+};
