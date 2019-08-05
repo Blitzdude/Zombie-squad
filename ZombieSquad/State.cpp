@@ -3,8 +3,17 @@
 #include "Zombie.h"
 #include "Bullet.h"
 
-void Chase::Update(Zombie& actor, float dt)
-{
+void Chasing::Update(Zombie& actor, float dt)
+{	
+	
+	if (Vec2f::DistanceBetween(actor.GetPosition(), m_chaseTarget->GetPosition()) < 1.0f)
+	{
+		// Zombie is close enough to Attack, set a new Attacking state
+	}
+	else {
+		actor.SetTarget(m_chaseTarget->GetPosition());
+		actor.doMove(dt);
+	}
 }
 
 void Controlled::Update(Player& actor, float dt)
@@ -32,7 +41,7 @@ void Flying::Update(Bullet& actor, float dt)
 	}
 }
 
-void Roam::Update(Zombie& actor, float dt)
+void Roaming::Update(Zombie& actor, float dt)
 {
 	// add to timer
 	m_timer += dt;

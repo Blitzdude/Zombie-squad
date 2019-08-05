@@ -10,14 +10,16 @@ public:
 	~Zombie();
 
 	virtual void Draw(olc::PixelGameEngine& game) override;
-	virtual void Update(float fElapsedTime) override;
+	virtual void Update(float fElapsedTime)  override;
+	virtual void Chase(const Player& player) override;
 
 	void doMove(float dt);
 
 	// Setters
 	void SetTarget(const Vec2f& newTarget) { m_target = newTarget; }
 private:
-	ZombieState* m_currentState; // Not Implemented
+	const float m_attackRange = 1.0f;
+	ZombieState* m_currentState; 
 	Vec2f m_target;
 };
 

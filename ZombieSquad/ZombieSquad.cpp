@@ -43,9 +43,17 @@ bool ZombieSquad::OnUserCreate()
 	vecActors.push_back(player3);
 	m_playerHandler.addPlayer(player3, 2);
 
+	// Initialize the ZombieHandler
+	m_zombieHandler.Init(*player1, *player2, *player3);
+
 	const int MINIMUM_DISTANCE = 5;
 
-	// For each cell, see if it's far enough from start and spawn zombies there
+	// Populate Level with zombies
+	/*
+		For each open cell far enough away from start
+		- Add zombies to unoccupied cells
+	*/
+
 	for (int y = 0; y < m_currentLevel->GetNumCellsY(); y++)
 	{
 		for (int x = 0; x < m_currentLevel->GetNumCellsX(); x++)
@@ -63,12 +71,6 @@ bool ZombieSquad::OnUserCreate()
 	}
 
 
-
-	// Populate Level with zombies
-	/*
-		For each open cell far enough away from start
-		- Add zombies to unoccupied cells
-	*/
 
 	return true;
 }
@@ -93,6 +95,9 @@ bool ZombieSquad::OnUserUpdate(float fElapsedTime)
 
 	*/
 
+	/*
+		Draw level, and actors.
+	*/
 	DoDraw();
 
 	return m_isRunning;
@@ -113,7 +118,7 @@ void ZombieSquad::DoInput(float fElapsedTime)
 
 	m_playerHandler.HandlePlayers(fElapsedTime);
 	// m_bulletHandler.HandleBullets(fElapsedTime);
-	// m_zombieHandler.HandleZombies(fElapsedTime);
+	m_zombieHandler.HandleZombies(fElapsedTime);
 
 	/*
 	Command* command = m_playerHandler.handleInput();
@@ -193,8 +198,12 @@ void ZombieSquad::DoUpdate(float fElapsedTime)
 	vec_circleEdgeColliders.clear();
 	vec_circleCircleColliders.clear();
 
-	// DELETE ACTORS END
-	// Remove destroyed actors (Bullets mostly)
+
+
+	// DELETE ACTORS
+	m_zombieHandler.RemoveDestroyed();
+
+	// Remove destroyed actors
 	// https://stackoverflow.com/questions/991335/how-to-erase-delete-pointers-to-objects-stored-in-a-vector rlbond's answer
 	// Apply a deleting function to each element. (call the destructor and make the pointer null)
 	std::for_each(vecActors.begin(), vecActors.end(), [](Actor*& e)
@@ -238,7 +247,9 @@ void ZombieSquad::SpawnZombie(int x, int y, float offset)
 	float size = m_currentLevel->GetCellSize();
 	float xPos = (x * size) + (size / 2.0f) + offset;
 	float yPos = (y * size) + (size / 2.0f);
-	vecActors.push_back(new Zombie(xPos, yPos));
+	Zombie* zomb = new Zombie(xPos, yPos);
+	vecActors.push_back(zomb);
+	m_zombieHandler.AddZombie(zomb);
 }
 
 void ZombieSquad::SpawnBullet(const Vec2f& pos, float dir, float lifetime)

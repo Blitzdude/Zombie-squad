@@ -4,7 +4,7 @@
 Zombie::Zombie(float x, float y)
 {
 	
-	m_currentState = new Roam();
+	m_currentState = new Roaming();
 	const float ZOMBIE_SIZE = 6.0f;
 	SetDestroyed(false);
 	SetX(x);
@@ -26,7 +26,8 @@ void Zombie::Draw(olc::PixelGameEngine& game)
 {
 
 	// TODO: Size should be a variable, static maybe? 
-	game.FillCircle((int32_t)GetX(), (int32_t)GetY(), (int32_t)GetRadius(), olc::DARK_GREEN);
+	olc::Pixel pix = m_currentState->GetStateID() == StateID::ZOMBIE_CHASE ? olc::DARK_YELLOW : olc::DARK_GREEN;
+	game.FillCircle((int32_t)GetX(), (int32_t)GetY(), (int32_t)GetRadius(), pix);
 
 	game.DrawLine((int32_t)GetX(), (int32_t)GetY(),
 		(int32_t)(GetX() + cosf(GetDirection()) * GetRadius()),
@@ -38,6 +39,14 @@ void Zombie::Draw(olc::PixelGameEngine& game)
 void Zombie::Update(float fElapsedTime)
 {
 	m_currentState->Update(*this, fElapsedTime);
+}
+
+void Zombie::Chase(const Player& player)
+{
+	if (m_currentState->GetStateID() != StateID::ZOMBIE_CHASE)
+	{
+		m_currentState = new Chasing(player);
+	}
 }
 
 void Zombie::doMove(float dt)

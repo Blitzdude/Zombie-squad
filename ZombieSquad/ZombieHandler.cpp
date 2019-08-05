@@ -1,8 +1,8 @@
 #include "ZombieHandler.h"
 #include "Command.h"
 
-ZombieHandler::ZombieHandler(Player& p1, Player& p2, Player& p3)
-	: m_player1(&p1), m_player2(&p2), m_player3(&p3)
+ZombieHandler::ZombieHandler()
+	: m_player1(nullptr), m_player2(nullptr), m_player3(nullptr)
 {
 }
 
@@ -12,6 +12,35 @@ ZombieHandler::~ZombieHandler()
 	m_player1 = nullptr;
 	m_player2 = nullptr;
 	m_player3 = nullptr;
+}
+
+bool ZombieHandler::Init(Player& p1, Player& p2, Player& p3)
+{
+	bool success = true;
+	m_player1 = &p1;
+	m_player2 = &p2;
+	m_player3 = &p3;
+
+	if (m_player1 != nullptr &&
+		m_player2 != nullptr &&
+		m_player3 != nullptr)
+	{
+		success = false;
+	}
+
+	return success;
+}
+
+void ZombieHandler::HandleZombies(float dt)
+{
+	for (auto &zomb : m_vecZombies)
+	{
+		Command* command = handleInput(*zomb);
+		if (command)
+		{
+			command->execute(*zomb, dt);
+		}
+	}
 }
 
 Command* ZombieHandler::handleInput(Zombie& actor)
@@ -50,4 +79,30 @@ const Player* ZombieHandler::GetClosestPlayer(Zombie& zombie)
 	}
 
 	return ret;
+}
+
+void ZombieHandler::AddZombie(Zombie* zombie)
+{
+	m_vecZombies.push_back(zombie);
+}
+
+void ZombieHandler::RemoveDestroyed()
+{
+	
+	// Remove destroyed actors (Bullets mostly)
+	// https://stackoverflow.com/questions/991335/how-to-erase-delete-pointers-to-objects-stored-in-a-vector rlbond's answer
+	// Apply a deleting function to each element. (call the destructor and make the pointer null)
+	std::for_each(m_vecZombies.begin(), m_vecZombies.end(), [](Zombie*& e)
+		{
+			if (e->GetDestroyed())
+			{
+				// e is not deleted here. That is done after this.
+				e = nullptr;
+			}
+		});
+	// remove re-orders the vector, so removed elements are at the back of the container
+	std::vector<Zombie*>::iterator newEnd = std::remove(m_vecZombies.begin(), m_vecZombies.end(), static_cast<Zombie*>(nullptr));
+	// erase the elements from the vector
+	m_vecZombies.erase(newEnd, m_vecZombies.end());
+	// DELETE ACTORS END
 }

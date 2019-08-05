@@ -1,6 +1,7 @@
 #pragma once
 #include "olcPixelGameEngine.h"
 #include "PlayerHandler.h"
+#include "ZombieHandler.h"
 #include "Player.h"
 #include "Zombie.h"
 #include "Bullet.h"
@@ -33,8 +34,7 @@ public:
 
 private:
 	PlayerHandler m_playerHandler;
-	// std::vector<Actor*> m_players; // Moved to player handler
-	// Actor* m_selectedPlayer; // Moved to player handler
+	ZombieHandler m_zombieHandler;
 	std::vector<Actor*> vecActors;
 	Level* m_currentLevel;
 	Physics m_physics;
