@@ -2,6 +2,7 @@
 
 unsigned int Actor::m_objectCount = 0;
 
+// TODO: Base variables should propably be initilized in Actor
 Actor::Actor()
 {
 	m_id = m_objectCount++;

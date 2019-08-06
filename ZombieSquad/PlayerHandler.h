@@ -1,21 +1,23 @@
 #pragma once
-#include "olcPixelGameEngine.h"
+
 
 #include <array>
 
 class Player;
 class Command; // Forward declaration
+class ZombieSquad;
 
 class PlayerHandler
 {
 public:
-	PlayerHandler(olc::PixelGameEngine& engine);
+	PlayerHandler(ZombieSquad& engine);
 	~PlayerHandler();
 
 	Command* handleInput();
 	void HandlePlayers(float fElapsedTime);
 	void bindButtons();
 	void addPlayer(Player* player, int index);
+	// Vec2f GetClosestZombiePosition(const Vec2f& player); TODO:: not implemented
 
 private:
 	Command* buttonW; // forward
@@ -28,7 +30,7 @@ private:
 	Command* buttonKey3; // Change to player 3
 	Command* buttonSpace; // Fire Gun
 
-	olc::PixelGameEngine* m_engine;
+	ZombieSquad* m_game;
 	std::array<Player*, 3> m_players;
 	Player* m_selectedPlayer;
 };

@@ -1,10 +1,11 @@
 #include "PlayerHandler.h"
+#include "ZombieSquad.h"
 #include "Command.h"
 #include "Player.h"
 #include <assert.h>
 
-PlayerHandler::PlayerHandler(olc::PixelGameEngine& engine)
-	: m_engine(&engine), m_selectedPlayer(nullptr)
+PlayerHandler::PlayerHandler(ZombieSquad& engine)
+	: m_game(&engine), m_selectedPlayer(nullptr)
 {
 	bindButtons();
 }
@@ -21,23 +22,24 @@ PlayerHandler::~PlayerHandler()
 
 Command * PlayerHandler::handleInput()
 {
-	if (m_engine->GetKey(olc::W).bHeld) return buttonW;
-	if (m_engine->GetKey(olc::A).bHeld) return buttonA;
-	if (m_engine->GetKey(olc::S).bHeld) return buttonS;
-	if (m_engine->GetKey(olc::D).bHeld) return buttonD;
-	if (m_engine->GetKey(olc::SPACE).bReleased) return buttonSpace;
+	
+	if (m_game->GetKey(olc::W).bHeld) return buttonW;
+	if (m_game->GetKey(olc::A).bHeld) return buttonA;
+	if (m_game->GetKey(olc::S).bHeld) return buttonS;
+	if (m_game->GetKey(olc::D).bHeld) return buttonD;
+	if (m_game->GetKey(olc::SPACE).bReleased) return buttonSpace;
 
-	if (m_engine->GetKey(olc::K1).bReleased)
+	if (m_game->GetKey(olc::K1).bReleased)
 	{
 		m_selectedPlayer = m_players[0];
 		return buttonKey1;
 	}
-	if (m_engine->GetKey(olc::K2).bReleased)
+	if (m_game->GetKey(olc::K2).bReleased)
 	{
 		m_selectedPlayer = m_players[1];
 		return buttonKey2;
 	}
-	if (m_engine->GetKey(olc::K3).bReleased)
+	if (m_game->GetKey(olc::K3).bReleased)
 	{
 		m_selectedPlayer = m_players[2];
 		return buttonKey3;
@@ -52,6 +54,16 @@ void PlayerHandler::HandlePlayers(float fElapsedTime)
 	if (command)
 	{
 		command->execute(*m_selectedPlayer, fElapsedTime);
+	}
+
+	// command the uncontrolled players
+	for (auto& p : m_players)
+	{
+		// If the state is overwatch, find the closest zombie
+		// Vec2f target = GetClosestZombiePosition(p->GetPosition()); // TODO:: what is wanted
+		// tell player to aim it's way
+		
+
 	}
 }
 

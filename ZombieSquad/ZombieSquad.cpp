@@ -1,4 +1,5 @@
 #include "ZombieSquad.h"
+#include "GlobalConstants.h"
 #include <algorithm>
 #include <functional>
 
@@ -45,8 +46,6 @@ bool ZombieSquad::OnUserCreate()
 
 	// Initialize the ZombieHandler
 	m_zombieHandler.Init(*player1, *player2, *player3);
-
-	const int MINIMUM_DISTANCE = 5;
 
 	// Populate Level with zombies
 	/*

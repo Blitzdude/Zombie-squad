@@ -10,7 +10,7 @@ public:
 	~Bullet();
 	void Draw(olc::PixelGameEngine& game) override;
 	void Update(float fElapsedTime) override;
-	
+
 	float m_lifeTime;
 private:
 

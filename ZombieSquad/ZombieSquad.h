@@ -30,7 +30,8 @@ public:
 	
 	void SpawnBullet(const Vec2f& pos, float dir, float lifetime);
 
-	
+	// Getters
+	const std::vector<Actor*>& const GetActors() const { return vecActors; };
 
 private:
 	PlayerHandler m_playerHandler;

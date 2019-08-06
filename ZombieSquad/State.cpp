@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Zombie.h"
 #include "Bullet.h"
+#include "GlobalConstants.h"
 
 void Chasing::Update(Zombie& actor, float dt)
 {	
@@ -18,10 +19,15 @@ void Chasing::Update(Zombie& actor, float dt)
 
 void Controlled::Update(Player& actor, float dt)
 {
+	// Take input commands
 }
 
-void Overwatch::Update(Player& actor, float dt)
+void Watching::Update(Player& actor, float dt)
 {
+	// Get closest zombie
+
+	
+	// If zombie is in front of player, fire the weapon
 }
 
 
@@ -30,12 +36,11 @@ void Flying::Update(Bullet& actor, float dt)
 	 
 	float dir = actor.GetDirection();
 	// New position
-	const float BULLET_SPEED = 80.0f;
 	Vec2f newPos(actor.GetPosition() + Vec2f(cosf(dir), sinf(dir)) * BULLET_SPEED * dt);
 	actor.SetPosition(newPos);
 
 	actor.m_lifeTime -= dt;
-	if (actor.m_lifeTime < 0.0f)
+	if (actor.GetIsHit() || actor.m_lifeTime < 0.0f)
 	{
 		actor.SetDestroyed(true);
 	}
@@ -45,7 +50,6 @@ void Roaming::Update(Zombie& actor, float dt)
 {
 	// add to timer
 	m_timer += dt;
-	static const float TIME_UNTIL_CHANGE_DIR = 3.0f;
 	if (m_timer >= TIME_UNTIL_CHANGE_DIR)
 	{
 		m_timer = 0.0f;
@@ -58,4 +62,22 @@ void Roaming::Update(Zombie& actor, float dt)
 	}
 
 	actor.doMove(dt);
+}
+
+void ZombieDead::Update(Zombie& actor, float dt)
+{
+	m_deathTime += dt;
+	if (m_deathTime > DYING_TIME)
+	{
+		actor.SetDestroyed(true);
+	}
+}
+
+void PlayerDead::Update(Player& actor, float dt)
+{
+	m_deathTime += dt;
+	if (m_deathTime > DYING_TIME)
+	{
+		actor.SetDestroyed(true);
+	}
 }

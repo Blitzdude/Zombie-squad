@@ -64,8 +64,7 @@ void Physics::resolveEdgeCircle(Actor* act, Vec2f normal, float distToMove)
 	// If actor is bullet, destroy bullet.
 	if (act->GetTag() == ActorTag::BULLET)
 	{
-		// for now do nothing, so actors can pass through.
-		act->SetDestroyed(true);
+		act->SetIsHit(true);
 	}
 	else {
 		// move the actor in the direction of the normal
@@ -86,8 +85,8 @@ void Physics::resolveCircleCircle(Actor* lhs, Actor* rhs, float overlap)
 		if (rhs->GetTag() == ActorTag::ZOMBIE)
 		{
 			// if Bullet hit a zombie, kill it.
-			rhs->SetDestroyed(true);
-			lhs->SetDestroyed(true);
+			rhs->SetIsHit(true);
+			lhs->SetIsHit(true);
 		}
 	}
 	else if (rhs->GetTag() == ActorTag::BULLET)
@@ -96,8 +95,8 @@ void Physics::resolveCircleCircle(Actor* lhs, Actor* rhs, float overlap)
 		if (lhs->GetTag() == ActorTag::ZOMBIE)
 		{
 			// If bullet hits zombie, kill it
-			rhs->SetDestroyed(true);
-			lhs->SetDestroyed(true);
+			rhs->SetIsHit(true);
+			lhs->SetIsHit(true);
 		}
 	}
 	else {

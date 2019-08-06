@@ -1,11 +1,11 @@
 #include "Bullet.h"
 #include "State.h"
+#include "GlobalConstants.h"
 
 Bullet::Bullet(const Vec2f& pos, float dir, float l)
 	: m_lifeTime(l), m_radius(0.0f)
 {
 	m_currentState = new Flying();
-	const float BULLET_SIZE = 4.0f;
 	SetDestroyed(false);
 	SetPosition(pos);
 	SetDirection(dir);
@@ -27,7 +27,5 @@ void Bullet::Draw(olc::PixelGameEngine& game)
 void Bullet::Update(float fElapsedTime)
 {
 	m_currentState->Update(*this, fElapsedTime);
-	// TODO: Update the bullet, maybe bullets shoudl have states as everyone else... or maybe not idk. yes? no?
-	
-
 }
+
