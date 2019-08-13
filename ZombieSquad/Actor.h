@@ -16,6 +16,7 @@ enum class ActorTag {
 	ZOMBIE,
 	BULLET
 };
+
 class Actor
 {
 public:
@@ -31,7 +32,7 @@ public:
 	virtual void MoveBack(float dt)	{};
 	virtual void TurnRight(float dt)  {};
 	virtual void TurnLeft(float dt)   {};
-	virtual void ChangePlayer() {};
+	virtual void ChangePlayer(bool truth) {};
 	virtual void Attack(float dt) {};
 	virtual void Die(float dt) {};
 
@@ -41,6 +42,7 @@ public:
 	Vec2f GetDirectionVector();
 
 	// Setters/Getters
+	float GetSpeed()			const { return m_speed; }
 	float GetX()				const { return m_x; }
 	float GetY()				const { return m_y; }
 	float GetDirection()		const { return m_dir; }
@@ -51,16 +53,16 @@ public:
 	bool GetIsHit()				const { return m_hit; }
 
 
-	void SetX(float x)			 { m_x = x; }
-	void SetY(float y)			 { m_y = y; }
-	void SetDirection(float dir) { m_dir = dir; }
-	void SetRadius(float r)		 { m_radius = r; }
-	void SetPosition(const Vec2f& pos) { m_x = pos.x, m_y = pos.y; }
-	void SetPosition(float x, float y) { m_x = x, m_y = y; }
-	void SetTag(ActorTag tag) { m_tag = tag; }
-	void SetDestroyed(bool truth) { m_destroyed = truth; }
-	void SetIsHit(bool truth) { m_hit = truth; }
-
+	void SetSpeed(float s)				{ m_speed = s; }
+	void SetX(float x)					{ m_x = x; }
+	void SetY(float y)					{ m_y = y; }
+	void SetDirection(float dir)		{ m_dir = dir; }
+	void SetRadius(float r)				{ m_radius = r; }
+	void SetPosition(const Vec2f& pos)  { m_x = pos.x, m_y = pos.y; }
+	void SetPosition(float x, float y)  { m_x = x, m_y = y; }
+	void SetTag(ActorTag tag)			{ m_tag = tag; }
+	void SetDestroyed(bool truth)		{ m_destroyed = truth; }
+	void SetIsHit(bool truth)			{ m_hit = truth; }
 
 	static unsigned int m_objectCount;
 	unsigned int m_id;
@@ -68,6 +70,7 @@ public:
 private:
 	bool m_hit;
 	bool m_destroyed;
+	float m_speed;
 	float m_x;
 	float m_y;
 	float m_dir;

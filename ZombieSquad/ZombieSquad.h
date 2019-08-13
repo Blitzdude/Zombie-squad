@@ -1,10 +1,9 @@
 #pragma once
 #include "olcPixelGameEngine.h"
-#include "PlayerHandler.h"
-#include "ZombieHandler.h"
-#include "Player.h"
 #include "Zombie.h"
 #include "Bullet.h"
+#include "ZombieHandler.h"
+#include "PlayerHandler.h"
 #include "Command.h"
 #include "Level.h"
 #include "Physics.h"
@@ -12,9 +11,9 @@
 #include <vector>
 #include <iostream>
 
+
 class ZombieSquad : public olc::PixelGameEngine
 {
-
 
 public:
 	ZombieSquad();
@@ -28,14 +27,15 @@ public:
 
 	void SpawnZombie(int x, int y, float offset = 0.0f);
 	
-	void SpawnBullet(const Vec2f& pos, float dir, float lifetime);
+	void SpawnBullet(const Vec2f& pos, float dir, float lifetime, float speed, ActorTag tag);
 
 	// Getters
-	const std::vector<Actor*>& const GetActors() const { return vecActors; };
+	const std::vector<Actor*>& GetActors() { return vecActors; };
 
 private:
-	PlayerHandler m_playerHandler;
+
 	ZombieHandler m_zombieHandler;
+	PlayerHandler m_playerHandler;
 	std::vector<Actor*> vecActors;
 	Level* m_currentLevel;
 	Physics m_physics;

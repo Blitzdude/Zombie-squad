@@ -1,4 +1,5 @@
 #include "ZombieSquad.h"
+#include "ZombieHandler.h"
 #include "GlobalConstants.h"
 #include <algorithm>
 #include <functional>
@@ -60,7 +61,7 @@ bool ZombieSquad::OnUserCreate()
 			int distance = ManhattanDistance(m_currentLevel->GetStartX(), m_currentLevel->GetStartY(), x, y);
 			if (distance > MINIMUM_DISTANCE && m_currentLevel->GetCell(x, y)->obstacle == false)
 			{
-				int numZombies = rand() % 3;
+				int numZombies = rand() % 2;
 				for (int i = 0; i <= numZombies; i++)
 				{
 					SpawnZombie(x, y, i * 0.5f);
@@ -112,8 +113,6 @@ void ZombieSquad::DoInput(float fElapsedTime)
 	- 1,2,3,4 - switch characters
 	- Space - fire gun -> create bullets
 	*/
-
-	// TODO: move player command execution to inside player handler
 
 	m_playerHandler.HandlePlayers(fElapsedTime);
 	// m_bulletHandler.HandleBullets(fElapsedTime);
@@ -246,12 +245,12 @@ void ZombieSquad::SpawnZombie(int x, int y, float offset)
 	float size = m_currentLevel->GetCellSize();
 	float xPos = (x * size) + (size / 2.0f) + offset;
 	float yPos = (y * size) + (size / 2.0f);
-	Zombie* zomb = new Zombie(xPos, yPos);
+	Zombie* zomb = new Zombie(xPos, yPos, *this);
 	vecActors.push_back(zomb);
 	m_zombieHandler.AddZombie(zomb);
 }
 
-void ZombieSquad::SpawnBullet(const Vec2f& pos, float dir, float lifetime)
+void ZombieSquad::SpawnBullet(const Vec2f& pos, float dir, float lifetime, float speed, ActorTag tag)
 {
-	vecActors.push_back(new Bullet(pos, dir, lifetime));
+	vecActors.push_back(new Bullet(pos, dir, lifetime, speed, tag));
 }

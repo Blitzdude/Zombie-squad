@@ -5,6 +5,7 @@
 class ZombieSquad;
 class Bullet;
 class PlayerState;
+class Bullet;
 
 class Player : public Actor
 {
@@ -20,12 +21,14 @@ public:
 	virtual void TurnLeft(float dt)	 override;
 	virtual void Attack(float dt)		 override;
 	virtual void Die(float dt)	override;
+	//virtual void ChangePlayer(bool truth) override;
 
-	
+
+	void SetWeapon(Bullet* bullet) { m_gun = bullet; };
 
 private:
 	PlayerState* m_currentState;
 	ZombieSquad* m_game; // Needed for bullet spawning
-	// Bullet* m_gun; // Which kind of bullets to spawn when firing // Not implemented
+	Bullet* m_gun; // Which kind of bullets to spawn when firing // Not implemented
 };
 

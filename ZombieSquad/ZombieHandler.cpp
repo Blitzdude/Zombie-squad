@@ -58,7 +58,6 @@ Command* ZombieHandler::handleInput(Zombie& actor)
 		Vec2f::DistanceBetween(actor.GetPosition(), player->GetPosition()) <= SIGHT_RANGE)
 	{
 		return new ChasePlayer(player);
-		
 	}
 
 	return nullptr;

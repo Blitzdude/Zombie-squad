@@ -1,4 +1,5 @@
 #include "Physics.h"
+#include "Bullet.h"
 #include "mathUtil.h"
 #include <assert.h>
 
@@ -81,20 +82,20 @@ void Physics::resolveCircleCircle(Actor* lhs, Actor* rhs, float overlap)
 	// TODO: Add checking for tags
 	if (lhs->GetTag() == ActorTag::BULLET)
 	{
-		// TODO: Do nothing for now, so bullets do not cause actors to move
-		if (rhs->GetTag() == ActorTag::ZOMBIE)
+		
+
+		if (static_cast<Bullet*>(lhs)->GetOwner() != rhs->GetTag())
 		{
-			// if Bullet hit a zombie, kill it.
+			// if Bullets owner is different then other, kill them
 			rhs->SetIsHit(true);
 			lhs->SetIsHit(true);
 		}
 	}
 	else if (rhs->GetTag() == ActorTag::BULLET)
 	{
-		// TODO: Do nothing for now, so bullet doens't cause actors to move
-		if (lhs->GetTag() == ActorTag::ZOMBIE)
+		if (static_cast<Bullet*>(rhs)->GetOwner() != lhs->GetTag())
 		{
-			// If bullet hits zombie, kill it
+			// if Bullets owner is different then other, kill them
 			rhs->SetIsHit(true);
 			lhs->SetIsHit(true);
 		}

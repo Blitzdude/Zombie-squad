@@ -56,12 +56,16 @@ public:
 class ChangePlayer : public Command
 {
 public:
-	ChangePlayer() {};
+	ChangePlayer(bool truth)
+	 : m_truth(truth)
+	{};
 
 	virtual void execute(Actor& actor, float dt) override
 	{
-		actor.ChangePlayer();
+		actor.ChangePlayer(m_truth);
 	}
+private:
+	bool m_truth;
 
 };
 
@@ -95,7 +99,6 @@ class Die : public Command
 {
 public:
 	Die() {};
-	// TODO: FInish applying dying
 	virtual void execute(Actor& actor, float dt) override
 	{
 		actor.Die(dt);

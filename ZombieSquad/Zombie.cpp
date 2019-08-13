@@ -1,10 +1,12 @@
+#include "ZombieSquad.h"
 #include "Zombie.h"
 #include "State.h"
 #include "GlobalConstants.h"
 
-Zombie::Zombie(float x, float y)
+
+Zombie::Zombie(float x, float y, ZombieSquad& game)
+	: m_game(&game)
 {
-	
 	m_currentState = new Roaming();
 	SetDestroyed(false);
 	SetX(x);
@@ -65,6 +67,14 @@ void Zombie::Die(float dt)
 		delete m_currentState;
 		m_currentState = new ZombieDead();
 	}
+}
+
+void Zombie::Attack(float dt)
+{
+	// calculate position for bullet 
+	Vec2f bulletSpawnPoint = GetPosition() + Vec2f(cosf(GetDirection()), sinf(GetDirection())) * (GetRadius() + 2.0f);
+	// Spawn the bullet
+	m_game->SpawnBullet(bulletSpawnPoint, GetDirection(), 1.0f, 0.0f, ActorTag::ZOMBIE);
 }
 
 void Zombie::doMove(float dt)

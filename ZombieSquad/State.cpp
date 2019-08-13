@@ -7,9 +7,9 @@
 void Chasing::Update(Zombie& actor, float dt)
 {	
 	
-	if (Vec2f::DistanceBetween(actor.GetPosition(), m_chaseTarget->GetPosition()) < 1.0f)
+	if (Vec2f::DistanceBetween(actor.GetPosition(), m_chaseTarget->GetPosition()) < actor.GetRadius()*2.0f)
 	{
-		// Zombie is close enough to Attack, set a new Attacking state
+		actor.Attack(dt);
 	}
 	else {
 		actor.SetTarget(m_chaseTarget->GetPosition());
@@ -76,8 +76,6 @@ void ZombieDead::Update(Zombie& actor, float dt)
 void PlayerDead::Update(Player& actor, float dt)
 {
 	m_deathTime += dt;
-	if (m_deathTime > DYING_TIME)
-	{
-		actor.SetDestroyed(true);
-	}
+	// Do not destroy players! just lay there
+	
 }

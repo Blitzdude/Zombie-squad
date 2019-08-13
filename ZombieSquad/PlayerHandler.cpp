@@ -34,12 +34,12 @@ Command * PlayerHandler::handleInput()
 		m_selectedPlayer = m_players[0];
 		return buttonKey1;
 	}
-	if (m_game->GetKey(olc::K2).bReleased)
+	else if (m_game->GetKey(olc::K2).bReleased)
 	{
 		m_selectedPlayer = m_players[1];
 		return buttonKey2;
 	}
-	if (m_game->GetKey(olc::K3).bReleased)
+	else if (m_game->GetKey(olc::K3).bReleased)
 	{
 		m_selectedPlayer = m_players[2];
 		return buttonKey3;
@@ -50,6 +50,7 @@ Command * PlayerHandler::handleInput()
 
 void PlayerHandler::HandlePlayers(float fElapsedTime)
 {
+	
 	Command* command = handleInput();
 	if (command)
 	{
@@ -59,11 +60,15 @@ void PlayerHandler::HandlePlayers(float fElapsedTime)
 	// command the uncontrolled players
 	for (auto& p : m_players)
 	{
+		// Check if player has taken damage
+		if (p->GetIsHit())
+		{
+			Command* c = new Die();
+			c->execute(*p, fElapsedTime);
+		}
 		// If the state is overwatch, find the closest zombie
 		// Vec2f target = GetClosestZombiePosition(p->GetPosition()); // TODO:: what is wanted
 		// tell player to aim it's way
-		
-
 	}
 }
 
@@ -74,9 +79,9 @@ void PlayerHandler::bindButtons()
 	buttonS = new MoveBack();
 	buttonD = new TurnRight();
 
-	buttonKey1 = new ChangePlayer(); // TODO: We only need one
-	buttonKey2 = new ChangePlayer();
-	buttonKey3 = new ChangePlayer();
+	// buttonKey1 = new ChangePlayer(); // TODO: We only need one
+	// buttonKey2 = new ChangePlayer();
+	// buttonKey3 = new ChangePlayer();
 
 	buttonSpace = new Attack();
 }

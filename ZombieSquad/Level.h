@@ -60,7 +60,7 @@ public:
 	// Getters
 	float GetCellSize() { return m_cellSize; }
 	std::vector<Edge> const GetEdges() { return vec_edges; }
-	const Vec2f& const GetStart() { return m_startPosition; }
+	const Vec2f& GetStart() { return m_startPosition; }
 	int GetStartX() { return (int)(m_startPosition.x / m_cellSize); }
 	int GetStartY() { return (int)(m_startPosition.y / m_cellSize); }
 

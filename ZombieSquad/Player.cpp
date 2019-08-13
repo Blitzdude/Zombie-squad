@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "ZombieSquad.h"
 #include "Bullet.h"
+#include "Command.h"
 #include "GlobalConstants.h"
 #include <iostream>
 
@@ -30,8 +31,15 @@ Player::~Player()
 
 void Player::Draw(olc::PixelGameEngine& game)
 {
-	// TODO: Size should be a variable, static maybe? 
-	game.FillCircle((int32_t)GetX(), (int32_t)GetY(), (int32_t)GetRadius());
+	olc::Pixel pix;
+	pix = m_currentState->GetStateID() != StateID::PLAYER_CONTROLLED ? olc::WHITE : olc::CYAN;
+
+	if (m_currentState->GetStateID() == StateID::STATE_DEAD)
+	{
+		pix = olc::VERY_DARK_RED;
+	}
+
+	game.FillCircle((int32_t)GetX(), (int32_t)GetY(), (int32_t)GetRadius(), pix);
 
 	game.DrawLine((int32_t)GetX(), (int32_t)GetY(),
 		(int32_t)(GetX() + cosf(GetDirection())*GetRadius()),
@@ -71,7 +79,7 @@ void Player::Attack(float dt)
 {	// if cooldown and bullets -> fire shot
 	// calculate bullet spawn point.
 	Vec2f bulletSpawnPoint = GetPosition() + Vec2f(cosf(GetDirection()), sinf(GetDirection())) * (GetRadius() + 2.0f);
-	m_game->SpawnBullet(bulletSpawnPoint, GetDirection(), 5.0f);
+	m_game->SpawnBullet(bulletSpawnPoint, GetDirection(), 5.0f, 40.0f, ActorTag::PLAYER);
 }
 
 void Player::Die(float dt)
@@ -82,3 +90,4 @@ void Player::Die(float dt)
 		m_currentState = new PlayerDead();
 	}
 }
+
