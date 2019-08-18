@@ -51,6 +51,7 @@ public:
 	const ActorTag& GetTag()	const { return m_tag; }
 	bool GetDestroyed()			const { return m_destroyed; }
 	bool GetIsHit()				const { return m_hit; }
+	
 
 
 	void SetSpeed(float s)				{ m_speed = s; }

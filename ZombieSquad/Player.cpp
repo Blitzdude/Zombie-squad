@@ -6,7 +6,7 @@
 #include <iostream>
 
 
-Player::Player(float x, float y, float dir, ZombieSquad& game)
+Player::Player(float x, float y, float dir, ZombieSquad& game, bool startingPlayer)
 	: m_game(&game)
 {
 	SetDestroyed(false);
@@ -15,7 +15,13 @@ Player::Player(float x, float y, float dir, ZombieSquad& game)
 	SetRadius(PLAYER_SIZE);
 	SetDirection(dir);
 	SetTag(ActorTag::PLAYER);
-	m_currentState = new Watching();
+	if (startingPlayer)
+	{
+		m_currentState = new Controlled();
+	}
+	else {
+		m_currentState = new Watching();
+	}
 	std::cout << "Player created\n";
 }
 
@@ -79,15 +85,27 @@ void Player::Attack(float dt)
 {	// if cooldown and bullets -> fire shot
 	// calculate bullet spawn point.
 	Vec2f bulletSpawnPoint = GetPosition() + Vec2f(cosf(GetDirection()), sinf(GetDirection())) * (GetRadius() + 2.0f);
-	m_game->SpawnBullet(bulletSpawnPoint, GetDirection(), 5.0f, 40.0f, ActorTag::PLAYER);
+	m_game->SpawnBullet(bulletSpawnPoint, GetDirection(), 5.0f, 10.0f, ActorTag::PLAYER);
 }
 
 void Player::Die(float dt)
 {
 	if (m_currentState->GetStateID() != StateID::STATE_DEAD)
 	{
-		delete m_currentState;
 		m_currentState = new PlayerDead();
+	}
+}
+
+void Player::ChangePlayer(bool truth)
+{
+	if (truth)
+	{
+		// This becomes the controlled player
+		m_currentState = new Controlled();
+	}
+	else {
+		// this becomes an npc character
+		m_currentState = new Watching();
 	}
 }
 

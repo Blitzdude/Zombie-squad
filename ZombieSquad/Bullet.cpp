@@ -5,6 +5,7 @@
 Bullet::Bullet(const Vec2f& pos, float dir, float s, float l, ActorTag owner)
 	: m_lifeTime(l), m_radius(0.0f), m_owner(owner)
 {
+	std::cout << "Bullet created\n";
 	m_currentState = new Flying();
 	SetDestroyed(false);
 	SetPosition(pos);

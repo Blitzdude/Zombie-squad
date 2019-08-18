@@ -32,8 +32,9 @@ bool ZombieSquad::OnUserCreate()
 		Set size
 		Give control to player
 	*/
+
 	// Player 1
-	Player* player1 = new Player(m_currentLevel->GetStart().x, m_currentLevel->GetStart().y, 0.0f, *this);
+	Player* player1 = new Player(m_currentLevel->GetStart().x, m_currentLevel->GetStart().y, 0.0f, *this, true);
 	vecActors.push_back(player1);
 	m_playerHandler.addPlayer(player1, 0);
 	// Player 2
@@ -69,9 +70,6 @@ bool ZombieSquad::OnUserCreate()
 			}
 		}
 	}
-
-
-
 	return true;
 }
 
@@ -79,7 +77,6 @@ bool ZombieSquad::OnUserUpdate(float fElapsedTime)
 {
 	DoInput(fElapsedTime);
 	// Check input
-
 
 	DoUpdate(fElapsedTime);
 	// Update 
@@ -118,13 +115,6 @@ void ZombieSquad::DoInput(float fElapsedTime)
 	// m_bulletHandler.HandleBullets(fElapsedTime);
 	m_zombieHandler.HandleZombies(fElapsedTime);
 
-	/*
-	Command* command = m_playerHandler.handleInput();
-	if (command)
-	{
-		command->execute(*m_selectedPlayer, fElapsedTime);
-	}
-	*/
 
 	if (GetKey(olc::ESCAPE).bReleased)
 	{

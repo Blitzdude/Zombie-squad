@@ -79,15 +79,12 @@ void Physics::resolveEdgeCircle(Actor* act, Vec2f normal, float distToMove)
 void Physics::resolveCircleCircle(Actor* lhs, Actor* rhs, float overlap)
 {
 
-	// TODO: Add checking for tags
 	if (lhs->GetTag() == ActorTag::BULLET)
 	{
-		
-
 		if (static_cast<Bullet*>(lhs)->GetOwner() != rhs->GetTag())
 		{
 			// if Bullets owner is different then other, kill them
-			rhs->SetIsHit(true);
+ 			rhs->SetIsHit(true);
 			lhs->SetIsHit(true);
 		}
 	}
@@ -96,7 +93,7 @@ void Physics::resolveCircleCircle(Actor* lhs, Actor* rhs, float overlap)
 		if (static_cast<Bullet*>(rhs)->GetOwner() != lhs->GetTag())
 		{
 			// if Bullets owner is different then other, kill them
-			rhs->SetIsHit(true);
+  			rhs->SetIsHit(true);
 			lhs->SetIsHit(true);
 		}
 	}

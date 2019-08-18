@@ -29,6 +29,9 @@ private:
 	Command* buttonKey2; // Change to player 2
 	Command* buttonKey3; // Change to player 3
 	Command* buttonSpace; // Fire Gun
+	Command* buttonChangeTrue;
+	Command* buttonChangeFalse;
+
 
 	ZombieSquad* m_game;
 	std::array<Player*, 3> m_players;

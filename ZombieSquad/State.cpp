@@ -6,15 +6,8 @@
 
 void Chasing::Update(Zombie& actor, float dt)
 {	
-	
-	if (Vec2f::DistanceBetween(actor.GetPosition(), m_chaseTarget->GetPosition()) < actor.GetRadius()*2.0f)
-	{
-		actor.Attack(dt);
-	}
-	else {
-		actor.SetTarget(m_chaseTarget->GetPosition());
-		actor.doMove(dt);
-	}
+	actor.SetTarget(m_chaseTarget->GetPosition());
+	actor.doMove(dt);
 }
 
 void Controlled::Update(Player& actor, float dt)
@@ -28,6 +21,7 @@ void Watching::Update(Player& actor, float dt)
 
 	
 	// If zombie is in front of player, fire the weapon
+	// otherwise turn
 }
 
 

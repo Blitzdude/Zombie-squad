@@ -54,11 +54,18 @@ Command* ZombieHandler::handleInput(Zombie& actor)
 
 	// If zombie can see player, chase them
 	const Player* player = GetClosestPlayer(actor);
-	if (player != nullptr &&
+	// if zombie is close enough to attack, attack
+	if (player != nullptr && 
+		Vec2f::DistanceBetween(actor.GetPosition(), player->GetPosition()) < 20.0f)
+	{
+		return new Attack();
+	}
+	else if (player != nullptr &&
 		Vec2f::DistanceBetween(actor.GetPosition(), player->GetPosition()) <= SIGHT_RANGE)
 	{
 		return new ChasePlayer(player);
 	}
+	
 
 	return nullptr;
 }
