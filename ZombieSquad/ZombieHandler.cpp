@@ -70,26 +70,33 @@ Command* ZombieHandler::handleInput(Zombie& actor)
 	return nullptr;
 }
 
-
 const Player* ZombieHandler::GetClosestPlayer(Zombie& zombie)
 {
-	Player* ret = m_player1;
+	Player* ret = nullptr;
 	Vec2f Zpos = zombie.GetPosition();
 
-	// Check if player2 is closer then player1
-	if (Vec2f::DistanceBetween(Zpos, m_player2->GetPosition()) <
-		Vec2f::DistanceBetween(Zpos, ret->GetPosition()))
+
+	if (m_player1->GetCurrentState()->GetStateID() != StateID::STATE_DEAD)
 	{
+		// Check player 1 isn't dead
+		ret = m_player1;
+	}
+	if (m_player2->GetCurrentState()->GetStateID() != StateID::STATE_DEAD &&
+		Vec2f::DistanceBetween(Zpos, m_player2->GetPosition()) <
+		Vec2f::DistanceBetween(Zpos, m_player1->GetPosition())
+		)
+	{
+		// Check if player2 is closer then player1 and not dead
 		ret = m_player2;
 	}
-
-	// Check if player3 is closer then player2
-	if (Vec2f::DistanceBetween(Zpos, m_player3->GetPosition()) <
-		Vec2f::DistanceBetween(Zpos, ret->GetPosition()))
+	if (m_player3->GetCurrentState()->GetStateID() != StateID::STATE_DEAD &&
+		Vec2f::DistanceBetween(Zpos, m_player3->GetPosition()) <
+		Vec2f::DistanceBetween(Zpos, m_player2->GetPosition()) )
 	{
+		// Check if player3 is closer then player2
 		ret = m_player3;
 	}
-
+	// If all of these fail, All players are dead -> return nullptr
 	return ret;
 }
 

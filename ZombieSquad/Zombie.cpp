@@ -87,7 +87,7 @@ void Zombie::doMove(float dt)
 
 	if (Vec2f::DistanceBetween(GetPosition(), m_target) > ATTACK_RANGE)
 	{
-		SetPosition(GetPosition() + vec * 50.0f * dt); // Zombie speed = 50
+		SetPosition(GetPosition() + vec * ZOMBIE_SPEED * dt); // Zombie speed = 50
 		SetDirection(Vec2f::AngleBetween(Vec2f(1.0f, 0.0f), vec));
 	}
 }

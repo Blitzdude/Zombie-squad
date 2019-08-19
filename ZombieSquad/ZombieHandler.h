@@ -21,7 +21,7 @@ public:
 private:
 
 	std::vector<Zombie*> m_vecZombies;
-	Player* m_player1; // AI handler only reads from player, and not change it's locations
+	Player* m_player1; // TODO: Convert to get a list of players
 	Player* m_player2;
 	Player* m_player3;
 };
