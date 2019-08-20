@@ -14,6 +14,33 @@ struct Edge
 	Vec2f normal;
 };
 
+struct Ray
+{
+	Ray() {}
+	Ray(Vec2f s, Vec2f e) 
+		: start(s), end(e)
+	{}
+	Ray(const Ray& other)
+		: start(other.start), end(other.end)
+	{}
+
+	Vec2f start;
+	Vec2f end;
+};
+
+struct IntersectResult
+{
+	IntersectResult()
+	{
+		px = 0.0f;
+		py = 0.0f;
+		t = -1.0f;
+	};
+
+	float px, py;
+	float t;
+};
+
 struct CECollision 
 {
 	CECollision(Actor* act, const Vec2f& norm, float dist)

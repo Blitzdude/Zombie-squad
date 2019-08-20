@@ -66,7 +66,6 @@ Command* ZombieHandler::handleInput(Zombie& actor)
 		return new ChasePlayer(player);
 	}
 	
-
 	return nullptr;
 }
 

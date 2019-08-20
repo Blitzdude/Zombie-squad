@@ -53,7 +53,9 @@ public:
 
 	void DrawPolyMap(olc::PixelGameEngine& engine);
 	void CalculateVisibilityPolygon(float ox, float oy, float radius, float direction, float fovRad); // Not Implemented
-	bool checkIfVisible(float ox, float oy, float radius); // Not implemented
+	void DrawVisibilityPolygon(const std::vector<std::tuple<float, float, float>>& points);
+	bool CheckLineIntersection(IntersectResult* point, Ray& e1, Edge& e2);
+	bool CheckIfVisible(float ox, float oy, float radius); // Not implemented
 	void DrawLevel(olc::PixelGameEngine& engine);
 	bool CheckVictory(Actor* m_player); // TODO: change to use list of player-characters as parameter.
 
@@ -76,6 +78,7 @@ private:
 	Vec2f m_startPosition;
 	Cell* m_map; // TODO: This is not very c++11
 	std::array<olc::Sprite*, (size_t)SpriteId::COUNT> m_sprites;
+	std::vector<std::tuple<float, float, float>> m_vecVisibilityPolygonPoints;
 	std::vector<Edge> vec_edges;
 };
 

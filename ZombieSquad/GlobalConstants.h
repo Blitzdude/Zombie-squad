@@ -7,7 +7,7 @@ constexpr float BULLET_SIZE = 4.0f;
 constexpr float BULLET_SPEED = 80.0f;
 constexpr float ZOMBIE_SPEED = 40.0f;
 // Ranges
-constexpr float ATTACK_RANGE = 20.0f;
+constexpr float ATTACK_RANGE = 16.0f;
 constexpr int MINIMUM_DISTANCE = 8;
 // Timings
 constexpr float TIME_UNTIL_CHANGE_DIR = 3.0f;

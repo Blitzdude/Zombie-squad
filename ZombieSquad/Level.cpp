@@ -1,5 +1,6 @@
 #include "Level.h"
 #include <sstream>
+#include <algorithm>
 
 // Convenient defines for polymap conversion
 constexpr unsigned int NORTH = 0;
@@ -326,6 +327,179 @@ void Level::DrawPolyMap(olc::PixelGameEngine & engine)
 		engine.DrawLine(edgeCenter.x, edgeCenter.y, edgeCenter.x + e.normal.x*10.0f, edgeCenter.y + e.normal.y*10.0f, olc::BLUE);
 
 	}
+}
+
+void Level::CalculateVisibilityPolygon(float ox, float oy, float radius, float direction, float fovRad)
+{
+	// Get rid of existing polygon
+	m_vecVisibilityPolygonPoints.clear();
+
+	// float dirPolar = Vec2f::PolarAngle({ cosf(direction), sinf(direction) });
+	// reference vector will be used for sorting, we just need the direction
+	Vec2f rayRef = { cosf(direction - fovRad), sinf(direction - fovRad) };
+
+
+	// For each edge in PolyMap
+	for (auto& edge1 : vec_edges)
+	{
+		// Take the start point, then the end point (we could use a pool of
+		// non-duplicated points here, it would be more optimal)
+		for (int i = 0; i < 2; i++)
+		{
+			float raydx, raydy;
+			raydx = (i == 0 ? edge1.start.x : edge1.end.x) - ox;
+			raydy = (i == 0 ? edge1.start.y : edge1.end.y) - oy;
+
+			float base_ang = atan2f(raydy, raydx);
+
+			float ang = 0;
+			// For each point, cast 3 rays, 1 directly at point
+			// and 1 a little bit either side
+			for (int j = 0; j < 3; j++)
+			{
+				if (j == 0)	ang = base_ang - 0.0001f;
+				if (j == 1)	ang = base_ang;
+				if (j == 2)	ang = base_ang + 0.0001f;
+
+				Vec2f rayS = { ox, oy };
+				Vec2f rayE = { radius * cosf(ang) + ox, radius * sinf(ang) + oy };
+
+				Ray ray = { rayS, rayE };
+
+				float min_t1 = INFINITY;
+				float min_px = 0, min_py = 0, min_ang = 0;
+				bool bValid = false;
+
+				// Check for ray intersection with all edges
+				for (auto& edge2 : vec_edges)
+				{
+					IntersectResult result;
+
+					if (CheckLineIntersection(&result, ray, edge2))
+					{
+						if (result.t < min_t1)
+						{
+							min_t1 = result.t;
+							min_px = result.px;
+							min_py = result.py;
+							// angle relative to left ray
+							min_ang = Vec2f::AngleBetween(rayRef, { min_px - ox, min_py - oy });
+
+							// min_ang = Vec2f::PolarAngle({ min_px - ox, min_py - oy });
+							//min_ang = atan2f(min_py - oy, min_px - ox);
+							bValid = true;
+
+						}
+					}
+				}
+
+				if (bValid)
+				{
+					// source: https://gamedev.stackexchange.com/questions/100504/how-do-i-optimize-2d-visibility-cone-calculations
+					// Use cross product to determine if, point is within the area 
+					if (Vec2f::IsLeft({ ox,oy }, { cosf(direction - fovRad) + ox, sinf(direction - fovRad) + oy }, { min_px, min_py })
+						&& !Vec2f::IsLeft({ ox,oy }, { cosf(direction + fovRad) + ox, sinf(direction + fovRad) + oy }, { min_px, min_py }))
+						m_vecVisibilityPolygonPoints.push_back({ min_ang, min_px, min_py });
+				}
+
+			}
+		}
+	}
+
+	// SHOOT THE EXTRA RAYS
+	for (int i = 0; i < 2; i++)
+	{
+		// if i == 0, shoot left, if i == 1, shoot right
+		float dirRad = i % 2 == 0 ? direction - fovRad : direction + fovRad;
+
+		Vec2f rayS = { ox, oy };
+		Vec2f rayE = { radius * cosf(dirRad) + ox, radius * sinf(dirRad) + oy };
+
+		Ray ray = { rayS, rayE };
+
+		float min_t1 = INFINITY;
+		float min_px = 0, min_py = 0, min_ang = 0;
+		bool bValid = false;
+
+		// Check for ray intersection with all edges
+		for (auto& edge : vec_edges)
+		{
+			IntersectResult result;
+
+			if (CheckLineIntersection(&result, ray, edge))
+			{
+				if (result.t < min_t1)
+				{
+					min_t1 = result.t;
+					min_px = result.px;
+					min_py = result.py;
+					min_ang = Vec2f::AngleBetween(rayRef, { min_px - ox, min_py - oy });
+
+					//min_ang = Vec2f::PolarAngle({ min_px - ox, min_py - oy });
+					//min_ang = atan2f(min_py - oy, min_px - ox);
+					bValid = true;
+				}
+			}
+		}
+
+		if (bValid)
+		{
+			m_vecVisibilityPolygonPoints.push_back({ min_ang, min_px, min_py });
+		}
+	}
+
+	// Sort perimeter points by angle from source. This will allow
+	// us to draw a triangle fan.
+	// when dealing with conical vision, we must sort relative to the left ray
+
+
+	std::sort(
+		m_vecVisibilityPolygonPoints.begin(),
+		m_vecVisibilityPolygonPoints.end(),
+		[&](const std::tuple<float, float, float>& t1, const std::tuple<float, float, float>& t2)
+		{
+			return std::get<0>(t1) < std::get<0>(t2);
+		});
+
+
+	// unless we have 360 degree vision, we need to add a point in the mouse position
+	// to the back of the array
+	m_vecVisibilityPolygonPoints.push_back({ Vec2f::PolarAngle({cosf(direction) + ox, sinf(direction) + oy }), ox, oy });
+
+}
+
+bool Level::CheckLineIntersection(IntersectResult* point, Ray& e1, Edge& e2)
+{
+	// Source: http://www.cs.swan.ac.uk/~cssimon/line_intersection.html
+	// calculate t1 and t2 where t1 is 
+
+	// calculate denominator 
+	float denominator = (e2.end.x - e2.start.x) * (e1.start.y - e1.end.y) - (e1.start.x - e1.end.x) * (e2.end.y - e2.start.y);
+
+	// check for division by zero error
+	if (denominator != 0.0f)
+	{
+		// calculate t1 and t2 values
+		float t1 = ((e2.start.y - e2.end.y) * (e1.start.x - e2.start.x) + (e2.end.x - e2.start.x) * (e1.start.y - e2.start.y))
+			/ denominator;
+
+		float t2 = ((e1.start.y - e1.end.y) * (e1.start.x - e2.start.x) + (e1.end.x - e1.start.x) * (e1.start.y - e2.start.y))
+			/ denominator;
+
+		if ((t1 >= 0.0f && t1 <= 1.0f) && (t2 >= 0.0f && t2 <= 1.0f)) // line segments are intersecting if true
+		{
+			if (point != nullptr)
+			{
+				// calculate intersection point
+				point->px = e1.start.x + t1 * (e1.end.x - e1.start.x);
+				point->py = e1.start.y + t1 * (e1.end.y - e1.start.y);
+				point->t = t1;
+			}
+			return true;
+		}
+	}
+
+	return false; // no intersection was found
 }
 
 void Level::DrawLevel(olc::PixelGameEngine & engine)
