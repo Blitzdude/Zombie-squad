@@ -6,8 +6,8 @@
 #include <iostream>
 
 
-Player::Player(float x, float y, float dir, ZombieSquad& game, bool startingPlayer)
-	: m_game(&game)
+Player::Player(float x, float y, float dir, ZombieSquad& game, PlayerHandler& handler, bool startingPlayer)
+	: m_game(&game), m_handler(&handler)
 {
 	SetDestroyed(false);
 	SetX(x); 

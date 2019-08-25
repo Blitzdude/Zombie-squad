@@ -1,4 +1,5 @@
 #include "Level.h"
+#include "Physics.h"
 #include <sstream>
 #include <algorithm>
 
@@ -375,7 +376,7 @@ void Level::CalculateVisibilityPolygon(float ox, float oy, float radius, float d
 				{
 					IntersectResult result;
 
-					if (CheckLineIntersection(&result, ray, edge2))
+					if (Physics::CheckLineIntersection(ray, edge2, &result))
 					{
 						if (result.t < min_t1)
 						{
@@ -426,7 +427,7 @@ void Level::CalculateVisibilityPolygon(float ox, float oy, float radius, float d
 		{
 			IntersectResult result;
 
-			if (CheckLineIntersection(&result, ray, edge))
+			if (Physics::CheckLineIntersection( ray, edge, &result))
 			{
 				if (result.t < min_t1)
 				{
@@ -466,40 +467,6 @@ void Level::CalculateVisibilityPolygon(float ox, float oy, float radius, float d
 	// to the back of the array
 	m_vecVisibilityPolygonPoints.push_back({ Vec2f::PolarAngle({cosf(direction) + ox, sinf(direction) + oy }), ox, oy });
 
-}
-
-bool Level::CheckLineIntersection(IntersectResult* point, Ray& e1, Edge& e2)
-{
-	// Source: http://www.cs.swan.ac.uk/~cssimon/line_intersection.html
-	// calculate t1 and t2 where t1 is 
-
-	// calculate denominator 
-	float denominator = (e2.end.x - e2.start.x) * (e1.start.y - e1.end.y) - (e1.start.x - e1.end.x) * (e2.end.y - e2.start.y);
-
-	// check for division by zero error
-	if (denominator != 0.0f)
-	{
-		// calculate t1 and t2 values
-		float t1 = ((e2.start.y - e2.end.y) * (e1.start.x - e2.start.x) + (e2.end.x - e2.start.x) * (e1.start.y - e2.start.y))
-			/ denominator;
-
-		float t2 = ((e1.start.y - e1.end.y) * (e1.start.x - e2.start.x) + (e1.end.x - e1.start.x) * (e1.start.y - e2.start.y))
-			/ denominator;
-
-		if ((t1 >= 0.0f && t1 <= 1.0f) && (t2 >= 0.0f && t2 <= 1.0f)) // line segments are intersecting if true
-		{
-			if (point != nullptr)
-			{
-				// calculate intersection point
-				point->px = e1.start.x + t1 * (e1.end.x - e1.start.x);
-				point->py = e1.start.y + t1 * (e1.end.y - e1.start.y);
-				point->t = t1;
-			}
-			return true;
-		}
-	}
-
-	return false; // no intersection was found
 }
 
 void Level::DrawLevel(olc::PixelGameEngine & engine)

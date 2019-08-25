@@ -18,9 +18,10 @@ void Controlled::Update(Player& actor, float dt)
 void Watching::Update(Player& actor, float dt)
 {
 	// Get closest zombie
-
 	
-	// If zombie is in front of player, fire the weapon
+	
+	// If zombie is in front of player, turn to face the zombie
+		
 	// otherwise turn
 }
 

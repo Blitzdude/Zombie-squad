@@ -4,12 +4,13 @@
 #include "State.h"
 
 class ZombieSquad;
+class ZombieHandler;
 
 class Zombie : public Actor
 {
 public:
 	// Zombie();
-	Zombie(float x, float y, ZombieSquad& game);
+	Zombie(float x, float y, ZombieSquad& game, ZombieHandler& handler);
 	~Zombie();
 
 	virtual void Draw(olc::PixelGameEngine& game) override;
@@ -24,7 +25,9 @@ public:
 	// Setters
 	void SetTarget(const Vec2f& newTarget) { m_target = newTarget; }
 private:
+	
 	ZombieState* m_currentState; 
+	ZombieHandler* m_handler;
 	ZombieSquad* m_game; // Needed for bullet spawning
 	Vec2f m_target;
 };

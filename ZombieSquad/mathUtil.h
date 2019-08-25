@@ -14,7 +14,7 @@ inline auto square(const T& x)
 }
 
 template <typename T>
-inline auto Deg2Radians(const T& d)
+inline auto Deg2Radians(const T& d) 
 {
 	return d * PI / 180;
 }

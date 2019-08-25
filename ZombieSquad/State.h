@@ -85,6 +85,7 @@ public:
 
 	const StateID& GetStateID() override { return m_id; }
 private:
+	Vec2f m_direction;
 	StateID m_id;
 };
 

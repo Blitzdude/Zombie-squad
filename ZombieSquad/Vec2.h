@@ -48,6 +48,14 @@ public: // methods
 		return *this;
 	}
 
+	Vec2 GetRotated(T rads)
+	{
+		Vec2<T> ret = *this;
+		ret.x = cos(rads) * this->x - sin(rads) * this->y;
+		ret.y = sin(rads) * this->x + cos(rads) * this->y;
+		return ret;
+	}
+
 	// get the normalized vector
 	Vec2 GetNormalized() const
 	{
@@ -95,10 +103,10 @@ public: // methods
 		return ret;
 	}
 
-	static bool IsLeft(const Vec2<T> &a, const Vec2<T> &b, const Vec2<T> &c)
+	static bool IsLeft(const Vec2<T> &a, const Vec2<T> &b, const Vec2<T> &point)
 	{
 		// return CrossProduct(b - a, c - a) > 0;
-		return ((b.x - a.x)*(c.y - a.y) - (b.y - a.y)*(c.x - a.x)) > 0;
+		return ((b.x - a.x)*(point.y - a.y) - (b.y - a.y)*(point.x - a.x)) > 0;
 	}
 
 	// returns the distance between 2d points

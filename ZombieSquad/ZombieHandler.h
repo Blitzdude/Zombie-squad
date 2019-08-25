@@ -18,6 +18,8 @@ public:
 	const Player* GetClosestPlayer(Zombie& zombie);
 	void AddZombie(Zombie* zombie);
 	void RemoveDestroyed();
+
+	bool ZombieSeesTarget(const Vec2f& target, const Zombie& zombie);
 private:
 
 	std::vector<Zombie*> m_vecZombies;

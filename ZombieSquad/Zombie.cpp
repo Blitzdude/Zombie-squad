@@ -4,8 +4,8 @@
 #include "GlobalConstants.h"
 
 
-Zombie::Zombie(float x, float y, ZombieSquad& game)
-	: m_game(&game)
+Zombie::Zombie(float x, float y, ZombieSquad& game, ZombieHandler& handler)
+	: m_game(&game), m_handler(&handler)
 {
 	m_currentState = new Roaming();
 	SetDestroyed(false);
@@ -37,14 +37,22 @@ void Zombie::Draw(olc::PixelGameEngine& game)
 	{
 		pix = olc::DARK_RED;
 	}
-
+	
+	// Draw zombie
 	game.FillCircle((int32_t)GetX(), (int32_t)GetY(), (int32_t)GetRadius(), pix);
 
+	// Draw look direction
 	game.DrawLine((int32_t)GetX(), (int32_t)GetY(),
 		(int32_t)(GetX() + cosf(GetDirection()) * GetRadius()),
 		(int32_t)(GetY() + sinf(GetDirection()) * GetRadius()),
 		olc::RED);
 
+	// Draw Sight Range
+	GetPosition().GetRotated(ZOMBIE_SIGHT_FOV_RAD);
+	
+
+	game.DrawCircle((int32_t)GetX(), (int32_t)GetY(), (int32_t)ZOMBIE_SIGHT_RANGE, olc::CYAN);
+	
 }
 
 void Zombie::Update(float dt)
@@ -84,10 +92,15 @@ void Zombie::doMove(float dt)
 	
 	// normalize vector
 	vec.Normalize();
-
+	/*
+	if (Vec2f::AngleBetween(vec, GetDirectionVector()) < 0.1f)
+	{
+		SetDirection(GetDirection() + 1.0f * dt);
+	}
+	*/
 	if (Vec2f::DistanceBetween(GetPosition(), m_target) > ATTACK_RANGE)
 	{
 		SetPosition(GetPosition() + vec * ZOMBIE_SPEED * dt); // Zombie speed = 50
-		SetDirection(Vec2f::AngleBetween(Vec2f(1.0f, 0.0f), vec));
+		
 	}
 }

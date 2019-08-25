@@ -6,7 +6,6 @@
 #include "PlayerHandler.h"
 #include "Command.h"
 #include "Level.h"
-#include "Physics.h"
 
 #include <vector>
 #include <iostream>
@@ -32,13 +31,12 @@ public:
 	// Getters
 	const std::vector<Actor*>& GetActors() { return vecActors; };
 
-private:
-
 	ZombieHandler m_zombieHandler;
 	PlayerHandler m_playerHandler;
+private:
+
 	std::vector<Actor*> vecActors;
 	Level* m_currentLevel;
-	Physics m_physics;
 
 	bool m_isRunning = true;
 };

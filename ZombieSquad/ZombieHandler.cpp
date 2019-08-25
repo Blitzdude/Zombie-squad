@@ -1,6 +1,8 @@
 #include "ZombieHandler.h"
 #include "Command.h"
+#include "StructCollection.h"
 #include "GlobalConstants.h"
+#include "Physics.h"
 
 ZombieHandler::ZombieHandler()
 	: m_player1(nullptr), m_player2(nullptr), m_player3(nullptr)
@@ -61,7 +63,7 @@ Command* ZombieHandler::handleInput(Zombie& actor)
 		return new Attack();
 	}
 	else if (player != nullptr &&
-		Vec2f::DistanceBetween(actor.GetPosition(), player->GetPosition()) <= SIGHT_RANGE)
+		ZombieSeesTarget(player->GetPosition(), actor))
 	{
 		return new ChasePlayer(player);
 	}
@@ -73,7 +75,6 @@ const Player* ZombieHandler::GetClosestPlayer(Zombie& zombie)
 {
 	Player* ret = nullptr;
 	Vec2f Zpos = zombie.GetPosition();
-
 
 	if (m_player1->GetCurrentState()->GetStateID() != StateID::STATE_DEAD)
 	{
@@ -106,7 +107,6 @@ void ZombieHandler::AddZombie(Zombie* zombie)
 
 void ZombieHandler::RemoveDestroyed()
 {
-	
 	// Remove destroyed actors (Bullets mostly)
 	// https://stackoverflow.com/questions/991335/how-to-erase-delete-pointers-to-objects-stored-in-a-vector rlbond's answer
 	// Apply a deleting function to each element. (call the destructor and make the pointer null)
@@ -123,4 +123,27 @@ void ZombieHandler::RemoveDestroyed()
 	// erase the elements from the vector
 	m_vecZombies.erase(newEnd, m_vecZombies.end());
 	// DELETE ACTORS END
+}
+
+bool ZombieHandler::ZombieSeesTarget(const Vec2f& target, const Zombie& zombie)
+{
+	// is the target close enough
+	if (Vec2f::DistanceBetween(target, zombie.GetPosition()) <= ZOMBIE_SIGHT_RANGE)
+	{
+		// get the directional vectors left and right
+		Vec2f left = zombie.GetDirectionVector().GetRotated(ZOMBIE_SIGHT_FOV_RAD) + zombie.GetPosition();
+		Vec2f right = zombie.GetDirectionVector().GetRotated(-ZOMBIE_SIGHT_FOV_RAD) + zombie.GetPosition();
+		// if target is left-side of right and right-side of left, target is in the cone
+		if (!Vec2f::IsLeft(zombie.GetPosition(), left, target) && 
+			Vec2f::IsLeft(zombie.GetPosition(), right, target))
+		{
+			// if target can be hit with a ray, it is visible
+			// Ray ray(zombie.GetPosition(), target);
+			// check intersection against all edges in the level
+			return true;
+
+		}
+
+	}
+	return false;
 }

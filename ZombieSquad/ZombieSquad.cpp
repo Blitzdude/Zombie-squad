@@ -1,6 +1,7 @@
 #include "ZombieSquad.h"
 #include "ZombieHandler.h"
 #include "GlobalConstants.h"
+#include "Physics.h"
 #include <algorithm>
 #include <functional>
 
@@ -34,15 +35,15 @@ bool ZombieSquad::OnUserCreate()
 	*/
 
 	// Player 1
-	Player* player1 = new Player(m_currentLevel->GetStart().x, m_currentLevel->GetStart().y, 0.0f, *this, true);
+	Player* player1 = new Player(m_currentLevel->GetStart().x, m_currentLevel->GetStart().y, 0.0f, *this, m_playerHandler, true);
 	vecActors.push_back(player1);
 	m_playerHandler.addPlayer(player1, 0);
 	// Player 2
-	Player* player2 = new Player(m_currentLevel->GetStart().x + 2.0f, m_currentLevel->GetStart().y, 0.0f, *this);
+	Player* player2 = new Player(m_currentLevel->GetStart().x + 2.0f, m_currentLevel->GetStart().y, 0.0f, *this, m_playerHandler);
 	vecActors.push_back(player2);
 	m_playerHandler.addPlayer(player2, 1);
 	// Player 3
-	Player* player3 = new Player(m_currentLevel->GetStart().x, m_currentLevel->GetStart().y + 2.0f, 0.0f, *this);
+	Player* player3 = new Player(m_currentLevel->GetStart().x, m_currentLevel->GetStart().y + 2.0f, 0.0f, *this, m_playerHandler);
 	vecActors.push_back(player3);
 	m_playerHandler.addPlayer(player3, 2);
 
@@ -147,7 +148,7 @@ void ZombieSquad::DoUpdate(float fElapsedTime)
 
 		for (auto& edge : m_currentLevel->GetEdges())
 		{
-			float overlap = m_physics.isColliding(*itr, edge);
+			float overlap = Physics::isColliding(*itr, edge);
 			if (overlap > 0.0f)
 			{
 				vec_circleEdgeColliders.emplace_back(itr, edge.normal, overlap);
@@ -162,7 +163,7 @@ void ZombieSquad::DoUpdate(float fElapsedTime)
 			{
 				continue;
 			}
-			float overlap = m_physics.isColliding(*itr, *other);
+			float overlap = Physics::isColliding(*itr, *other);
 			if (overlap > 0.0f)
 			{
 				// actors are colliding
@@ -175,12 +176,12 @@ void ZombieSquad::DoUpdate(float fElapsedTime)
 	// For each item in CollidingActors- vector container, resolve collisions
 	for (auto p : vec_circleEdgeColliders)
 	{
-		m_physics.resolveEdgeCircle(p.actor, p.normal, p.distance);
+		Physics::resolveEdgeCircle(p.actor, p.normal, p.distance);
 	}
 	// for each item in circle-circle collisions container, resolve collision
 	for (auto p : vec_circleCircleColliders)
 	{
-		m_physics.resolveCircleCircle(p.lhs, p.rhs, p.overlap);
+		Physics::resolveCircleCircle(p.lhs, p.rhs, p.overlap);
 	}
 
 	vec_circleEdgeColliders.clear();
@@ -235,7 +236,7 @@ void ZombieSquad::SpawnZombie(int x, int y, float offset)
 	float size = m_currentLevel->GetCellSize();
 	float xPos = (x * size) + (size / 2.0f) + offset;
 	float yPos = (y * size) + (size / 2.0f);
-	Zombie* zomb = new Zombie(xPos, yPos, *this);
+	Zombie* zomb = new Zombie(xPos, yPos, *this, m_zombieHandler);
 	vecActors.push_back(zomb);
 	m_zombieHandler.AddZombie(zomb);
 }

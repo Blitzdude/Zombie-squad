@@ -39,7 +39,7 @@ public:
 	// Zombie commands
 	virtual void Chase(const Player& player) {};
 	
-	Vec2f GetDirectionVector();
+	Vec2f GetDirectionVector() const;
 
 	// Setters/Getters
 	float GetSpeed()			const { return m_speed; }

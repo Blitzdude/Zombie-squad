@@ -5,12 +5,13 @@
 class ZombieSquad;
 class Bullet;
 class PlayerState;
+class PlayerHandler;
 class Bullet;
 
 class Player : public Actor
 {
 public:
-	Player(float x, float y, float dir, ZombieSquad& game, bool startingPlayer = false);
+	Player(float x, float y, float dir, ZombieSquad& game, PlayerHandler& handler, bool startingPlayer = false);
 	~Player();
 	virtual void Draw(olc::PixelGameEngine& game) override;
 	virtual void Update(float dt) override;
@@ -26,11 +27,12 @@ public:
 	PlayerState* GetCurrentState() const { return m_currentState; };
 
 
-	void SetWeapon(Bullet* bullet) { m_gun = bullet; };
+	// void SetWeapon(Bullet* bullet) { m_gun = bullet; };
 
 private:
 	PlayerState* m_currentState;
+	PlayerHandler* m_handler;
 	ZombieSquad* m_game; // Needed for bullet spawning
-	Bullet* m_gun; // Which kind of bullets to spawn when firing // Not implemented
+	//Bullet* m_gun; // Which kind of bullets to spawn when firing // Not implemented
 };
 
