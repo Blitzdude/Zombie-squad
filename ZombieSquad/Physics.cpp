@@ -15,7 +15,7 @@ float Physics::isColliding(const Actor& act, const Edge& edge)
 	// Calculate the closest (i.e perpendicular) point on the line by projecting
 	// vec_PS to vec_SE and clamping its value between zero and it's length
 	// Then normalize the value by dividing the value with edge length
-	float t = ZClamp(0.0f, edgeLength, Vec2f::DotProduct(vecSE, vecPS)) / edgeLength;
+	float t = Clamp(0.0f, edgeLength, Vec2f::DotProduct(vecSE, vecPS)) / edgeLength;
 	Vec2f vecClosestPoint = edge.start + vecSE * t;
 
 	Vec2f vecPC(act.GetPosition() - vecClosestPoint); // Actor position to closest position

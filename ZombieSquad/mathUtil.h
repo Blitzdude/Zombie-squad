@@ -4,7 +4,11 @@
 #include <memory>
 
 constexpr float PI = 3.14159265f;
+constexpr float PI2 = 3.14159265f * 2.0f;
+
 constexpr double PI_D = 3.1415926535897932;
+constexpr double PI2_D = 3.1415926535897932 * 2.0f;
+
 
 // returns the value squared
 template <typename T>
@@ -26,7 +30,7 @@ inline auto Rad2Degrees(const T& d)
 }
 
 template <typename T>
-inline auto ZClamp(const T& min, const T& max, const T& value)
+inline auto Clamp(const T& min, const T& max, const T& value)
 {
 	if (value <= min)
 	{
