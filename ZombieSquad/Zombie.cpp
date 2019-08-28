@@ -48,11 +48,17 @@ void Zombie::Draw(olc::PixelGameEngine& game)
 		olc::RED);
 
 	// Draw Sight Range
-	GetPosition().GetRotated(ZOMBIE_SIGHT_FOV_RAD);
-	
+	Vec2f left = GetDirectionVector().GetRotated(ZOMBIE_SIGHT_FOV_RAD);
+	left = left.GetNormalized() * ZOMBIE_SIGHT_RANGE + GetPosition();
 
-	game.DrawCircle((int32_t)GetX(), (int32_t)GetY(), (int32_t)ZOMBIE_SIGHT_RANGE, olc::CYAN);
-	
+	Vec2f right = GetDirectionVector().GetRotated(-ZOMBIE_SIGHT_FOV_RAD);
+	right = right.GetNormalized() * ZOMBIE_SIGHT_RANGE + GetPosition();
+
+	game.DrawTriangle(GetX(), GetY(), left.x, left.y, right.x, right.y, olc::CYAN);
+	// game.DrawCircle((int32_t)GetX(), (int32_t)GetY(), (int32_t)ZOMBIE_SIGHT_RANGE, olc::CYAN);
+	// game.DrawLine((int32_t)GetX(), (int32_t)GetY(), left.x, left.y, olc::CYAN);
+	// game.DrawLine((int32_t)GetX(), (int32_t)GetY(), right.x, right.y, olc::CYAN);
+
 }
 
 void Zombie::Update(float dt)
@@ -89,7 +95,7 @@ void Zombie::doMove(float dt)
 {
 	// get vector to target
 	Vec2f vec = m_target - GetPosition();
-	
+
 	// normalize vector
 	vec.Normalize();
 	/*
@@ -101,6 +107,6 @@ void Zombie::doMove(float dt)
 	if (Vec2f::DistanceBetween(GetPosition(), m_target) > ATTACK_RANGE)
 	{
 		SetPosition(GetPosition() + vec * ZOMBIE_SPEED * dt); // Zombie speed = 50
-		
+		SetDirection(Vec2f::AngleBetween(Vec2f(1.0f, 0.0f), vec));
 	}
 }
