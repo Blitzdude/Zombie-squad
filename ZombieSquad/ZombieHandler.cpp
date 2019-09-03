@@ -138,6 +138,8 @@ bool ZombieHandler::ZombieSeesTarget(const Vec2f& target, const Zombie& zombie)
 			Vec2f::IsLeft(zombie.GetPosition(), right, target))
 		{
 			// if target can be hit with a ray, it is visible
+			Ray ray(zombie.GetPosition(), target); 
+			
 			// Ray ray(zombie.GetPosition(), target);
 			// check intersection against all edges in the level
 			return true;

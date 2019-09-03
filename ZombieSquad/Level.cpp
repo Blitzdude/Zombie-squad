@@ -466,7 +466,6 @@ void Level::CalculateVisibilityPolygon(float ox, float oy, float radius, float d
 	// unless we have 360 degree vision, we need to add a point in the mouse position
 	// to the back of the array
 	m_vecVisibilityPolygonPoints.push_back({ Vec2f::PolarAngle({cosf(direction) + ox, sinf(direction) + oy }), ox, oy });
-
 }
 
 void Level::DrawLevel(olc::PixelGameEngine & engine)

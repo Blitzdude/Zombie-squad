@@ -59,12 +59,12 @@ public:
 	void SetY(float y)					{ m_y = y; }
 	void SetDirection(float dir)		
 	{ 
+		// Make sure, that direction doens't go over 
 		m_dir = dir;
 		if (m_dir > PI2)
 			m_dir -= PI2;
 		else if (m_dir < 0.0f)
 			m_dir += PI2;
-
 	}
 	void SetRadius(float r)				{ m_radius = r; }
 	void SetPosition(const Vec2f& pos)  { m_x = pos.x, m_y = pos.y; }

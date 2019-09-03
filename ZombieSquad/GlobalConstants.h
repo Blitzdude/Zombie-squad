@@ -12,6 +12,6 @@ constexpr float ATTACK_RANGE = 16.0f;
 constexpr int MINIMUM_DISTANCE = 8;
 constexpr float ZOMBIE_SIGHT_FOV_RAD = 45.0f * PI / 180.0f;
 // Timings
-constexpr float TIME_UNTIL_CHANGE_DIR = 3.0f;
+constexpr float TIME_UNTIL_CHANGE_DIR = 5.0f;
 constexpr float DYING_TIME = 0.5f;
 constexpr float ZOMBIE_SIGHT_RANGE = 200.0f; // variable to control enemy sight range

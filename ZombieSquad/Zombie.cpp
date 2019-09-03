@@ -55,9 +55,18 @@ void Zombie::Draw(olc::PixelGameEngine& game)
 	right = right.GetNormalized() * ZOMBIE_SIGHT_RANGE + GetPosition();
 
 	game.DrawTriangle(GetX(), GetY(), left.x, left.y, right.x, right.y, olc::CYAN);
-	// game.DrawCircle((int32_t)GetX(), (int32_t)GetY(), (int32_t)ZOMBIE_SIGHT_RANGE, olc::CYAN);
-	// game.DrawLine((int32_t)GetX(), (int32_t)GetY(), left.x, left.y, olc::CYAN);
-	// game.DrawLine((int32_t)GetX(), (int32_t)GetY(), right.x, right.y, olc::CYAN);
+	
+	game.DrawCircle(m_target.x, m_target.y, 1.0f, olc::MAGENTA);
+
+	// get vector to target
+	Vec2f vec = m_target - GetPosition();
+
+	// normalize vector
+	vec.Normalize();
+	float angle = std::abs(Vec2f::AngleBetween(vec, GetDirectionVector()));
+
+	game.DrawLine(GetX(), GetY(), vec.x*8.0f + GetX(), vec.y*8.0f + GetY());
+	game.DrawString(GetX(), GetY(), std::to_string(angle));
 
 }
 
@@ -98,15 +107,24 @@ void Zombie::doMove(float dt)
 
 	// normalize vector
 	vec.Normalize();
-	/*
-	if (Vec2f::AngleBetween(vec, GetDirectionVector()) < 0.1f)
+	float angle = std::abs(Vec2f::AngleBetween(vec, GetDirectionVector()) );
+
+	if (angle > 0.01f)
 	{
-		SetDirection(GetDirection() + 1.0f * dt);
+		// Which direction to turn?
+		float cross = Vec2f::CrossProduct(vec, GetDirectionVector());
+		float dir = cross > 0.0f ? -1.0f : 1.0f; // Magically determined
+
+		SetDirection(GetDirection() + 0.5f * dir * dt);
 	}
-	*/
-	if (Vec2f::DistanceBetween(GetPosition(), m_target) > ATTACK_RANGE)
+	
+	if (Vec2f::DistanceBetween(GetPosition(), m_target) > ATTACK_RANGE 
+		&& angle < 0.1f)
 	{
-		SetPosition(GetPosition() + vec * ZOMBIE_SPEED * dt); // Zombie speed = 50
-		SetDirection(Vec2f::AngleBetween(Vec2f(1.0f, 0.0f), vec));
+		SetPosition(GetPosition() + vec * ZOMBIE_SPEED * dt); 
+		
+		//SetDirection(Vec2f::AngleBetween(Vec2f(1.0f, 0.0f), vec));
+		// TODO: LEft off here, fix zombies looking away from movement direction
 	}
+	
 }
