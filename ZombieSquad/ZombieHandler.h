@@ -1,6 +1,7 @@
 #pragma once
 #include "Player.h"
 #include "Zombie.h"
+#include "Level.h"
 #include <vector>
 
 class Command;
@@ -11,7 +12,7 @@ public:
 	ZombieHandler();
 	~ZombieHandler();
 
-	bool Init(Player& p1, Player& p2, Player& p3);
+	bool Init(Player& p1, Player& p2, Player& p3, const Level &lev);
 
 	void HandleZombies(float dt);
 	Command* handleInput(Zombie& actor);
@@ -21,6 +22,8 @@ public:
 
 	bool ZombieSeesTarget(const Vec2f& target, const Zombie& zombie);
 private:
+
+	const Level* m_level;
 
 	std::vector<Zombie*> m_vecZombies;
 	Player* m_player1; // TODO: Convert to get a list of players

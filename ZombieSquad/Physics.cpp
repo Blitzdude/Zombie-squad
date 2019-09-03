@@ -101,22 +101,22 @@ void Physics::resolveCircleCircle(Actor* lhs, Actor* rhs, float overlap)
 	}
 }
 
-bool Physics::CheckLineIntersection(Ray& e1, Edge& e2, IntersectResult* point)
+bool Physics::CheckLineIntersection(Ray& r, Edge& e, IntersectResult* point)
 {
 	// Source: http://www.cs.swan.ac.uk/~cssimon/line_intersection.html
 	// calculate t1 and t2 where t1 is 
 
 	// calculate denominator 
-	float denominator = (e2.end.x - e2.start.x) * (e1.start.y - e1.end.y) - (e1.start.x - e1.end.x) * (e2.end.y - e2.start.y);
+	float denominator = (e.end.x - e.start.x) * (r.start.y - r.end.y) - (r.start.x - r.end.x) * (e.end.y - e.start.y);
 
 	// check for division by zero error
 	if (denominator != 0.0f)
 	{
 		// calculate t1 and t2 values
-		float t1 = ((e2.start.y - e2.end.y) * (e1.start.x - e2.start.x) + (e2.end.x - e2.start.x) * (e1.start.y - e2.start.y))
+		float t1 = ((e.start.y - e.end.y) * (r.start.x - e.start.x) + (e.end.x - e.start.x) * (r.start.y - e.start.y))
 			/ denominator;
 
-		float t2 = ((e1.start.y - e1.end.y) * (e1.start.x - e2.start.x) + (e1.end.x - e1.start.x) * (e1.start.y - e2.start.y))
+		float t2 = ((r.start.y - r.end.y) * (r.start.x - e.start.x) + (r.end.x - r.start.x) * (r.start.y - e.start.y))
 			/ denominator;
 
 		if ((t1 >= 0.0f && t1 <= 1.0f) && (t2 >= 0.0f && t2 <= 1.0f)) // line segments are intersecting if true
@@ -124,8 +124,8 @@ bool Physics::CheckLineIntersection(Ray& e1, Edge& e2, IntersectResult* point)
 			if (point != nullptr)
 			{
 				// calculate intersection point
-				point->px = e1.start.x + t1 * (e1.end.x - e1.start.x);
-				point->py = e1.start.y + t1 * (e1.end.y - e1.start.y);
+				point->px = r.start.x + t1 * (r.end.x - r.start.x);
+				point->py = r.start.y + t1 * (r.end.y - r.start.y);
 				point->t = t1;
 			}
 			return true;

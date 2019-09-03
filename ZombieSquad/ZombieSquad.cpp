@@ -48,7 +48,7 @@ bool ZombieSquad::OnUserCreate()
 	m_playerHandler.addPlayer(player3, 2);
 
 	// Initialize the ZombieHandler
-	m_zombieHandler.Init(*player1, *player2, *player3);
+	m_zombieHandler.Init(*player1, *player2, *player3, *m_currentLevel );
 
 	// Populate Level with zombies
 	/*

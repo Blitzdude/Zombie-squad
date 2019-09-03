@@ -17,16 +17,18 @@ ZombieHandler::~ZombieHandler()
 	m_player3 = nullptr;
 }
 
-bool ZombieHandler::Init(Player& p1, Player& p2, Player& p3)
+bool ZombieHandler::Init(Player& p1, Player& p2, Player& p3, const Level& lev)
 {
 	bool success = true;
 	m_player1 = &p1;
 	m_player2 = &p2;
 	m_player3 = &p3;
+	m_level = &lev;
 
 	if (m_player1 != nullptr &&
 		m_player2 != nullptr &&
-		m_player3 != nullptr)
+		m_player3 != nullptr && 
+		m_level != nullptr)
 	{
 		success = false;
 	}
@@ -139,13 +141,21 @@ bool ZombieHandler::ZombieSeesTarget(const Vec2f& target, const Zombie& zombie)
 		{
 			// if target can be hit with a ray, it is visible
 			Ray ray(zombie.GetPosition(), target); 
-			
-			// Ray ray(zombie.GetPosition(), target);
-			// check intersection against all edges in the level
+			for (auto edge : m_level->GetEdges())
+			{
+				if (Physics::CheckLineIntersection(ray, edge))
+				{
+					return false;
+				}
+			}
+			// if no intersections were found, zombie sees the target
 			return true;
-
 		}
-
+		else {
+			return false;
+		}
 	}
-	return false;
+	else {
+		return false;
+	}
 }
