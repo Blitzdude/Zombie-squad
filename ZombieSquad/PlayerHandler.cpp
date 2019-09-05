@@ -1,7 +1,10 @@
 #include "PlayerHandler.h"
 #include "ZombieSquad.h"
 #include "Command.h"
+#include "Zombie.h"
+#include "GlobalConstants.h"
 #include "Player.h"
+#include "Physics.h"
 #include <assert.h>
 
 PlayerHandler::PlayerHandler(ZombieSquad& engine)
@@ -24,7 +27,6 @@ PlayerHandler::~PlayerHandler()
 
 Command * PlayerHandler::handleInput()
 {
-	
 	if (m_game->GetKey(olc::W).bHeld) return buttonW;
 	if (m_game->GetKey(olc::A).bHeld) return buttonA;
 	if (m_game->GetKey(olc::S).bHeld) return buttonS;
@@ -113,3 +115,47 @@ void PlayerHandler::addPlayer(Player* player, int index)
 		m_selectedPlayer = m_players[index];
 	}
 }
+
+Zombie* PlayerHandler::GetClosestVisibleZombiePosition(const Vec2f& player, const Vec2f& targetDirection)
+{
+	float distance = INFINITE;
+	for (auto zomb : *m_zombies)
+	{
+		
+	}
+	return nullptr;
+}
+
+bool PlayerHandler::PlayerSeesTarget(const Vec2f& targetPos, const Player& player)
+{
+	// is the target close enough
+	if (Vec2f::DistanceBetween(targetPos, player.GetPosition()) <= ZOMBIE_SIGHT_RANGE)
+	{
+		// get the directional vectors left and right
+		Vec2f left = player.GetDirectionVector().GetRotated(ZOMBIE_SIGHT_FOV_RAD) + player.GetPosition();
+		Vec2f right = player.GetDirectionVector().GetRotated(-ZOMBIE_SIGHT_FOV_RAD) + player.GetPosition();
+		// if target is left-side of right and right-side of left, target is in the cone
+		if (!Vec2f::IsLeft(player.GetPosition(), left, targetPos) &&
+			Vec2f::IsLeft(player.GetPosition(), right, targetPos))
+		{
+			// if target can be hit with a ray, it is visible
+			Ray ray(player.GetPosition(), targetPos);
+			for (auto edge : m_game->m_currentLevel->GetEdges())
+			{
+				if (Physics::CheckLineIntersection(ray, edge))
+				{
+					return false;
+				}
+			}
+			// if no intersections were found, zombie sees the target
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	else {
+		return false;
+	}
+}
+

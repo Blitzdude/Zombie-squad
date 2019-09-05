@@ -11,7 +11,7 @@ class Bullet;
 class Player : public Actor
 {
 public:
-	Player(float x, float y, float dir, ZombieSquad& game, PlayerHandler& handler, bool startingPlayer = false);
+	Player(float x, float y, float dir, ZombieSquad& game, PlayerHandler& player_handler, bool startingPlayer = false);
 	~Player();
 	virtual void Draw(olc::PixelGameEngine& game) override;
 	virtual void Update(float dt) override;
@@ -25,7 +25,7 @@ public:
 	virtual void ChangePlayer(bool truth) override;
 
 	PlayerState* GetCurrentState() const { return m_currentState; };
-
+	Vec2f GetVisibleZombie(const Vec2f& direction, float player_fov);
 
 	// void SetWeapon(Bullet* bullet) { m_gun = bullet; };
 

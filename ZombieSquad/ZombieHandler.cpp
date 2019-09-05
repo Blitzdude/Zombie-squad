@@ -2,10 +2,11 @@
 #include "Command.h"
 #include "StructCollection.h"
 #include "GlobalConstants.h"
+#include "ZombieSquad.h"
 #include "Physics.h"
 
-ZombieHandler::ZombieHandler()
-	: m_player1(nullptr), m_player2(nullptr), m_player3(nullptr)
+ZombieHandler::ZombieHandler(ZombieSquad& engine)
+	: m_player1(nullptr), m_player2(nullptr), m_player3(nullptr), m_game(&engine)
 {
 }
 
@@ -17,18 +18,16 @@ ZombieHandler::~ZombieHandler()
 	m_player3 = nullptr;
 }
 
-bool ZombieHandler::Init(Player& p1, Player& p2, Player& p3, const Level& lev)
+bool ZombieHandler::Init(Player& p1, Player& p2, Player& p3)
 {
 	bool success = true;
 	m_player1 = &p1;
 	m_player2 = &p2;
 	m_player3 = &p3;
-	m_level = &lev;
 
 	if (m_player1 != nullptr &&
 		m_player2 != nullptr &&
-		m_player3 != nullptr && 
-		m_level != nullptr)
+		m_player3 != nullptr)
 	{
 		success = false;
 	}
@@ -141,7 +140,7 @@ bool ZombieHandler::ZombieSeesTarget(const Vec2f& target, const Zombie& zombie)
 		{
 			// if target can be hit with a ray, it is visible
 			Ray ray(zombie.GetPosition(), target); 
-			for (auto edge : m_level->GetEdges())
+			for (auto edge : m_game->m_currentLevel->GetEdges())
 			{
 				if (Physics::CheckLineIntersection(ray, edge))
 				{

@@ -26,6 +26,7 @@ Zombie::~Zombie()
 
 void Zombie::Draw(olc::PixelGameEngine& game)
 {
+#pragma warning (disable : 4244) // Disable conversion from 'float' to 'int32_t' warning
 
 	// TODO: Size should be a variable, static maybe? 
 	olc::Pixel pix = olc::DARK_GREEN;
@@ -53,11 +54,9 @@ void Zombie::Draw(olc::PixelGameEngine& game)
 
 	Vec2f right = GetDirectionVector().GetRotated(-ZOMBIE_SIGHT_FOV_RAD / 2.0f);
 	right = right.GetNormalized() * ZOMBIE_SIGHT_RANGE + GetPosition();
-
 	game.DrawTriangle(GetX(), GetY(), left.x, left.y, right.x, right.y, olc::CYAN);
 	
 	game.DrawCircle(m_target.x, m_target.y, 1.0f, olc::MAGENTA);
-
 	// get vector to target
 	Vec2f vec = m_target - GetPosition();
 
@@ -67,6 +66,8 @@ void Zombie::Draw(olc::PixelGameEngine& game)
 
 	game.DrawLine(GetX(), GetY(), vec.x*8.0f + GetX(), vec.y*8.0f + GetY());
 	game.DrawString(GetX(), GetY(), std::to_string(angle));
+
+#pragma warning (default : 4244) // reenable the warning
 
 }
 

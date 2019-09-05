@@ -6,8 +6,8 @@
 #include <iostream>
 
 
-Player::Player(float x, float y, float dir, ZombieSquad& game, PlayerHandler& handler, bool startingPlayer)
-	: m_game(&game), m_handler(&handler)
+Player::Player(float x, float y, float dir, ZombieSquad& game, PlayerHandler& player_handler, bool startingPlayer)
+	: m_game(&game), m_handler(&player_handler)
 {
 	SetDestroyed(false);
 	SetX(x); 
@@ -109,5 +109,12 @@ void Player::ChangePlayer(bool truth)
 		// this becomes an npc character
 		m_currentState = new Watching();
 	}
+}
+
+Vec2f Player::GetVisibleZombie(const Vec2f& direction, float player_fov)
+{
+	// ask player handler for a target
+	return Vec2f();
+	// LEFT OFF HERE
 }
 

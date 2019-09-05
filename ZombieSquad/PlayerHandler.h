@@ -1,6 +1,5 @@
 #pragma once
-
-
+#include "Zombie.h"
 #include <array>
 
 class Player;
@@ -17,7 +16,8 @@ public:
 	void HandlePlayers(float fElapsedTime);
 	void bindButtons();
 	void addPlayer(Player* player, int index);
-	// Vec2f GetClosestZombiePosition(const Vec2f& player); TODO:: not implemented
+	Zombie* GetClosestVisibleZombiePosition(const Vec2f& player, const Vec2f& targetDirection); 
+	bool PlayerSeesTarget(const Vec2f& targetPos, const Player& player);
 
 private:
 	Command* buttonW; // forward
@@ -34,6 +34,7 @@ private:
 
 
 	ZombieSquad* m_game;
+	const std::vector<Zombie*>* m_zombies;
 	std::array<Player*, 3> m_players;
 	Player* m_selectedPlayer;
 };

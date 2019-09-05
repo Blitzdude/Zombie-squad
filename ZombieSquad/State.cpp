@@ -18,7 +18,7 @@ void Controlled::Update(Player& actor, float dt)
 void Watching::Update(Player& actor, float dt)
 {
 	// Get closest zombie
-	
+	actor.GetVisibleZombie(m_direction, PLAYER_SIGHT_FOV_RAD);
 	
 	// If zombie is in front of player, turn to face the zombie
 		

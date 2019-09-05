@@ -1,12 +1,11 @@
 #include "ZombieSquad.h"
-#include "ZombieHandler.h"
 #include "GlobalConstants.h"
 #include "Physics.h"
 #include <algorithm>
 #include <functional>
 
 ZombieSquad::ZombieSquad() 
-	: m_playerHandler(*this)
+	: m_playerHandler(*this), m_zombieHandler(*this)
 {
 	sAppName = "ZombieSquad";
 }
@@ -48,7 +47,7 @@ bool ZombieSquad::OnUserCreate()
 	m_playerHandler.addPlayer(player3, 2);
 
 	// Initialize the ZombieHandler
-	m_zombieHandler.Init(*player1, *player2, *player3, *m_currentLevel );
+	m_zombieHandler.Init(*player1, *player2, *player3);
 
 	// Populate Level with zombies
 	/*

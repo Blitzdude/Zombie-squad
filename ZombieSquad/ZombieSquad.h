@@ -33,10 +33,11 @@ public:
 
 	ZombieHandler m_zombieHandler;
 	PlayerHandler m_playerHandler;
+
+	Level* m_currentLevel;
 private:
 
 	std::vector<Actor*> vecActors;
-	Level* m_currentLevel;
 
 	bool m_isRunning = true;
 };

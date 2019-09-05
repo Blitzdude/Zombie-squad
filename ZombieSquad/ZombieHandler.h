@@ -5,14 +5,18 @@
 #include <vector>
 
 class Command;
+class ZombieSquad;
+class Player;
+class Zombie;
+class ZombieSquad;
 
 class ZombieHandler
 {
 public:
-	ZombieHandler();
+	ZombieHandler(ZombieSquad& engine);
 	~ZombieHandler();
 
-	bool Init(Player& p1, Player& p2, Player& p3, const Level &lev);
+	bool Init(Player& p1, Player& p2, Player& p3);
 
 	void HandleZombies(float dt);
 	Command* handleInput(Zombie& actor);
@@ -23,7 +27,7 @@ public:
 	bool ZombieSeesTarget(const Vec2f& target, const Zombie& zombie);
 private:
 
-	const Level* m_level;
+	ZombieSquad* m_game;
 
 	std::vector<Zombie*> m_vecZombies;
 	Player* m_player1; // TODO: Convert to get a list of players

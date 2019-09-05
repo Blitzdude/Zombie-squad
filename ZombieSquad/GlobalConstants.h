@@ -11,6 +11,8 @@ constexpr float ZOMBIE_SPEED = 40.0f;
 constexpr float ATTACK_RANGE = 16.0f;
 constexpr int MINIMUM_DISTANCE = 8;
 constexpr float ZOMBIE_SIGHT_FOV_RAD = 45.0f * PI / 180.0f;
+constexpr float PLAYER_SIGHT_FOV_RAD = 45.0f * PI / 180.0f;
+
 // Timings
 constexpr float TIME_UNTIL_CHANGE_DIR = 5.0f;
 constexpr float DYING_TIME = 0.5f;
