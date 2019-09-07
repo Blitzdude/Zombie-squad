@@ -16,7 +16,7 @@ public:
 	void HandlePlayers(float fElapsedTime);
 	void bindButtons();
 	void addPlayer(Player* player, int index);
-	Zombie* GetClosestVisibleZombiePosition(const Vec2f& player, const Vec2f& targetDirection); 
+	Zombie* GetClosestVisibleZombiePosition(const Player& player); 
 	bool PlayerSeesTarget(const Vec2f& targetPos, const Player& player);
 
 private:
@@ -31,7 +31,6 @@ private:
 	Command* buttonSpace; // Fire Gun
 	Command* buttonChangeTrue;
 	Command* buttonChangeFalse;
-
 
 	ZombieSquad* m_game;
 	const std::vector<Zombie*>* m_zombies;

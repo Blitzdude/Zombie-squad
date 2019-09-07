@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "Physics.h"
 #include <assert.h>
+#include <limits>
 
 PlayerHandler::PlayerHandler(ZombieSquad& engine)
 	: m_game(&engine), m_selectedPlayer(nullptr)
@@ -116,14 +117,25 @@ void PlayerHandler::addPlayer(Player* player, int index)
 	}
 }
 
-Zombie* PlayerHandler::GetClosestVisibleZombiePosition(const Vec2f& player, const Vec2f& targetDirection)
+Zombie* PlayerHandler::GetClosestVisibleZombiePosition(const Player& player)
 {
-	float distance = INFINITE;
+	float distance = std::numeric_limits<float>::infinity();
+	Zombie* ret = nullptr;
 	for (auto zomb : *m_zombies)
 	{
-		
+		// if player sees target check it's distance, for closest;
+		if (PlayerSeesTarget(zomb->GetPosition(), player))
+		{
+			float compare = Vec2f::DistanceBetween(player.GetPosition(), zomb->GetPosition());
+			if (compare < distance)
+			{
+				ret = zomb;
+				distance = compare;
+			}
+		}
 	}
-	return nullptr;
+	// if ret is nullptr, no zombie was found
+	return ret;
 }
 
 bool PlayerHandler::PlayerSeesTarget(const Vec2f& targetPos, const Player& player)
