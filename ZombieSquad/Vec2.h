@@ -81,7 +81,6 @@ public: // methods
 	// returns the angle between 2d vectors
 	static T AngleBetween(const Vec2<T> &v1, const Vec2<T> &v2)
 	{
-
 		T dot = DotProduct(v1, v2);
 		T det = v1.x*v2.y - v1.y*v2.x;
 		T ret = std::atan2(det, dot);

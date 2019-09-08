@@ -22,18 +22,15 @@ void Watching::Update(Player& actor, float dt)
 	if (targetZombie != nullptr)
 	{
 		// If zombie is in front of player, turn to face the zombie
-		if (Vec2f::AngleBetween(targetZombie->GetPosition(), actor.GetDirectionVector()) > 0.1f) // MAGIC
+		float angle = std::abs(Vec2f::AngleBetween( actor.GetDirectionVector(), targetZombie->GetPosition() - actor.GetPosition() ));
+
+		if (angle > 0.05f) // MAGIC
 		{
 			// Which direction to turn?
-			float cross = Vec2f::CrossProduct(targetZombie->GetPosition(), actor.GetDirectionVector());
-			if (cross < 0.0f)
-			{
-				actor.TurnLeft(dt);
-			}
-			else
-			{
-				actor.TurnRight(dt);
-			}
+			float cross = Vec2f::CrossProduct(targetZombie->GetPosition() - actor.GetPosition(), actor.GetDirectionVector());
+			// turn accordingly
+			cross < 0.0f ? actor.TurnRight(dt) : actor.TurnLeft(dt);
+
 		}
 		else 
 		{

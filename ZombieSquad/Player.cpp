@@ -52,7 +52,7 @@ void Player::Draw(olc::PixelGameEngine& game)
 		(int32_t)(GetY() + sinf(GetDirection())*GetRadius()),
 		olc::BLUE);
 
-	game.DrawString((int32_t)GetX(), (int32_t)GetY(), std::to_string(GetDirection()));
+	game.DrawString((int32_t)GetX() + 5.0f, (int32_t)GetY() + 5.0f, std::to_string(GetDirection()));
 }
 
 void Player::Update(float dt)
