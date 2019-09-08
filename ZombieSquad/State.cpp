@@ -4,38 +4,38 @@
 #include "Bullet.h"
 #include "GlobalConstants.h"
 
-void Chasing::Update(Zombie& actor, float dt)
+void Chasing::Update(Zombie& zombie, float dt)
 {	
-	actor.SetTarget(m_chaseTarget->GetPosition());
-	actor.doMove(dt);
+	zombie.SetTarget(m_chaseTarget->GetPosition());
+	zombie.doMove(dt);
 }
 
-void Controlled::Update(Player& actor, float dt)
+void Controlled::Update(Player& player, float dt)
 {
 	// Take input commands
 }
 
-void Watching::Update(Player& actor, float dt)
+void Watching::Update(Player& player, float dt)
 {
 	// Get closest zombie
-	const Zombie* targetZombie = actor.GetVisibleZombie();
+	const Zombie* targetZombie = player.GetVisibleZombie();
 	if (targetZombie != nullptr)
 	{
 		// If zombie is in front of player, turn to face the zombie
-		float angle = std::abs(Vec2f::AngleBetween( actor.GetDirectionVector(), targetZombie->GetPosition() - actor.GetPosition() ));
+		float angle = std::abs(Vec2f::AngleBetween(player.GetDirectionVector(), targetZombie->GetPosition() - player.GetPosition() ));
 
 		if (angle > 0.05f) // MAGIC
 		{
 			// Which direction to turn?
-			float cross = Vec2f::CrossProduct(targetZombie->GetPosition() - actor.GetPosition(), actor.GetDirectionVector());
+			float cross = Vec2f::CrossProduct(targetZombie->GetPosition() - player.GetPosition(), player.GetDirectionVector());
 			// turn accordingly
-			cross < 0.0f ? actor.TurnRight(dt) : actor.TurnLeft(dt);
+			cross < 0.0f ? player.TurnRight(dt) : player.TurnLeft(dt);
 
 		}
 		else 
 		{
 			// Zombie in front. Fire the gun!
-			actor.Attack(dt);
+			player.Attack(dt);
 		}
 	}
 	else {
@@ -45,21 +45,21 @@ void Watching::Update(Player& actor, float dt)
 }
 
 
-void Flying::Update(Bullet& actor, float dt)
+void Flying::Update(Bullet& bullet, float dt)
 {
-	float dir = actor.GetDirection();
+	float dir = bullet.GetDirection();
 	// New position
-	Vec2f newPos(actor.GetPosition() + Vec2f(cosf(dir), sinf(dir)) * BULLET_SPEED * dt);
-	actor.SetPosition(newPos);
+	Vec2f newPos(bullet.GetPosition() + Vec2f(cosf(dir), sinf(dir)) * BULLET_SPEED * dt);
+	bullet.SetPosition(newPos);
 
-	actor.m_lifeTime -= dt;
-	if (actor.GetIsHit() || actor.m_lifeTime < 0.0f)
+	bullet.m_lifeTime -= dt;
+	if (bullet.GetIsHit() || bullet.m_lifeTime < 0.0f)
 	{
-		actor.SetDestroyed(true);
+		bullet.SetDestroyed(true);
 	}
 }
 
-void Roaming::Update(Zombie& actor, float dt)
+void Roaming::Update(Zombie& zombie, float dt)
 {
 	// add to timer
 	m_timer += dt;
@@ -71,24 +71,23 @@ void Roaming::Update(Zombie& actor, float dt)
 		float rY = ((rand() % (2 * 100)) - 100) / 100.0f; // returns value between -1.0f / 1.0f
 		Vec2f r(rX, rY);
 		
-		actor.SetTarget(actor.GetPosition() + r * 100.0f);
+		zombie.SetTarget(zombie.GetPosition() + r * 100.0f);
 	}
 
-	actor.doMove(dt);
+	zombie.doMove(dt);
 }
 
-void ZombieDead::Update(Zombie& actor, float dt)
+void ZombieDead::Update(Zombie& zombie, float dt)
 {
 	m_deathTime += dt;
 	if (m_deathTime > DYING_TIME)
 	{
-		actor.SetDestroyed(true);
+		zombie.SetDestroyed(true);
 	}
 }
 
-void PlayerDead::Update(Player& actor, float dt)
+void PlayerDead::Update(Player&, float dt)
 {
 	m_deathTime += dt;
-	// Do not destroy players! just lay there
-	
+	// Do not destroy players! just lie there... dead
 }

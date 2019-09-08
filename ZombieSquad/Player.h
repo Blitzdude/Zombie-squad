@@ -33,6 +33,9 @@ private:
 	PlayerState* m_currentState;
 	PlayerHandler* m_handler;
 	ZombieSquad* m_game; // Needed for bullet spawning
+	float m_fireRate;
+	float m_lastTimeFired;
+
 	//Bullet* m_gun; // Which kind of bullets to spawn when firing // Not implemented
 };
 

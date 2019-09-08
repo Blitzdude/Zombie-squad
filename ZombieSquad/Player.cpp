@@ -15,6 +15,9 @@ Player::Player(float x, float y, float dir, ZombieSquad& game, PlayerHandler& pl
 	SetRadius(PLAYER_SIZE);
 	SetDirection(dir);
 	SetTag(ActorTag::PLAYER);
+	m_fireRate = PLAYER_FIRING_RATE;
+	m_lastTimeFired = 0.0f;
+
 	if (startingPlayer)
 	{
 		m_currentState = new Controlled();
@@ -32,7 +35,6 @@ Player::~Player()
 	m_game = nullptr;
 	delete m_currentState;
 	m_currentState = nullptr;
-
 }
 
 void Player::Draw(olc::PixelGameEngine& game)
@@ -45,6 +47,8 @@ void Player::Draw(olc::PixelGameEngine& game)
 		pix = olc::VERY_DARK_RED;
 	}
 
+#pragma warning (disable : 4244) // converting from float to int32_t
+
 	game.FillCircle((int32_t)GetX(), (int32_t)GetY(), (int32_t)GetRadius(), pix);
 
 	game.DrawLine((int32_t)GetX(), (int32_t)GetY(),
@@ -53,11 +57,13 @@ void Player::Draw(olc::PixelGameEngine& game)
 		olc::BLUE);
 
 	game.DrawString((int32_t)GetX() + 5.0f, (int32_t)GetY() + 5.0f, std::to_string(GetDirection()));
+#pragma warning (default : 4244)
 }
 
 void Player::Update(float dt)
 {
 	// Update the current Player state
+	m_lastTimeFired += dt;
 	m_currentState->Update(*this, dt);
 }
 
@@ -84,10 +90,14 @@ void Player::TurnLeft(float dt)
 }
 
 void Player::Attack(float dt)
-{	// if cooldown and bullets -> fire shot
-	// calculate bullet spawn point.
-	Vec2f bulletSpawnPoint = GetPosition() + Vec2f(cosf(GetDirection()), sinf(GetDirection())) * (GetRadius() + 2.0f);
-	m_game->SpawnBullet(bulletSpawnPoint, GetDirection(), 5.0f, 10.0f, ActorTag::PLAYER);
+{	// if cooldown -> fire shot
+	if (m_lastTimeFired >= m_fireRate)
+	{
+		// calculate bullet spawn point.
+		Vec2f bulletSpawnPoint = GetPosition() + Vec2f(cosf(GetDirection()), sinf(GetDirection())) * (GetRadius() + 2.0f);
+		m_game->SpawnBullet(bulletSpawnPoint, GetDirection(), 5.0f, 10.0f, ActorTag::PLAYER);
+		m_lastTimeFired = 0.0f;
+	}
 }
 
 void Player::Die(float dt)
