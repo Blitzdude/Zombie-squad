@@ -26,6 +26,19 @@ PlayerHandler::~PlayerHandler()
 	delete buttonChangeTrue; buttonChangeTrue = nullptr;
 }
 
+bool PlayerHandler::Init(ZombieHandler& zombieHandler)
+{
+	m_zombieHandler = &zombieHandler;
+	if (m_zombieHandler == nullptr)
+	{
+		return false;
+	}
+	else 
+	{
+		return true;
+	}
+}
+
 Command * PlayerHandler::handleInput()
 {
 	if (m_game->GetKey(olc::W).bHeld) return buttonW;
@@ -117,11 +130,12 @@ void PlayerHandler::addPlayer(Player* player, int index)
 	}
 }
 
-Zombie* PlayerHandler::GetClosestVisibleZombiePosition(const Player& player)
+// returns nullptr if no zombie was found
+const Zombie* PlayerHandler::GetClosestVisibleZombiePosition(const Player& player)
 {
 	float distance = std::numeric_limits<float>::infinity();
 	Zombie* ret = nullptr;
-	for (auto zomb : *m_zombies)
+	for (auto zomb : m_zombieHandler->GetZombies())
 	{
 		// if player sees target check it's distance, for closest;
 		if (PlayerSeesTarget(zomb->GetPosition(), player))

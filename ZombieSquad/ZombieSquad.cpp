@@ -12,6 +12,7 @@ ZombieSquad::ZombieSquad()
 
 bool ZombieSquad::OnUserCreate()
 {
+	bool createSuccess = false;
 	// Load Level data
 	/*
 		world width, height, blockwidth
@@ -34,20 +35,34 @@ bool ZombieSquad::OnUserCreate()
 	*/
 
 	// Player 1
-	Player* player1 = new Player(m_currentLevel->GetStart().x, m_currentLevel->GetStart().y, 0.0f, *this, m_playerHandler, true);
-	vecActors.push_back(player1);
-	m_playerHandler.addPlayer(player1, 0);
+	float startX = m_currentLevel->GetStart().x;
+	float startY = m_currentLevel->GetStart().y;
+
+	Player* player1 = SpawnPlayer(startX, startY, 0.0f, 0, *this, m_playerHandler, 0.0f, true);
+	// Player* player1 = new Player(m_currentLevel->GetStart().x, m_currentLevel->GetStart().y, 0.0f, *this, m_playerHandler, true);
+	// vecActors.push_back(player1);
+	// m_playerHandler.addPlayer(player1, 0);
+
 	// Player 2
-	Player* player2 = new Player(m_currentLevel->GetStart().x + 2.0f, m_currentLevel->GetStart().y, 0.0f, *this, m_playerHandler);
-	vecActors.push_back(player2);
-	m_playerHandler.addPlayer(player2, 1);
+	Player* player2 = SpawnPlayer(startX, startY, 0.0f, 1, *this, m_playerHandler, 3.0f);
+
+	// Player* player2 = new Player(m_currentLevel->GetStart().x + 2.0f, m_currentLevel->GetStart().y, 0.0f, *this, m_playerHandler);
+	// vecActors.push_back(player2);
+	// m_playerHandler.addPlayer(player2, 1);
+	
 	// Player 3
-	Player* player3 = new Player(m_currentLevel->GetStart().x, m_currentLevel->GetStart().y + 2.0f, 0.0f, *this, m_playerHandler);
-	vecActors.push_back(player3);
-	m_playerHandler.addPlayer(player3, 2);
+	Player* player3 = SpawnPlayer(startX, startY, 0.0f, 2, *this, m_playerHandler, 6.0f);
+
+	// Player* player3 = new Player(m_currentLevel->GetStart().x, m_currentLevel->GetStart().y + 2.0f, 0.0f, *this, m_playerHandler);
+	// vecActors.push_back(player3);
+	// m_playerHandler.addPlayer(player3, 2);
 
 	// Initialize the ZombieHandler
-	m_zombieHandler.Init(*player1, *player2, *player3);
+	createSuccess = m_zombieHandler.Init(*player1, *player2, *player3);
+	createSuccess = m_playerHandler.Init(m_zombieHandler);
+	player1 = nullptr;
+	player2 = nullptr;
+	player3 = nullptr;
 
 	// Populate Level with zombies
 	/*
@@ -70,11 +85,15 @@ bool ZombieSquad::OnUserCreate()
 			}
 		}
 	}
-	return true;
+
+	// If createSuccess is false, Initializing handlers failed
+	return createSuccess;
 }
 
 bool ZombieSquad::OnUserUpdate(float fElapsedTime)
 {
+	AddActors();
+
 	DoInput(fElapsedTime);
 	// Check input
 
@@ -186,8 +205,6 @@ void ZombieSquad::DoUpdate(float fElapsedTime)
 	vec_circleEdgeColliders.clear();
 	vec_circleCircleColliders.clear();
 
-
-
 	// DELETE ACTORS
 	m_zombieHandler.RemoveDestroyed();
 
@@ -230,17 +247,40 @@ void ZombieSquad::DoDraw()
 	}
 }
 
-void ZombieSquad::SpawnZombie(int x, int y, float offset)
+Player* ZombieSquad::SpawnPlayer(float xPos, float yPos, float dir, int playerNum, ZombieSquad& game, PlayerHandler& playerHandler, float offset, bool startingPlayer)
 {
 	float size = m_currentLevel->GetCellSize();
-	float xPos = (x * size) + (size / 2.0f) + offset;
-	float yPos = (y * size) + (size / 2.0f);
+	// float xPos = (x * size) + (size / 2.0f) + offset;
+	// float yPos = (y * size) + (size / 2.0f);
+	Player* player = new Player(xPos + offset, yPos, dir, game, playerHandler, startingPlayer);
+	// add player's directly to game, because it's the first thing we do.
+	m_playerHandler.addPlayer(player, playerNum);
+	vecActors.push_back(player);
+	return player;
+}
+
+void ZombieSquad::SpawnZombie(int xCell, int yCell, float offset)
+{
+	float size = m_currentLevel->GetCellSize();
+	float xPos = (xCell * size) + (size / 2.0f) + offset;
+	float yPos = (yCell * size) + (size / 2.0f);
 	Zombie* zomb = new Zombie(xPos, yPos, *this, m_zombieHandler);
-	vecActors.push_back(zomb);
+	vecActorsToAdd.push_back(zomb);
 	m_zombieHandler.AddZombie(zomb);
 }
 
 void ZombieSquad::SpawnBullet(const Vec2f& pos, float dir, float lifetime, float speed, ActorTag tag)
 {
-	vecActors.push_back(new Bullet(pos, dir, lifetime, speed, tag));
+	vecActorsToAdd.push_back(new Bullet(pos, dir, lifetime, speed, tag));
+}
+
+void ZombieSquad::AddActors()
+{
+	// add the add the actors to be added
+	for (auto itr : vecActorsToAdd)
+	{
+		vecActors.push_back(itr);
+	}
+
+	vecActorsToAdd.clear();
 }

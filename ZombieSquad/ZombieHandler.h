@@ -25,6 +25,8 @@ public:
 	void RemoveDestroyed();
 
 	bool ZombieSeesTarget(const Vec2f& target, const Zombie& zombie);
+
+	const std::vector<Zombie*>& GetZombies() { return m_vecZombies; }
 private:
 
 	ZombieSquad* m_game;

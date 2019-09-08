@@ -20,7 +20,7 @@ public:
 	virtual void Attack(float dt) override;
 	void doMove(float dt);
 
-	// Getters
+	
 
 	// Setters
 	void SetTarget(const Vec2f& newTarget) { m_target = newTarget; }
@@ -31,4 +31,3 @@ private:
 	ZombieSquad* m_game; // Needed for bullet spawning
 	Vec2f m_target;
 };
-

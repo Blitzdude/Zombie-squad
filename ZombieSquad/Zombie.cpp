@@ -124,8 +124,6 @@ void Zombie::doMove(float dt)
 	{
 		SetPosition(GetPosition() + vec * ZOMBIE_SPEED * dt); 
 		
-		//SetDirection(Vec2f::AngleBetween(Vec2f(1.0f, 0.0f), vec));
-		// TODO: LEft off here, fix zombies looking away from movement direction
 	}
 	
 }

@@ -111,10 +111,11 @@ void Player::ChangePlayer(bool truth)
 	}
 }
 
-Vec2f Player::GetVisibleZombie(const Vec2f& direction, float player_fov)
+// returns nullptr
+const Zombie* Player::GetVisibleZombie()
 {
 	// ask player handler for a target
-	return Vec2f();
-	// LEFT OFF HERE
+	return m_handler->GetClosestVisibleZombiePosition(*this);
+	
 }
 

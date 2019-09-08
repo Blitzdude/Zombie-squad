@@ -18,17 +18,38 @@ void Controlled::Update(Player& actor, float dt)
 void Watching::Update(Player& actor, float dt)
 {
 	// Get closest zombie
-	actor.GetVisibleZombie(m_direction, PLAYER_SIGHT_FOV_RAD);
-	
-	// If zombie is in front of player, turn to face the zombie
-		
-	// otherwise turn
+	const Zombie* targetZombie = actor.GetVisibleZombie();
+	if (targetZombie != nullptr)
+	{
+		// If zombie is in front of player, turn to face the zombie
+		if (Vec2f::AngleBetween(targetZombie->GetPosition(), actor.GetDirectionVector()) > 0.1f) // MAGIC
+		{
+			// Which direction to turn?
+			float cross = Vec2f::CrossProduct(targetZombie->GetPosition(), actor.GetDirectionVector());
+			if (cross < 0.0f)
+			{
+				actor.TurnLeft(dt);
+			}
+			else
+			{
+				actor.TurnRight(dt);
+			}
+		}
+		else 
+		{
+			// Zombie in front. Fire the gun!
+			actor.Attack(dt);
+		}
+	}
+	else {
+		// otherwise turn to face the direction you are watching
+		// TODO: have the watching player actor turn back to the direction they are looking at
+	}
 }
 
 
 void Flying::Update(Bullet& actor, float dt)
 {
-	 
 	float dir = actor.GetDirection();
 	// New position
 	Vec2f newPos(actor.GetPosition() + Vec2f(cosf(dir), sinf(dir)) * BULLET_SPEED * dt);

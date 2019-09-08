@@ -23,7 +23,7 @@ Bullet::~Bullet()
 
 void Bullet::Draw(olc::PixelGameEngine& game)
 {
-	game.FillCircle(GetX(), GetY(), GetRadius());
+	game.FillCircle((int32_t)GetX(), (int32_t)GetY(), (int32_t)GetRadius());
 }
 
 void Bullet::Update(float fElapsedTime)

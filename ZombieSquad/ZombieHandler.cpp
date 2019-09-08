@@ -25,10 +25,11 @@ bool ZombieHandler::Init(Player& p1, Player& p2, Player& p3)
 	m_player2 = &p2;
 	m_player3 = &p3;
 
-	if (m_player1 != nullptr &&
-		m_player2 != nullptr &&
-		m_player3 != nullptr)
+	if (m_player1 == nullptr &&
+		m_player2 == nullptr &&
+		m_player3 == nullptr)
 	{
+		std::cout << "One or more players were nullptrs \n";
 		success = false;
 	}
 

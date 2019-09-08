@@ -24,9 +24,11 @@ public:
 	void DoUpdate(float fElapsedTime);
 	void DoDraw();
 
+	Player* SpawnPlayer(float xPos, float yPos, float dir, int playerNum, ZombieSquad& game, PlayerHandler& playerHandler, float offset = 0.0f, bool startingPlayer = false);
 	void SpawnZombie(int x, int y, float offset = 0.0f);
-	
 	void SpawnBullet(const Vec2f& pos, float dir, float lifetime, float speed, ActorTag tag);
+
+	void AddActors(); 
 
 	// Getters
 	const std::vector<Actor*>& GetActors() { return vecActors; };
@@ -38,6 +40,7 @@ public:
 private:
 
 	std::vector<Actor*> vecActors;
+	std::vector<Actor*> vecActorsToAdd;
 
 	bool m_isRunning = true;
 };

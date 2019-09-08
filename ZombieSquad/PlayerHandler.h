@@ -2,9 +2,10 @@
 #include "Zombie.h"
 #include <array>
 
-class Player;
-class Command; // Forward declaration
+class Player; // Forward declaration
+class Command; 
 class ZombieSquad;
+class ZombieHandler;
 
 class PlayerHandler
 {
@@ -12,11 +13,13 @@ public:
 	PlayerHandler(ZombieSquad& engine);
 	~PlayerHandler();
 
+	bool Init(ZombieHandler& zombieHandler);
+
 	Command* handleInput();
 	void HandlePlayers(float fElapsedTime);
 	void bindButtons();
 	void addPlayer(Player* player, int index);
-	Zombie* GetClosestVisibleZombiePosition(const Player& player); 
+	const Zombie* GetClosestVisibleZombiePosition(const Player& player);
 	bool PlayerSeesTarget(const Vec2f& targetPos, const Player& player);
 
 private:
@@ -33,7 +36,8 @@ private:
 	Command* buttonChangeFalse;
 
 	ZombieSquad* m_game;
-	const std::vector<Zombie*>* m_zombies;
+	ZombieHandler* m_zombieHandler;
+	// const std::vector<Zombie*>* m_zombies;
 	std::array<Player*, 3> m_players;
 	Player* m_selectedPlayer;
 };

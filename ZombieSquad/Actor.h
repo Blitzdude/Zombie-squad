@@ -52,8 +52,6 @@ public:
 	bool GetDestroyed()			const { return m_destroyed; }
 	bool GetIsHit()				const { return m_hit; }
 	
-
-
 	void SetSpeed(float s)				{ m_speed = s; }
 	void SetX(float x)					{ m_x = x; }
 	void SetY(float y)					{ m_y = y; }

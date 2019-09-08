@@ -25,7 +25,7 @@ public:
 	virtual void ChangePlayer(bool truth) override;
 
 	PlayerState* GetCurrentState() const { return m_currentState; };
-	Vec2f GetVisibleZombie(const Vec2f& direction, float player_fov);
+	const Zombie* GetVisibleZombie();
 
 	// void SetWeapon(Bullet* bullet) { m_gun = bullet; };
 

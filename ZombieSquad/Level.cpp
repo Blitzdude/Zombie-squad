@@ -286,6 +286,7 @@ void Level::ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float fBlockWi
 	}
 	// create the level boundary
 	// left
+#pragma warning (disable : 4244) // narrowing conversion from int32_t to float
 	Edge left;
 	left.start.x = sx; left.start.y = sy;
 	left.end.x = sx; left.end.y = (sy + m_mapCellHeight) * fBlockWidth;
@@ -312,11 +313,14 @@ void Level::ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float fBlockWi
 	bottom.end.x = (sx + m_mapCellWidth) * fBlockWidth; bottom.end.y = (sy + m_mapCellHeight) * fBlockWidth;
 	bottom.normal.x = 0.0f; bottom.normal.y = -1.0f;
 	vec_edges.push_back(bottom);
+#pragma warning (default : 4244)
+
 }
 
 
 void Level::DrawPolyMap(olc::PixelGameEngine & engine)
 {
+#pragma warning (disable : 4244) // Narrowing conversion from float to int32_t
 	for (auto e : vec_edges)
 	{
 		engine.DrawLine(e.start.x, e.start.y, e.end.x, e.end.y, olc::DARK_RED);
@@ -324,10 +328,13 @@ void Level::DrawPolyMap(olc::PixelGameEngine & engine)
 		engine.FillCircle(e.end.x, e.end.y, 3, olc::RED);
 		// Draw the normal
 		Vec2f edgeCenter = { e.start.x + (e.end.x - e.start.x)*0.5f, e.start.y + (e.end.y-e.start.y)*0.5f };
+
 		engine.FillCircle(edgeCenter.x, edgeCenter.y, 3, olc::BLUE);
 		engine.DrawLine(edgeCenter.x, edgeCenter.y, edgeCenter.x + e.normal.x*10.0f, edgeCenter.y + e.normal.y*10.0f, olc::BLUE);
 
 	}
+#pragma warning (default : 4244)
+
 }
 
 void Level::CalculateVisibilityPolygon(float ox, float oy, float radius, float direction, float fovRad)
@@ -470,6 +477,8 @@ void Level::CalculateVisibilityPolygon(float ox, float oy, float radius, float d
 
 void Level::DrawLevel(olc::PixelGameEngine & engine)
 {
+#pragma warning (disable : 4244) // Narrowing conversion from float to int32_t
+
 	// Draw Blocks from TileMap
 	for (int x = 0; x < m_mapCellWidth; x++)
 	{
@@ -488,6 +497,8 @@ void Level::DrawLevel(olc::PixelGameEngine & engine)
 			}
 		}
 	}
+#pragma warning (default : 4244)
+
 }
 
 bool Level::CheckVictory(Actor* m_player)
