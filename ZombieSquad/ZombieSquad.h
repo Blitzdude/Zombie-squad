@@ -23,6 +23,7 @@ public:
 	void DoInput(float fElapsedTime);
 	void DoUpdate(float fElapsedTime);
 	void DoDraw();
+	bool CheckVictory();
 
 	Player* SpawnPlayer(float xPos, float yPos, float dir, int playerNum, ZombieSquad& game, PlayerHandler& playerHandler, float offset = 0.0f, bool startingPlayer = false);
 	void SpawnZombie(int x, int y, float offset = 0.0f);
@@ -42,6 +43,8 @@ private:
 	std::vector<Actor*> vecActors;
 	std::vector<Actor*> vecActorsToAdd;
 
-	bool m_isRunning = true;
+	bool m_isWin;
+	bool m_isGameOver;
+	bool m_isRunning;
 };
 

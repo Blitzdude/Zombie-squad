@@ -22,6 +22,8 @@ public:
 	const Zombie* GetClosestVisibleZombiePosition(const Player& player);
 	bool PlayerSeesTarget(const Vec2f& targetPos, const Player& player);
 
+	const std::array<Player*, 3> GetPlayers() { return m_players; }
+
 private:
 	Command* buttonW; // forward
 	Command* buttonA; // back
@@ -37,7 +39,6 @@ private:
 
 	ZombieSquad* m_game;
 	ZombieHandler* m_zombieHandler;
-	// const std::vector<Zombie*>* m_zombies;
 	std::array<Player*, 3> m_players;
 	Player* m_selectedPlayer;
 };

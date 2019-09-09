@@ -184,4 +184,3 @@ bool PlayerHandler::PlayerSeesTarget(const Vec2f& targetPos, const Player& playe
 		return false;
 	}
 }
-

@@ -34,28 +34,18 @@ bool ZombieSquad::OnUserCreate()
 		Give control to player
 	*/
 
-	// Player 1
 	float startX = m_currentLevel->GetStart().x;
 	float startY = m_currentLevel->GetStart().y;
 
+	// Player 1
 	Player* player1 = SpawnPlayer(startX, startY, 0.0f, 0, *this, m_playerHandler, 0.0f, true);
-	// Player* player1 = new Player(m_currentLevel->GetStart().x, m_currentLevel->GetStart().y, 0.0f, *this, m_playerHandler, true);
-	// vecActors.push_back(player1);
-	// m_playerHandler.addPlayer(player1, 0);
 
 	// Player 2
 	Player* player2 = SpawnPlayer(startX, startY, 0.0f, 1, *this, m_playerHandler, 3.0f);
 
-	// Player* player2 = new Player(m_currentLevel->GetStart().x + 2.0f, m_currentLevel->GetStart().y, 0.0f, *this, m_playerHandler);
-	// vecActors.push_back(player2);
-	// m_playerHandler.addPlayer(player2, 1);
-	
 	// Player 3
 	Player* player3 = SpawnPlayer(startX, startY, 0.0f, 2, *this, m_playerHandler, 6.0f);
 
-	// Player* player3 = new Player(m_currentLevel->GetStart().x, m_currentLevel->GetStart().y + 2.0f, 0.0f, *this, m_playerHandler);
-	// vecActors.push_back(player3);
-	// m_playerHandler.addPlayer(player3, 2);
 
 	// Initialize the ZombieHandler
 	createSuccess = m_zombieHandler.Init(*player1, *player2, *player3);
@@ -85,36 +75,48 @@ bool ZombieSquad::OnUserCreate()
 			}
 		}
 	}
-
+	// initialize flags
+	m_isRunning = true;
+	m_isGameOver = false;
+	m_isWin = false;
+	
 	// If createSuccess is false, Initializing handlers failed
 	return createSuccess;
 }
 
 bool ZombieSquad::OnUserUpdate(float fElapsedTime)
 {
-	AddActors();
+	if (!m_isGameOver)
+	{
+		
 
-	DoInput(fElapsedTime);
-	// Check input
+		DoInput(fElapsedTime);
+		// Check input
 
-	DoUpdate(fElapsedTime);
-	// Update 
-	/*
-		Check victory condition
-		- All player characters are in the goal cell
-		Check Collisions
-		Resolve collisions
-		- Move zombies and characters away from walls
-		- destroy bullets, when they touch something
-		Move Actors (zombies, characters, bullets)
-		Calculate visibility polygons
+		DoUpdate(fElapsedTime);
+		// Update 
+		/*
+			Check victory condition
+			- All player characters are in the goal cell
+			Check Collisions
+			Resolve collisions
+			- Move zombies and characters away from walls
+			- destroy bullets, when they touch something
+			Move Actors (zombies, characters, bullets)
+			Calculate visibility polygons
 
-	*/
+		*/
 
-	/*
-		Draw level, and actors.
-	*/
-	DoDraw();
+		/*
+			Draw level, and actors.
+		*/
+		DoDraw();
+	}
+	if (m_isGameOver && !m_isWin)
+	{
+		// all players are dead
+		std::cout << "You and your friends are dead. Game Over\n";
+	}
 
 	return m_isRunning;
 }
@@ -152,6 +154,10 @@ void ZombieSquad::DoUpdate(float fElapsedTime)
 	}
 	*/
 
+	// checkGame conditions
+	m_isGameOver = CheckVictory();
+
+	AddActors();
 	// update actors
 	for (auto& itr : vecActors)
 	{
@@ -163,7 +169,6 @@ void ZombieSquad::DoUpdate(float fElapsedTime)
 
 	for (auto& itr : vecActors)
 	{
-
 		for (auto& edge : m_currentLevel->GetEdges())
 		{
 			float overlap = Physics::isColliding(*itr, edge);
@@ -224,6 +229,8 @@ void ZombieSquad::DoUpdate(float fElapsedTime)
 	// erase the elements from the vector
 	vecActors.erase(newEnd, vecActors.end());
 	// DELETE ACTORS END
+
+	
 }
 
 void ZombieSquad::DoDraw()
@@ -245,6 +252,25 @@ void ZombieSquad::DoDraw()
 	{
 		itr->Draw(*this);
 	}
+}
+
+bool ZombieSquad::CheckVictory()
+{
+	// returns condition, that tells if game is over
+
+	// Check if all players are dead
+	for (auto itr : m_playerHandler.GetPlayers())
+	{
+		if (!itr->GetIsHit())
+		{
+			// players are alive -> game is not over
+			return false;
+		}
+	}
+	// Check if all alive players are on goal tile
+
+	// if this gets here, the game is over
+	return true;
 }
 
 Player* ZombieSquad::SpawnPlayer(float xPos, float yPos, float dir, int playerNum, ZombieSquad& game, PlayerHandler& playerHandler, float offset, bool startingPlayer)
