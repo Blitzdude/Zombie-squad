@@ -30,6 +30,8 @@ struct Cell
 	bool obstacle = false;
 	bool isStart = false;
 	bool isGoal = false;
+	int xPos;
+	int yPos;
 	SpriteId sprId;
 };
 
@@ -57,7 +59,7 @@ public:
 	// bool CheckLineIntersection(IntersectResult* point, Ray& e1, Edge& e2);
 	bool CheckIfVisible(float ox, float oy, float radius); // Not implemented
 	void DrawLevel(olc::PixelGameEngine& engine);
-	bool CheckVictory(Actor* m_player); // TODO: change to use list of player-characters as parameter.
+	// bool CheckVictory(Actor* m_player); // TODO: change to use list of player-characters as parameter.
 
 	// Getters
 	float GetCellSize() { return m_cellSize; }

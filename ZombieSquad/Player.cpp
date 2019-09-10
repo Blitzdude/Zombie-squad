@@ -57,6 +57,13 @@ void Player::Draw(olc::PixelGameEngine& game)
 		olc::BLUE);
 
 	game.DrawString((int32_t)GetX() + 5.0f, (int32_t)GetY() + 5.0f, std::to_string(GetDirection()));
+
+	// Draw the currently occupied cell
+	float cellSize = m_handler->m_game->m_currentLevel->GetCellSize();
+	Cell* cell = m_handler->m_game->m_currentLevel->GetCell(GetPosition());
+
+	game.DrawRect(cell->xPos * cellSize, cell->yPos * cellSize, cellSize, cellSize, olc::MAGENTA);
+
 #pragma warning (default : 4244)
 }
 
@@ -121,7 +128,7 @@ void Player::ChangePlayer(bool truth)
 	}
 }
 
-// returns nullptr
+// returns nullptr if no zombie
 const Zombie* Player::GetVisibleZombie()
 {
 	// ask player handler for a target

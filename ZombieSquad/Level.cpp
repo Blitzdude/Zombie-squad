@@ -81,6 +81,11 @@ bool Level::LoadLevel(std::string filepath)
 					break;
 				}
 			}
+			// add Cells coordinates
+			m_map[x + y * m_mapCellWidth].xPos = x;
+			m_map[x + y * m_mapCellWidth].yPos = y;
+
+
 		}
 	}
 
@@ -500,7 +505,7 @@ void Level::DrawLevel(olc::PixelGameEngine & engine)
 #pragma warning (default : 4244)
 
 }
-
+/*
 bool Level::CheckVictory(Actor* m_player)
 {
 	if (GetCell(m_player->GetPosition())->isGoal)
@@ -512,6 +517,7 @@ bool Level::CheckVictory(Actor* m_player)
 		return false;
 	}
 }
+*/
 
 Cell* Level::GetCell(int x, int y)
 {

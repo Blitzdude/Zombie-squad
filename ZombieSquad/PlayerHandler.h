@@ -10,6 +10,8 @@ class ZombieHandler;
 class PlayerHandler
 {
 public:
+	friend Player;
+
 	PlayerHandler(ZombieSquad& engine);
 	~PlayerHandler();
 

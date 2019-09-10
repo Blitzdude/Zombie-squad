@@ -88,8 +88,6 @@ bool ZombieSquad::OnUserUpdate(float fElapsedTime)
 {
 	if (!m_isGameOver)
 	{
-		
-
 		DoInput(fElapsedTime);
 		// Check input
 
@@ -116,6 +114,10 @@ bool ZombieSquad::OnUserUpdate(float fElapsedTime)
 	{
 		// all players are dead
 		std::cout << "You and your friends are dead. Game Over\n";
+	}
+	else if (m_isGameOver && m_isWin)
+	{
+		std::cout << "You have survived, Congratulations!\n";
 	}
 
 	return m_isRunning;
@@ -257,20 +259,32 @@ void ZombieSquad::DoDraw()
 bool ZombieSquad::CheckVictory()
 {
 	// returns condition, that tells if game is over
-
+	bool gameOver = true;
 	// Check if all players are dead
 	for (auto itr : m_playerHandler.GetPlayers())
 	{
 		if (!itr->GetIsHit())
 		{
 			// players are alive -> game is not over
-			return false;
+			gameOver =  false;
 		}
 	}
-	// Check if all alive players are on goal tile
+	
+	bool win = true;
+	// if the player has won -> end the game
+	for (auto itr : m_playerHandler.GetPlayers())
+	{
+		if (!(m_currentLevel->GetCell(itr->GetPosition())->isGoal) && 
+			(itr->GetCurrentState()->GetStateID() != StateID::STATE_DEAD) )
+		{
+			win = false;
+		}
+	}
 
+	m_isWin = win;
+	gameOver = win == true ? true : false;
 	// if this gets here, the game is over
-	return true;
+	return gameOver;
 }
 
 Player* ZombieSquad::SpawnPlayer(float xPos, float yPos, float dir, int playerNum, ZombieSquad& game, PlayerHandler& playerHandler, float offset, bool startingPlayer)

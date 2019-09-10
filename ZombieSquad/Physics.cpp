@@ -52,7 +52,6 @@ float Physics::isColliding(const Actor& lhs, const Actor& rhs)
 
 void Physics::resolveEdgeCircle(Actor* act, Vec2f normal, float distToMove)
 {
-	// TODO: Add checking for tags. 
 	// If actor is bullet, destroy bullet.
 	if (act->GetTag() == ActorTag::BULLET)
 	{
