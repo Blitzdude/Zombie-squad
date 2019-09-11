@@ -1,0 +1,11 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$class_command.html" title=" " alt="" coords="5,183,87,209"/>
+<area shape="rect" id="node2" href="$class_attack.html" title=" " alt="" coords="156,5,216,32"/>
+<area shape="rect" id="node3" href="$class_change_player.html" title=" " alt="" coords="135,56,237,83"/>
+<area shape="rect" id="node4" href="$class_chase_player.html" title=" " alt="" coords="138,107,234,133"/>
+<area shape="rect" id="node5" href="$class_die.html" title=" " alt="" coords="165,157,207,184"/>
+<area shape="rect" id="node6" href="$class_move_back.html" title=" " alt="" coords="145,208,227,235"/>
+<area shape="rect" id="node7" href="$class_move_forward.html" title=" " alt="" coords="137,259,235,285"/>
+<area shape="rect" id="node8" href="$class_turn_left.html" title=" " alt="" coords="152,309,220,336"/>
+<area shape="rect" id="node9" href="$class_turn_right.html" title=" " alt="" coords="147,360,225,387"/>
+</map>

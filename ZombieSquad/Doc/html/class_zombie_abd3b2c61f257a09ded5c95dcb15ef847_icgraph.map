@@ -1,0 +1,5 @@
+<map id="Zombie::doMove" name="Zombie::doMove">
+<area shape="rect" id="node1" title=" " alt="" coords="176,31,292,57"/>
+<area shape="rect" id="node2" href="$class_chasing.html#a2c7d84ee15647b9b13a6c7d85b9b256b" title=" " alt="" coords="7,5,126,32"/>
+<area shape="rect" id="node3" href="$class_roaming.html#a762496f9c10dcdc2957be7a161294739" title=" " alt="" coords="5,56,128,83"/>
+</map>

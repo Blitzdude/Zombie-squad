@@ -1,0 +1,8 @@
+<map id="Actor::GetIsHit" name="Actor::GetIsHit">
+<area shape="rect" id="node1" title=" " alt="" coords="933,31,1041,57"/>
+<area shape="rect" id="node2" href="$class_zombie_handler.html#ac233925a124fbfa52b91f2ec4aafde0d" title=" " alt="" coords="703,5,885,32"/>
+<area shape="rect" id="node6" href="$class_flying.html#adeadd49215e437b54fef4911f72b4b3b" title=" " alt="" coords="741,56,847,83"/>
+<area shape="rect" id="node3" href="$class_zombie_handler.html#a42c3f3476b2aa165e695db4b8905cda9" title=" " alt="" coords="449,5,655,32"/>
+<area shape="rect" id="node4" href="$class_zombie_squad.html#aec065debeb04f7823be4d23bd3760a52" title=" " alt="" coords="248,5,401,32"/>
+<area shape="rect" id="node5" href="$class_zombie_squad.html#ae086a8d81b15ca84408ea06b051da706" title=" " alt="" coords="5,5,200,32"/>
+</map>

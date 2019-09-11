@@ -1,0 +1,8 @@
+<map id="Player::MoveBack" name="Player::MoveBack">
+<area shape="rect" id="node1" title=" " alt="" coords="5,107,132,133"/>
+<area shape="rect" id="node2" href="$class_actor.html#a938f21dadc75cbbe9a265da6736ec047" title=" " alt="" coords="180,5,313,32"/>
+<area shape="rect" id="node3" href="$class_actor.html#a0d6296d772235e005c04d345bdbd1c10" title=" " alt="" coords="202,56,291,83"/>
+<area shape="rect" id="node4" href="$class_actor.html#abaed4e72c6660626f02aef378aa10950" title=" " alt="" coords="201,107,292,133"/>
+<area shape="rect" id="node5" href="$class_actor.html#af99dcc3f6701db4a2f79db5ba2fedbdd" title=" " alt="" coords="203,157,291,184"/>
+<area shape="rect" id="node6" href="$class_actor.html#a388f9eefe8dc5eda584f95baaab5c724" title=" " alt="" coords="201,208,292,235"/>
+</map>

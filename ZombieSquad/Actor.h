@@ -17,18 +17,45 @@ enum class ActorTag {
 	BULLET
 };
 
+
+/// Abstract base class for all actors
+///
+/// Actor acts as a parent class for Player, Zombie and Bullet classes. 
+/// As this class is abstract, no objects can or should be instanciated 
+/// from this class
 class Actor
 {
 public:
 	Actor();
 	virtual ~Actor();
 
+	/// Draws the actor
+	///
+	/// Abstract method used to draw the actor. Must be implemented by children
+	/// 
+	/// @param PixelGameEngine& game
+	/// @returns no return value
+	/// @see Command()
 	virtual void Draw(olc::PixelGameEngine& game) = 0;
 	virtual void Update(float fElapsedTime) = 0;
 	
 
-	// Player commands
+	/// Moves a player actor forward
+	///
+	/// Command moves player actor in the direction its currently facing
+	/// overriden by child actor objects
+	/// @param dt delta time: time elapsed since the previous update.
+	/// @returns no return value
+	/// @see Command()
 	virtual void MoveForward(float dt){};
+
+	/// Moves a player actor backwards
+	///
+	/// Command moves player actor directly away from the direction its currently facing
+	/// overriden by child actor objects
+	/// @param dt delta time: time elapsed since the previous update.
+	/// @returns no return values
+	/// @see Command()
 	virtual void MoveBack(float dt)	{};
 	virtual void TurnRight(float dt)  {};
 	virtual void TurnLeft(float dt)   {};

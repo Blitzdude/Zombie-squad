@@ -15,6 +15,10 @@ Level
 	- map of sprites needed to draw <id, olc::sprite>
 */
 
+/// Sprite ID
+
+/*  This is used to determine by level, which sprite to draw in the cell
+*/
 
 enum class SpriteId
 {
@@ -23,6 +27,10 @@ enum class SpriteId
 	COUNT
 };
 
+/// Cell structure
+
+/* Game world is composed of Cells. They hold edge information and other information
+*/
 struct Cell
 {	
 	int edge_id[4] = {-1, -1, -1, -1};
@@ -35,6 +43,12 @@ struct Cell
 	SpriteId sprId;
 };
 
+
+/**
+* Level short description
+*
+* The level uses stuff and quarks
+*/
 class Level
 {
 public:
@@ -59,8 +73,7 @@ public:
 	// bool CheckLineIntersection(IntersectResult* point, Ray& e1, Edge& e2);
 	bool CheckIfVisible(float ox, float oy, float radius); // Not implemented
 	void DrawLevel(olc::PixelGameEngine& engine);
-	// bool CheckVictory(Actor* m_player); // TODO: change to use list of player-characters as parameter.
-
+	
 	// Getters
 	float GetCellSize() { return m_cellSize; }
 	const std::vector<Edge>& GetEdges() const { return vec_edges; }

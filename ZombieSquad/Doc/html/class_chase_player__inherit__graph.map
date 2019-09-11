@@ -1,0 +1,4 @@
+<map id="ChasePlayer" name="ChasePlayer">
+<area shape="rect" id="node1" title=" " alt="" coords="5,145,121,237"/>
+<area shape="rect" id="node2" href="$class_command.html" title=" " alt="" coords="9,5,118,97"/>
+</map>

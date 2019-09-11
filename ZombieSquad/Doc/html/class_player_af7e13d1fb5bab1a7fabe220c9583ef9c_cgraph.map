@@ -1,0 +1,5 @@
+<map id="Player::TurnLeft" name="Player::TurnLeft">
+<area shape="rect" id="node1" title=" " alt="" coords="5,31,119,57"/>
+<area shape="rect" id="node2" href="$class_actor.html#a938f21dadc75cbbe9a265da6736ec047" title=" " alt="" coords="167,5,300,32"/>
+<area shape="rect" id="node3" href="$class_actor.html#a155029c6ea99d39630391eef2d25c2b3" title=" " alt="" coords="167,56,299,83"/>
+</map>

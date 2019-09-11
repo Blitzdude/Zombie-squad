@@ -1,0 +1,4 @@
+<map id="Player" name="Player">
+<area shape="rect" id="node1" title=" " alt="" coords="5,292,149,545"/>
+<area shape="rect" id="node2" href="$class_actor.html" title="Abstract base class for all actors." alt="" coords="16,5,139,244"/>
+</map>

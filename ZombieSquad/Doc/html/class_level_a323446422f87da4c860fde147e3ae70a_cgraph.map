@@ -1,0 +1,7 @@
+<map id="Level::CalculateVisibilityPolygon" name="Level::CalculateVisibilityPolygon">
+<area shape="rect" id="node1" title=" " alt="" coords="5,74,168,115"/>
+<area shape="rect" id="node2" href="$class_vec2.html#a9b63ef4c211777bb1d8310540de309cf" title=" " alt="" coords="223,5,414,32"/>
+<area shape="rect" id="node3" href="$class_physics.html#ab8bcf05f014290dc45a077dc0f795cb0" title=" " alt="" coords="216,56,421,83"/>
+<area shape="rect" id="node4" href="$class_vec2.html#a920a4033f1642c6bd1eb63274476bb48" title=" " alt="" coords="249,107,388,133"/>
+<area shape="rect" id="node5" href="$class_vec2.html#a99b61b2c3a3c5cca31e64e410d6cfc81" title=" " alt="" coords="233,157,404,184"/>
+</map>

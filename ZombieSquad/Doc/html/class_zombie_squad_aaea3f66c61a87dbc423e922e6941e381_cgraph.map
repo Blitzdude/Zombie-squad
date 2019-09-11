@@ -1,0 +1,5 @@
+<map id="ZombieSquad::SpawnPlayer" name="ZombieSquad::SpawnPlayer">
+<area shape="rect" id="node1" title=" " alt="" coords="5,31,191,57"/>
+<area shape="rect" id="node2" href="$class_player_handler.html#a83d374f37cc55b3056590fb2ae586f51" title=" " alt="" coords="239,5,408,32"/>
+<area shape="rect" id="node3" href="$class_level.html#ad7cb25470e5f1ce24c1972b6e60ca9b4" title=" " alt="" coords="259,56,387,83"/>
+</map>

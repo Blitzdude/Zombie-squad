@@ -1,0 +1,7 @@
+<map id="Actor::SetY" name="Actor::SetY">
+<area shape="rect" id="node1" title=" " alt="" coords="196,81,287,108"/>
+<area shape="rect" id="node2" href="$class_player.html#a935722a42ca076ddc9cad86618ca5645" title=" " alt="" coords="13,5,140,32"/>
+<area shape="rect" id="node3" href="$class_player.html#a5097348f0972dc9e4e0887c529314a97" title="Moves a player actor forward." alt="" coords="5,56,148,83"/>
+<area shape="rect" id="node4" href="$class_player.html#a84321ec9e1d357f8f77440fb9bf5e04e" title=" " alt="" coords="25,107,129,133"/>
+<area shape="rect" id="node5" href="$class_zombie.html#a237c1c288dbfa5d7217ef3be03043556" title=" " alt="" coords="19,157,134,184"/>
+</map>
