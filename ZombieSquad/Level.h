@@ -20,6 +20,10 @@ Level
 /*  This is used to determine by level, which sprite to draw in the cell
 */
 
+
+/// Sprite id Enum class
+/// 
+/// Sprite id is a numbered Enum class by level to determine the Sprite to draw on the cell
 enum class SpriteId
 {
 	ROAD = 0,
@@ -45,9 +49,9 @@ struct Cell
 
 
 /**
-* Level short description
+* Level class
 *
-* The level uses stuff and quarks
+* Level is responsible for the 
 */
 class Level
 {

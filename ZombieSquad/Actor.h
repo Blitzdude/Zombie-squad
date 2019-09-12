@@ -35,8 +35,15 @@ public:
 	/// 
 	/// @param PixelGameEngine& game
 	/// @returns no return value
-	/// @see Command()
 	virtual void Draw(olc::PixelGameEngine& game) = 0;
+
+	/// Updates the actor
+	///
+	/// Abstract method used to update the actor. Must be implemented by children
+	///
+	/// @param dt delta time: time elapsed since previous update
+	/// @returns no return value
+	/// @see DoUpdate()
 	virtual void Update(float fElapsedTime) = 0;
 	
 
@@ -57,13 +64,54 @@ public:
 	/// @returns no return values
 	/// @see Command()
 	virtual void MoveBack(float dt)	{};
+	
+	/// Turns player actor right
+	///
+	/// Command turns player actor clockwise to the right
+	/// overriden by child actor objects
+	/// @param dt delta time: time elapsed since the previous update.
+	/// @returns no return values
+	/// @see Command()
 	virtual void TurnRight(float dt)  {};
+
+	/// Turns player actor left
+	///
+	/// Command turns player actor counter-clockwise to the left
+	/// overriden by child actor objects
+	/// @param dt delta time: time elapsed since the previous update.
+	/// @returns no return values
+	/// @see Command()
 	virtual void TurnLeft(float dt)   {};
+
+	/// Changes the controlled player
+	///
+	/// Changes the players state to controlled or watching depending on the boolean
+	/// overriden by child actor objects
+	/// @param truth if the player should become the controlled player
+	/// @returns no return values
+	/// @see Command()
 	virtual void ChangePlayer(bool truth) {};
+	
+	/// Commands actor to attack.
+	///
+	/// Tells the actor to attack. All actors create bullets, in their attack
+	/// overriden by child actor objects
+	/// @param dt delta time: time elapsed since the previous update.
+	/// @returns no return values
+	/// @see Command()
 	virtual void Attack(float dt) {};
+
+	/// Commands actor to die
+	///
+	/// Tells the actor to die. This puts the actor in an appropriate DEAD state
+	/// overriden by child actor objects
+	/// @param dt delta time: time elapsed since the previous update.
+	/// @returns no return values
+	/// @see Command()
 	virtual void Die(float dt) {};
 
 	// Zombie commands
+
 	virtual void Chase(const Player& player) {};
 	
 	Vec2f GetDirectionVector() const;
