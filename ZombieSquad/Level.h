@@ -2,7 +2,6 @@
 #include "Vec2.h"
 #include "StructCollection.h"
 #include "olcPixelGameEngine.h"
-#include <vector>
 #include <string>
 #include <map>
 #include <array>
@@ -44,10 +43,17 @@ struct Cell
 	bool obstacle = false;
 	bool isStart = false;
 	bool isGoal = false;
+	bool isVisited = false;
+
 	int xCoord = -1;
 	int yCoord = -1;
+	float globalGoalDist = 0.0f;
+	float localGoalDist = 0.0f;
 	SpriteId sprId = SpriteId::NONE;
+	Cell* parentCell = nullptr;
+	std::vector<Cell*> vecNeighbours;
 };
+
 
 
 /**
@@ -71,6 +77,14 @@ public:
 
 	bool LoadLevel(std::string filepath);
 	bool LoadTextures();
+
+	/// Initialize Path finding 
+	/*
+	* NOTE: Must be called AFTER LoadLevel
+	*
+	*/
+	void InitPathfinding();
+
 	void ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float fBlockWidth, int pitch);
 
 	void DrawPolyMap(olc::PixelGameEngine& engine);

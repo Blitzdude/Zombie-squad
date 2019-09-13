@@ -1,6 +1,5 @@
 #include "Level.h"
 #include "Physics.h"
-#include <utility>
 #include <sstream>
 // #include <algorithm>
 
@@ -85,8 +84,6 @@ bool Level::LoadLevel(std::string filepath)
 			// add Cells coordinates
 			m_map[x + y * m_mapCellWidth].xCoord = x;
 			m_map[x + y * m_mapCellWidth].yCoord = y;
-
-
 		}
 	}
 
@@ -114,6 +111,41 @@ bool Level::LoadTextures()
 	return true;
 }
 
+void Level::InitPathfinding()
+{
+	for (int x = 0; x < m_mapCellWidth; x++)
+		for (int y = 0; y < m_mapCellHeight; y++)
+		{
+			m_map[y * m_mapCellWidth + x].parentCell = nullptr;
+			m_map[y * m_mapCellWidth + x].isVisited = false;
+		}
+
+	// Create connections - in this case m_map are on a regular grid
+	for (int x = 0; x < m_mapCellWidth; x++)
+		for (int y = 0; y < m_mapCellHeight; y++)
+		{
+			if (y > 0)
+				m_map[y * m_mapCellWidth + x].vecNeighbours.push_back(&m_map[(y - 1) * m_mapCellWidth + (x + 0)]);
+			if (y < m_mapCellHeight - 1)
+				m_map[y * m_mapCellWidth + x].vecNeighbours.push_back(&m_map[(y + 1) * m_mapCellWidth + (x + 0)]);
+			if (x > 0)
+				m_map[y * m_mapCellWidth + x].vecNeighbours.push_back(&m_map[(y + 0) * m_mapCellWidth + (x - 1)]);
+			if (x < m_mapCellWidth - 1)
+				m_map[y * m_mapCellWidth + x].vecNeighbours.push_back(&m_map[(y + 0) * m_mapCellWidth + (x + 1)]);
+
+			// We can also connect diagonally
+			/*if (y>0 && x>0)
+				nodes[y*nMapWidth + x].vecNeighbours.push_back(&nodes[(y - 1) * nMapWidth + (x - 1)]);
+			if (y<nMapHeight-1 && x>0)
+				nodes[y*nMapWidth + x].vecNeighbours.push_back(&nodes[(y + 1) * nMapWidth + (x - 1)]);
+			if (y>0 && x<nMapWidth-1)
+				nodes[y*nMapWidth + x].vecNeighbours.push_back(&nodes[(y - 1) * nMapWidth + (x + 1)]);
+			if (y<nMapHeight - 1 && x<nMapWidth-1)
+				nodes[y*nMapWidth + x].vecNeighbours.push_back(&nodes[(y + 1) * nMapWidth + (x + 1)]);
+			*/
+		}
+}
+
 
 
 void Level::ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float fBlockWidth, int pitch)
@@ -136,11 +168,11 @@ void Level::ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float fBlockWi
 		for (int y = 0; y < h; y++)
 		{
 			// Create some convenient indices
-			int i = (y + sy) * pitch + (x + sx);		// This
+			int i = (y + sy) * pitch + (x + sx);			// This Cell
 			int north = (y + sy - 1) * pitch + (x + sx);	// Northern Neighbour
 			int south = (y + sy + 1) * pitch + (x + sx);	// Southern Neighbour
-			int west = (y + sy) * pitch + (x + sx - 1);	// Western Neighbour
-			int east = (y + sy) * pitch + (x + sx + 1);	// Eastern Neighbour
+			int west = (y + sy) * pitch + (x + sx - 1);		// Western Neighbour
+			int east = (y + sy) * pitch + (x + sx + 1);		// Eastern Neighbour
 			// Bools for if neighbors are inside the array
 			bool i_isBoundary = x == 0 || x + 1 == m_mapCellWidth || y == 0 || y + 1 == m_mapCellHeight;
 			bool north_in = y > 0;
@@ -523,6 +555,92 @@ std::vector<std::pair<int, int>> Level::GetPathToTarget(const Vec2f& start, cons
 }
 std::vector<std::pair<int, int>> Level::SolveAStarPath(std::pair<int, int> startCoord, std::pair<int, int> targetCoord)
 {
+	// Reset Navigation Graph - default all node states
+	for (int x = 0; x < m_mapCellWidth; x++)
+		for (int y = 0; y < m_mapCellHeight; y++)
+		{
+			m_map[y * m_mapCellWidth + x].isVisited = false;
+			m_map[y * m_mapCellWidth + x].globalGoalDist = INFINITY;
+			m_map[y * m_mapCellWidth + x].localGoalDist = INFINITY;
+			m_map[y * m_mapCellWidth + x].parentCell = nullptr;	// No parents
+		}
+
+	auto distance = [](Cell* a, Cell* b) // For convenience
+	{
+		return sqrtf((a->xCoord - b->xCoord) * (a->xCoord - b->xCoord) + (a->yCoord - b->yCoord) * (a->yCoord - b->yCoord));
+	};
+
+	auto heuristic = [distance](Cell* a, Cell* b) // So we can experiment with heuristic
+	{
+		return distance(a, b);
+	};
+
+	// Setup starting conditions
+	
+	Cell* nodeStart = GetCell(startCoord.first, startCoord.second);
+	Cell* nodeEnd = GetCell(targetCoord.first, targetCoord.second);
+
+	Cell* nodeCurrent = nodeStart;
+	nodeStart->localGoalDist = 0.0f;
+	nodeStart->globalGoalDist = heuristic(nodeStart, nodeEnd);
+
+	// Add start node to not tested list - this will ensure it gets tested.
+	// As the algorithm progresses, newly discovered nodes get added to this
+	// list, and will themselves be tested later
+	std::list<Cell*> listNotTestedNodes;
+	listNotTestedNodes.push_back(nodeStart);
+
+	// if the not tested list contains nodes, there may be better paths
+	// which have not yet been explored. However, we will also stop 
+	// searching when we reach the target - there may well be better
+	// paths but this one will do - it wont be the longest.
+	while (!listNotTestedNodes.empty() && nodeCurrent != nodeEnd)// Find absolutely shortest path // && nodeCurrent != nodeEnd)
+	{
+		// Sort Untested nodes by global goal, so lowest is first
+		listNotTestedNodes.sort([](const Cell* lhs, const Cell* rhs) { return lhs->globalGoalDist < rhs->globalGoalDist; });
+
+		// Front of listNotTestedNodes is potentially the lowest distance node. Our
+		// list may also contain nodes that have been visited, so ditch these...
+		while (!listNotTestedNodes.empty() && listNotTestedNodes.front()->isVisited)
+			listNotTestedNodes.pop_front();
+
+		// ...or abort because there are no valid nodes left to test
+		if (listNotTestedNodes.empty())
+			break;
+
+		nodeCurrent = listNotTestedNodes.front();
+		nodeCurrent->isVisited = true; // We only explore a node once
+
+
+		// Check each of this node's neighbours...
+		for (auto nodeNeighbour : nodeCurrent->vecNeighbours)
+		{
+			// ... and only if the neighbour is not visited and is 
+			// not an obstacle, add it to NotTested List
+			if (!nodeNeighbour->isVisited && nodeNeighbour->obstacle == 0)
+				listNotTestedNodes.push_back(nodeNeighbour);
+
+			// Calculate the neighbours potential lowest parent distance
+			float fPossiblyLowerGoal = nodeCurrent->localGoalDist + distance(nodeCurrent, nodeNeighbour);
+
+			// If choosing to path through this node is a lower distance than what 
+			// the neighbour currently has set, update the neighbour to use this node
+			// as the path source, and set its distance scores as necessary
+			if (fPossiblyLowerGoal < nodeNeighbour->localGoalDist)
+			{
+				nodeNeighbour->parentCell = nodeCurrent;
+				nodeNeighbour->localGoalDist = fPossiblyLowerGoal;
+
+				// The best path length to the neighbour being tested has changed, so
+				// update the neighbour's score. The heuristic is used to globally bias
+				// the path algorithm, so it knows if its getting better or worse. At some
+				// point the algo will realise this path is worse and abandon it, and then go
+				// and search along the next best path.
+				nodeNeighbour->globalGoalDist = nodeNeighbour->localGoalDist + heuristic(nodeNeighbour, nodeEnd);
+			}
+		}
+	}
+
 	return std::vector<std::pair<int, int>>();
 }
 /*
