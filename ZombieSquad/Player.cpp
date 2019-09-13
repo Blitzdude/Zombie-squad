@@ -62,7 +62,7 @@ void Player::Draw(olc::PixelGameEngine& game)
 	float cellSize = m_handler->m_game->m_currentLevel->GetCellSize();
 	Cell* cell = m_handler->m_game->m_currentLevel->GetCell(GetPosition());
 
-	game.DrawRect(cell->xPos * cellSize, cell->yPos * cellSize, cellSize, cellSize, olc::MAGENTA);
+	game.DrawRect(cell->xCoord * cellSize, cell->yCoord * cellSize, cellSize, cellSize, olc::MAGENTA);
 
 #pragma warning (default : 4244)
 }

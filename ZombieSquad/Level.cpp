@@ -1,7 +1,8 @@
 #include "Level.h"
 #include "Physics.h"
+#include <utility>
 #include <sstream>
-#include <algorithm>
+// #include <algorithm>
 
 // Convenient defines for polymap conversion
 constexpr unsigned int NORTH = 0;
@@ -82,8 +83,8 @@ bool Level::LoadLevel(std::string filepath)
 				}
 			}
 			// add Cells coordinates
-			m_map[x + y * m_mapCellWidth].xPos = x;
-			m_map[x + y * m_mapCellWidth].yPos = y;
+			m_map[x + y * m_mapCellWidth].xCoord = x;
+			m_map[x + y * m_mapCellWidth].yCoord = y;
 
 
 		}
@@ -504,6 +505,25 @@ void Level::DrawLevel(olc::PixelGameEngine & engine)
 	}
 #pragma warning (default : 4244)
 
+}
+std::vector<std::pair<int, int>> Level::GetPathToTarget(const Vec2f& start, const Vec2f& target)
+{
+	// get relevant cell coordinates of start and target
+	Cell* startCell  = GetCell(start);
+	Cell* targetCell = GetCell(target);
+	// Turn them into pairs of cell coordinates
+	std::pair<int, int> startCoord  = std::make_pair(startCell->xCoord , startCell->yCoord);
+	std::pair<int, int> targetCoord = std::make_pair(targetCell->xCoord, targetCell->yCoord);
+
+	// call solve AStar
+	std::vector<std::pair<int, int>> ret = SolveAStarPath(startCoord, targetCoord);
+	// TODO: Return empty vector for now...
+	return std::vector<std::pair<int, int>>();
+	
+}
+std::vector<std::pair<int, int>> Level::SolveAStarPath(std::pair<int, int> startCoord, std::pair<int, int> targetCoord)
+{
+	return std::vector<std::pair<int, int>>();
 }
 /*
 bool Level::CheckVictory(Actor* m_player)

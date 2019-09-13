@@ -2,6 +2,7 @@
 #include "Vec2.h"
 #include "StructCollection.h"
 #include "olcPixelGameEngine.h"
+#include <vector>
 #include <string>
 #include <map>
 #include <array>
@@ -26,7 +27,8 @@ Level
 /// Sprite id is a numbered Enum class by level to determine the Sprite to draw on the cell
 enum class SpriteId
 {
-	ROAD = 0,
+	NONE = -1,
+	ROAD,
 	BUILDING,
 	COUNT
 };
@@ -42,9 +44,9 @@ struct Cell
 	bool obstacle = false;
 	bool isStart = false;
 	bool isGoal = false;
-	int xPos;
-	int yPos;
-	SpriteId sprId;
+	int xCoord = -1;
+	int yCoord = -1;
+	SpriteId sprId = SpriteId::NONE;
 };
 
 
@@ -72,19 +74,52 @@ public:
 	void ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float fBlockWidth, int pitch);
 
 	void DrawPolyMap(olc::PixelGameEngine& engine);
-	void CalculateVisibilityPolygon(float ox, float oy, float radius, float direction, float fovRad); // Not Implemented
-	void DrawVisibilityPolygon(const std::vector<std::tuple<float, float, float>>& points);
+	
+	/// Not Implemented
+	///
+	///
+	void CalculateVisibilityPolygon(float ox, float oy, float radius, float direction, float fovRad); 
+	
+	/// Not Implemented
+	///
+	///
+	void DrawVisibilityPolygon(const std::vector<std::tuple<float, float, float>>& points); 
 	// bool CheckLineIntersection(IntersectResult* point, Ray& e1, Edge& e2);
+	
+	/// Not Implemented
+	///
+	///
 	bool CheckIfVisible(float ox, float oy, float radius); // Not implemented
+	
+	/// Draws the level
+	///
+	/// Used for drawing the level
+	/// @param engine Reference to the game engine class
 	void DrawLevel(olc::PixelGameEngine& engine);
 	
+	/// Gets path as vector of int pairs
+	///
+	/// Uses A*-algorithm to find the path from start location to target location
+	/// @param start Position of the start coordinate
+	/// @param target Position of the target location
+	/// @returns returns a vector of int pairs corresponding to cells to pass through
+	std::vector<std::pair<int, int>> GetPathToTarget(const Vec2f& start, const Vec2f& target);
+
+	/// Solves a path using A-star
+	/// 
+	/// called by GetPathToTarget(const Vec2f&, const Vec2f&) to solve the path from starting
+	/// cell and target cell. 
+	/// @param startCoord coordinate of the starting cell
+	/// @param targetCoord coordinate of the target cell
+	/// @returns returns vector of int pairs corresponding to cells to pass through
+	std::vector<std::pair<int, int>> SolveAStarPath(std::pair<int, int> startCoord, std::pair<int, int> targetCoord);
+
 	// Getters
 	float GetCellSize() { return m_cellSize; }
 	const std::vector<Edge>& GetEdges() const { return vec_edges; }
 	const Vec2f& GetStart() { return m_startPosition; }
 	int GetStartX() { return (int)(m_startPosition.x / m_cellSize); }
 	int GetStartY() { return (int)(m_startPosition.y / m_cellSize); }
-
 	int GetNumCellsX() { return m_mapCellWidth; }
 	int GetNumCellsY() { return m_mapCellHeight; }
 	Cell* GetCell(int x, int y);
