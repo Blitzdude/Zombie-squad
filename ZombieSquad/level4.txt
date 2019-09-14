@@ -1,9 +1,9 @@
 10 8 64
-C.CCC.C.CC
+CECCC.C.CC
 ..C...C.CC
 C...C.....
 .CCCCC..CC
 ...CC...C.
 ..CC...CC.
-..E.......
+..........
 ...CS.CCCC

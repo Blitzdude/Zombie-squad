@@ -685,7 +685,7 @@ std::vector<std::pair<int, int>> Level::SolveAStarPath(std::pair<int, int> start
 		}
 	}
 
-	return std::vector<std::pair<int, int>>();
+	return returnableList;
 }
 
 Cell* Level::GetCell(int x, int y)

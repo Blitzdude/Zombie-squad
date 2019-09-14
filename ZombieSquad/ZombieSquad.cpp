@@ -251,7 +251,7 @@ void ZombieSquad::DoDraw()
 
 	m_currentLevel->DrawLevel(*this);
 	m_currentLevel->DrawPolyMap(*this);
-	m_currentLevel->DrawConnections(*this);
+	// m_currentLevel->DrawConnections(*this);
 	for (auto& itr : vecActors)
 	{
 		itr->Draw(*this);
@@ -259,16 +259,24 @@ void ZombieSquad::DoDraw()
 	
 
 	// DEBUG: Draw the cells with the path
-	/*
-	for (auto itr = vecDebugPath.begin(); std::next(itr) != vecDebugPath.end(); itr++)
+	
+	if (!vecDebugPath.empty())
 	{
-		auto next = std::next(itr);
-		DrawLine(m_currentLevel->GetCellCenterPos(itr->first, itr->second).x, 
-				 m_currentLevel->GetCellCenterPos(itr->first, itr->second).y,
-				 m_currentLevel->GetCellCenterPos(next->first, next->second).x,
-				 m_currentLevel->GetCellCenterPos(next->first, next->second).y);
+		for (auto itr = vecDebugPath.begin(); itr != vecDebugPath.end(); itr++)
+		{
+			if (itr != vecDebugPath.begin())
+			{
+
+			auto prev = std::prev(itr);
+			DrawLine(m_currentLevel->GetCellCenterPos(itr->first, itr->second).x, 
+					 m_currentLevel->GetCellCenterPos(itr->first, itr->second).y,
+					 m_currentLevel->GetCellCenterPos(prev->first, prev->second).x,
+					 m_currentLevel->GetCellCenterPos(prev->first, prev->second).y,
+					 olc::RED);
+			}
+		}
 	}
-	*/
+	
 }
 
 bool ZombieSquad::CheckVictory()
