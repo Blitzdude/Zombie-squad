@@ -256,7 +256,7 @@ protected:
 				for (auto n : nodes[y * nMapWidth + x].vecNeighbours)
 				{
 					DrawLine(x * nNodeSize + nNodeSize / 2, y * nNodeSize + nNodeSize / 2,
-						n->x * nNodeSize + nNodeSize / 2, n->y * nNodeSize + nNodeSize / 2, olc::DARK_BLUE);
+						n->x * nNodeSize + nNodeSize / 2, n->y * nNodeSize + nNodeSize / 2, olc::VERY_DARK_BLUE);
 				}
 			}
 
@@ -270,7 +270,7 @@ protected:
 				
 
 				if (nodes[y * nMapWidth + x].bVisited)
-					FillRect(x * nNodeSize + nNodeBorder, y * nNodeSize + nNodeBorder, nNodeSize - nNodeBorder, nNodeSize - nNodeBorder, olc::MAGENTA);
+					FillRect(x * nNodeSize + nNodeBorder, y * nNodeSize + nNodeBorder, nNodeSize - nNodeBorder, nNodeSize - nNodeBorder, olc::BLUE);
 
 				if (&nodes[y * nMapWidth + x] == nodeStart)
 					FillRect(x * nNodeSize + nNodeBorder, y * nNodeSize + nNodeBorder, nNodeSize - nNodeBorder, nNodeSize - nNodeBorder, olc::GREEN);
@@ -304,7 +304,7 @@ protected:
 int main()
 {
 	OneLoneCoder_PathFinding game;
-	game.Construct(160, 160, 4, 4);
+	game.Construct(160, 160, 6, 6);
 	game.Start();
 	return 0;
 }

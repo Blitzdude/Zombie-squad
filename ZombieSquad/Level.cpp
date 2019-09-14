@@ -72,6 +72,7 @@ bool Level::LoadLevel(std::string filepath)
 				case 'E':
 				case 'e':
 					GetCell(x, y)->isGoal = true;
+					m_endPosition = Vec2f(x * m_cellSize + (m_cellSize / 2), y * m_cellSize + (m_cellSize / 2));
 					m_map[x + y * m_mapCellWidth].obstacle = false;
 					m_map[x + y * m_mapCellWidth].sprId = SpriteId::ROAD;
 					break;
@@ -113,25 +114,22 @@ bool Level::LoadTextures()
 
 void Level::InitPathfinding()
 {
-	for (int x = 0; x < m_mapCellWidth; x++)
-		for (int y = 0; y < m_mapCellHeight; y++)
-		{
-			m_map[y * m_mapCellWidth + x].parentCell = nullptr;
-			m_map[y * m_mapCellWidth + x].isVisited = false;
-		}
+
+	ClearPathfinding();
 
 	// Create connections - in this case m_map are on a regular grid
 	for (int x = 0; x < m_mapCellWidth; x++)
+	{
 		for (int y = 0; y < m_mapCellHeight; y++)
 		{
 			if (y > 0)
-				m_map[y * m_mapCellWidth + x].vecNeighbours.push_back(&m_map[(y - 1) * m_mapCellWidth + (x + 0)]);
+				m_map[y * m_mapCellWidth + x].vecNeighbours.push_back(&m_map[(y - 1) * m_mapCellWidth + (x + 0)]); // UP
 			if (y < m_mapCellHeight - 1)
-				m_map[y * m_mapCellWidth + x].vecNeighbours.push_back(&m_map[(y + 1) * m_mapCellWidth + (x + 0)]);
+				m_map[y * m_mapCellWidth + x].vecNeighbours.push_back(&m_map[(y + 1) * m_mapCellWidth + (x + 0)]); // DOWN
 			if (x > 0)
-				m_map[y * m_mapCellWidth + x].vecNeighbours.push_back(&m_map[(y + 0) * m_mapCellWidth + (x - 1)]);
+				m_map[y * m_mapCellWidth + x].vecNeighbours.push_back(&m_map[(y + 0) * m_mapCellWidth + (x - 1)]); // LEFT
 			if (x < m_mapCellWidth - 1)
-				m_map[y * m_mapCellWidth + x].vecNeighbours.push_back(&m_map[(y + 0) * m_mapCellWidth + (x + 1)]);
+				m_map[y * m_mapCellWidth + x].vecNeighbours.push_back(&m_map[(y + 0) * m_mapCellWidth + (x + 1)]); // RIGHT
 
 			// We can also connect diagonally
 			/*if (y>0 && x>0)
@@ -144,9 +142,24 @@ void Level::InitPathfinding()
 				nodes[y*nMapWidth + x].vecNeighbours.push_back(&nodes[(y + 1) * nMapWidth + (x + 1)]);
 			*/
 		}
+	}
 }
 
 
+
+void Level::ClearPathfinding()
+{
+	for (int x = 0; x < m_mapCellWidth; x++)
+	{
+		for (int y = 0; y < m_mapCellHeight; y++)
+		{
+			m_map[y * m_mapCellWidth + x].globalGoalDist = INFINITY;
+			m_map[y * m_mapCellWidth + x].localGoalDist = INFINITY;
+			m_map[y * m_mapCellWidth + x].parentCell = nullptr;
+			m_map[y * m_mapCellWidth + x].isVisited = false;
+		}
+	}
+}
 
 void Level::ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float fBlockWidth, int pitch)
 {
@@ -155,12 +168,16 @@ void Level::ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float fBlockWi
 
 	// Clear each cells information
 	for (int x = 0; x < w; x++)
+	{
 		for (int y = 0; y < h; y++)
+		{
 			for (int j = 0; j < 4; j++)
 			{
 				m_map[(y + sy) * pitch + (x + sx)].edge_exist[j] = false;
 				m_map[(y + sy) * pitch + (x + sx)].edge_id[j] = 0;
 			}
+		}
+	}
 
 	// Iterate through region from top left to bottom right
 	for (int x = 0; x < w; x++)
@@ -317,9 +334,7 @@ void Level::ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float fBlockWi
 						m_map[i].edge_exist[SOUTH] = true;
 					}
 				}
-
 			}
-			
 		}
 	}
 	// create the level boundary
@@ -373,6 +388,25 @@ void Level::DrawPolyMap(olc::PixelGameEngine & engine)
 	}
 #pragma warning (default : 4244)
 
+}
+
+void Level::DrawConnections(olc::PixelGameEngine& engine)
+{
+	for (int y = 0; y < m_mapCellHeight; y++)
+	{
+		for (int x = 0; x < m_mapCellWidth; x++)
+		{
+			for (auto itr : m_map[y * m_mapCellWidth + x].vecNeighbours)
+			{
+				Vec2f cellCenter = GetCellCenterPos(x, y);
+				Vec2f neighborCenter = GetCellCenterPos(itr->xCoord, itr->yCoord);
+
+				engine.DrawLine( cellCenter.x, cellCenter.y,
+								 neighborCenter.x, neighborCenter.y,
+								 olc::WHITE, 0xF0F0F0F0F);
+			}
+		}
+	}
 }
 
 void Level::CalculateVisibilityPolygon(float ox, float oy, float radius, float direction, float fovRad)
@@ -538,6 +572,7 @@ void Level::DrawLevel(olc::PixelGameEngine & engine)
 #pragma warning (default : 4244)
 
 }
+
 std::vector<std::pair<int, int>> Level::GetPathToTarget(const Vec2f& start, const Vec2f& target)
 {
 	// get relevant cell coordinates of start and target
@@ -548,22 +583,17 @@ std::vector<std::pair<int, int>> Level::GetPathToTarget(const Vec2f& start, cons
 	std::pair<int, int> targetCoord = std::make_pair(targetCell->xCoord, targetCell->yCoord);
 
 	// call solve AStar
+
 	std::vector<std::pair<int, int>> ret = SolveAStarPath(startCoord, targetCoord);
-	// TODO: Return empty vector for now...
-	return std::vector<std::pair<int, int>>();
+
+	return ret;
 	
 }
+
 std::vector<std::pair<int, int>> Level::SolveAStarPath(std::pair<int, int> startCoord, std::pair<int, int> targetCoord)
 {
 	// Reset Navigation Graph - default all node states
-	for (int x = 0; x < m_mapCellWidth; x++)
-		for (int y = 0; y < m_mapCellHeight; y++)
-		{
-			m_map[y * m_mapCellWidth + x].isVisited = false;
-			m_map[y * m_mapCellWidth + x].globalGoalDist = INFINITY;
-			m_map[y * m_mapCellWidth + x].localGoalDist = INFINITY;
-			m_map[y * m_mapCellWidth + x].parentCell = nullptr;	// No parents
-		}
+	ClearPathfinding();
 
 	auto distance = [](Cell* a, Cell* b) // For convenience
 	{
@@ -617,7 +647,7 @@ std::vector<std::pair<int, int>> Level::SolveAStarPath(std::pair<int, int> start
 		{
 			// ... and only if the neighbour is not visited and is 
 			// not an obstacle, add it to NotTested List
-			if (!nodeNeighbour->isVisited && nodeNeighbour->obstacle == 0)
+			if (!nodeNeighbour->isVisited && nodeNeighbour->obstacle == false)
 				listNotTestedNodes.push_back(nodeNeighbour);
 
 			// Calculate the neighbours potential lowest parent distance
@@ -640,22 +670,23 @@ std::vector<std::pair<int, int>> Level::SolveAStarPath(std::pair<int, int> start
 			}
 		}
 	}
+	// Create the returnable list
+	std::vector<std::pair<int, int>> returnableList;
+	// populate the path by starting at the end, and following the parent node trail
+	// back to the start - the start node will not have a parent path to follow
+	if (nodeEnd != nullptr)
+	{
+		Cell* p = nodeEnd;
+		while (p->parentCell != nullptr)
+		{
+			returnableList.push_back(std::make_pair(p->xCoord, p->yCoord));
+			// Set next node to this node's parent
+			p = p->parentCell;
+		}
+	}
 
 	return std::vector<std::pair<int, int>>();
 }
-/*
-bool Level::CheckVictory(Actor* m_player)
-{
-	if (GetCell(m_player->GetPosition())->isGoal)
-	{
-		return true;
-	}
-	else 
-	{
-		return false;
-	}
-}
-*/
 
 Cell* Level::GetCell(int x, int y)
 {

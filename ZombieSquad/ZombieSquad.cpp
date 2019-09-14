@@ -21,7 +21,7 @@ bool ZombieSquad::OnUserCreate()
 	*/
 
 	m_currentLevel = new Level("level4.txt");
-
+	m_currentLevel->InitPathfinding();
 	// Generate Edge data from tile map
 	/*
 		see lineOfSight demo
@@ -80,6 +80,8 @@ bool ZombieSquad::OnUserCreate()
 	m_isGameOver = false;
 	m_isWin = false;
 	
+	vecDebugPath = m_currentLevel->GetPathToTarget(m_currentLevel->GetStart(), m_currentLevel->GetEnd());
+
 	// If createSuccess is false, Initializing handlers failed
 	return createSuccess;
 }
@@ -249,11 +251,24 @@ void ZombieSquad::DoDraw()
 
 	m_currentLevel->DrawLevel(*this);
 	m_currentLevel->DrawPolyMap(*this);
-
+	m_currentLevel->DrawConnections(*this);
 	for (auto& itr : vecActors)
 	{
 		itr->Draw(*this);
 	}
+	
+
+	// DEBUG: Draw the cells with the path
+	/*
+	for (auto itr = vecDebugPath.begin(); std::next(itr) != vecDebugPath.end(); itr++)
+	{
+		auto next = std::next(itr);
+		DrawLine(m_currentLevel->GetCellCenterPos(itr->first, itr->second).x, 
+				 m_currentLevel->GetCellCenterPos(itr->first, itr->second).y,
+				 m_currentLevel->GetCellCenterPos(next->first, next->second).x,
+				 m_currentLevel->GetCellCenterPos(next->first, next->second).y);
+	}
+	*/
 }
 
 bool ZombieSquad::CheckVictory()

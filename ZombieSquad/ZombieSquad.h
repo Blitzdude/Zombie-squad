@@ -43,6 +43,9 @@ private:
 	std::vector<Actor*> vecActors;
 	std::vector<Actor*> vecActorsToAdd;
 
+	/// For testing purpouses only.
+	std::vector<std::pair<int, int>> vecDebugPath;
+
 	bool m_isWin;
 	bool m_isGameOver;
 	bool m_isRunning;

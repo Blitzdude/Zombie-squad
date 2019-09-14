@@ -59,7 +59,7 @@ struct Cell
 /**
 * Level class
 *
-* Level is responsible for the 
+* Level is responsible for everything involved with the level 
 */
 class Level
 {
@@ -81,14 +81,19 @@ public:
 	/// Initialize Path finding 
 	/*
 	* NOTE: Must be called AFTER LoadLevel
-	*
+	* Clears cells for pathfinding and creates connections
 	*/
 	void InitPathfinding();
+
+	/// Clears pathfinding data on cells
+	/// 
+	/// Needed to be called, whenever pathfinding is done
+	void ClearPathfinding();
 
 	void ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float fBlockWidth, int pitch);
 
 	void DrawPolyMap(olc::PixelGameEngine& engine);
-	
+	void DrawConnections(olc::PixelGameEngine& engine);
 	/// Not Implemented
 	///
 	///
@@ -104,7 +109,6 @@ public:
 	///
 	///
 	bool CheckIfVisible(float ox, float oy, float radius); // Not implemented
-	
 	/// Draws the level
 	///
 	/// Used for drawing the level
@@ -132,6 +136,16 @@ public:
 	float GetCellSize() { return m_cellSize; }
 	const std::vector<Edge>& GetEdges() const { return vec_edges; }
 	const Vec2f& GetStart() { return m_startPosition; }
+	const Vec2f& GetEnd() { return m_endPosition; }
+	const Vec2f GetCellCenterPos(int x, int y) 
+	{ 
+		return Vec2f(x * GetCellSize() + GetCellSize() / 2.0f, y * GetCellSize() + GetCellSize() / 2.0f); 
+	};
+	
+	// TODO: Change naming scheme to following: 
+	// - Cell -> Returns Cell*
+	// - Pos -> Returns Vec2f as Cells center?
+	// - CoordX/CoordY -> returns Cells coordinate int in array
 	int GetStartX() { return (int)(m_startPosition.x / m_cellSize); }
 	int GetStartY() { return (int)(m_startPosition.y / m_cellSize); }
 	int GetNumCellsX() { return m_mapCellWidth; }
@@ -139,11 +153,13 @@ public:
 	Cell* GetCell(int x, int y);
 	Cell* GetCell(Vec2f pos);
 	
+
 private:
 	int m_mapCellWidth; // Map width in cells
 	int m_mapCellHeight; // Map Height in cells
 	float m_cellSize;
 	Vec2f m_startPosition;
+	Vec2f m_endPosition;
 	Cell* m_map; // TODO: This is not very c++11
 	std::array<olc::Sprite*, (size_t)SpriteId::COUNT> m_sprites;
 	std::vector<std::tuple<float, float, float>> m_vecVisibilityPolygonPoints;
