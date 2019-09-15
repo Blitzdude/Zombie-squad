@@ -19,7 +19,7 @@ public:
 	virtual void Die(float dt) override;
 	virtual void Attack(float dt) override;
 	void doMove(float dt);
-
+	Vec2f GetRandomCellLocation();
 	
 
 	// Setters

@@ -127,3 +127,29 @@ void Zombie::doMove(float dt)
 	}
 	
 }
+
+Vec2f Zombie::GetRandomCellLocation()
+{
+	// Get the current cell
+	Cell* currentCell = m_game->m_currentLevel->GetCell(GetPosition());
+	float cellSize = m_game->m_currentLevel->GetCellSize();
+	// choose a random cell from current and neighbors
+	int r = rand() % currentCell->vecNeighbours.size(); // number between 0 - size
+	Cell* choice = nullptr;
+	if (r < currentCell->vecNeighbours.size()) 
+	{
+		// choose indexed neighbor
+		choice = currentCell->vecNeighbours[r];
+	}
+	else {
+		// choose the current cell
+		choice = currentCell;
+	}
+	// pick a random location within the cell
+	float rX = (rand() % 101) / 100.0f; // Returns number between 0.0 - 1.0
+	float rY = (rand() % 101) / 100.0f; 
+	float rPosX = choice->xPos + cellSize * rX;
+	float rPosY = choice->yPos + cellSize * rY;
+	// return the randomized location
+	return Vec2f(rPosX, rPosY);
+}

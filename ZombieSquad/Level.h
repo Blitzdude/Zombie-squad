@@ -47,6 +47,9 @@ struct Cell
 
 	int xCoord = -1;
 	int yCoord = -1;
+	// upper-left corner
+	float xPos = 0.0f;
+	float yPos = 0.0f;
 	float globalGoalDist = 0.0f;
 	float localGoalDist = 0.0f;
 	SpriteId sprId = SpriteId::NONE;

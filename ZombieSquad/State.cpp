@@ -67,11 +67,15 @@ void Roaming::Update(Zombie& zombie, float dt)
 	{
 		m_timer = 0.0f;
 		// randomize direction
-		float rX = ((rand() % (2 * 100)) - 100) / 100.0f; // returns value between -1.0f / 1.0f 
-		float rY = ((rand() % (2 * 100)) - 100) / 100.0f; // returns value between -1.0f / 1.0f
-		Vec2f r(rX, rY);
-		
-		zombie.SetTarget(zombie.GetPosition() + r * 100.0f);
+
+		// NOT USED /////////////////////////////////////////////////
+		// Pick a random cell from current one and this on
+		//float rX = ((rand() % (2 * 100)) - 100) / 100.0f; // returns value between -1.0f / 1.0f 
+		//float rY = ((rand() % (2 * 100)) - 100) / 100.0f; // returns value between -1.0f / 1.0f
+		// /////////////////////////////////////////////////////////
+
+		Vec2f r = zombie.GetRandomCellLocation();
+		zombie.SetTarget(r);
 	}
 
 	zombie.doMove(dt);

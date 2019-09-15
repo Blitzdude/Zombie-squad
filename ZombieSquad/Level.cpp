@@ -85,6 +85,8 @@ bool Level::LoadLevel(std::string filepath)
 			// add Cells coordinates
 			m_map[x + y * m_mapCellWidth].xCoord = x;
 			m_map[x + y * m_mapCellWidth].yCoord = y;
+			m_map[x + y * m_mapCellWidth].xPos = x * m_cellSize;
+			m_map[x + y * m_mapCellWidth].yPos = y * m_cellSize;
 		}
 	}
 
