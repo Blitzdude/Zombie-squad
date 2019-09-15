@@ -27,7 +27,9 @@ Level
 enum class SpriteId
 {
 	NONE = -1,
-	ROAD,
+	ROAD_LEFT_RIGHT,
+	ROAD_UP_DOWN,
+	ROAD_CROSS,
 	BUILDING,
 	COUNT
 };

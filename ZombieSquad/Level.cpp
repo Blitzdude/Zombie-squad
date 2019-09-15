@@ -67,18 +67,18 @@ bool Level::LoadLevel(std::string filepath)
 					GetCell(x, y)->isStart = true;
 					m_startPosition = Vec2f(x * m_cellSize + (m_cellSize / 2), y * m_cellSize + (m_cellSize / 2));
 					m_map[x + y * m_mapCellWidth].obstacle = false;
-					m_map[x + y * m_mapCellWidth].sprId = SpriteId::ROAD;
+					m_map[x + y * m_mapCellWidth].sprId = SpriteId::ROAD_LEFT_RIGHT;
 					break;
 				case 'E':
 				case 'e':
 					GetCell(x, y)->isGoal = true;
 					m_endPosition = Vec2f(x * m_cellSize + (m_cellSize / 2), y * m_cellSize + (m_cellSize / 2));
 					m_map[x + y * m_mapCellWidth].obstacle = false;
-					m_map[x + y * m_mapCellWidth].sprId = SpriteId::ROAD;
+					m_map[x + y * m_mapCellWidth].sprId = SpriteId::ROAD_LEFT_RIGHT;
 					break;
 				default:
 					m_map[x + y * m_mapCellWidth].obstacle = false;
-					m_map[x + y * m_mapCellWidth].sprId = SpriteId::ROAD;
+					m_map[x + y * m_mapCellWidth].sprId = SpriteId::ROAD_LEFT_RIGHT;
 					break;
 				}
 			}
@@ -92,17 +92,31 @@ bool Level::LoadLevel(std::string filepath)
 
 	// close the file
 	input.close();
+
 	return true;
 }
 
 // Returns true, if all textures were loaded succesfully
 bool Level::LoadTextures()
 {
-	m_sprites[(size_t)SpriteId::ROAD] = new olc::Sprite("resources/road.png");
-	if (m_sprites[(size_t)SpriteId::ROAD] == nullptr)
+	m_sprites[(size_t)SpriteId::ROAD_LEFT_RIGHT] = new olc::Sprite("resources/road_right.png");
+	if (m_sprites[(size_t)SpriteId::ROAD_LEFT_RIGHT] == nullptr)
 	{
 		return false;
 	}
+
+	m_sprites[(size_t)SpriteId::ROAD_UP_DOWN] = new olc::Sprite("resources/road_up.png");
+	if (m_sprites[(size_t)SpriteId::ROAD_UP_DOWN] == nullptr)
+	{
+		return false;
+	}
+
+	m_sprites[(size_t)SpriteId::ROAD_CROSS] = new olc::Sprite("resources/road_cross.png");
+	if (m_sprites[(size_t)SpriteId::ROAD_CROSS] == nullptr)
+	{
+		return false;
+	}
+
 
 	m_sprites[(size_t)SpriteId::BUILDING] = new olc::Sprite("resources/building.png");
 	if (m_sprites[(size_t)SpriteId::BUILDING] == nullptr)
