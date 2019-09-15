@@ -251,7 +251,7 @@ void ZombieSquad::DoDraw()
 
 	m_currentLevel->DrawLevel(*this);
 	m_currentLevel->DrawPolyMap(*this);
-	// m_currentLevel->DrawConnections(*this);
+	m_currentLevel->DrawConnections(*this);
 	for (auto& itr : vecActors)
 	{
 		itr->Draw(*this);

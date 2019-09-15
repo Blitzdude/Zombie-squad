@@ -124,25 +124,42 @@ void Level::InitPathfinding()
 	{
 		for (int y = 0; y < m_mapCellHeight; y++)
 		{
-			if (y > 0)
-				m_map[y * m_mapCellWidth + x].vecNeighbours.push_back(&m_map[(y - 1) * m_mapCellWidth + (x + 0)]); // UP
-			if (y < m_mapCellHeight - 1)
-				m_map[y * m_mapCellWidth + x].vecNeighbours.push_back(&m_map[(y + 1) * m_mapCellWidth + (x + 0)]); // DOWN
-			if (x > 0)
-				m_map[y * m_mapCellWidth + x].vecNeighbours.push_back(&m_map[(y + 0) * m_mapCellWidth + (x - 1)]); // LEFT
-			if (x < m_mapCellWidth - 1)
-				m_map[y * m_mapCellWidth + x].vecNeighbours.push_back(&m_map[(y + 0) * m_mapCellWidth + (x + 1)]); // RIGHT
+			// check that cell we are adding is not an obstacle
+			// Important for zombie behaviour
+			if (!m_map[y * m_mapCellWidth + x].obstacle)
+			{
+				if (y > 0)
+				{
+					if (!m_map[(y - 1) * m_mapCellWidth + (x + 0)].obstacle)
+						m_map[y * m_mapCellWidth + x].vecNeighbours.push_back(&m_map[(y - 1) * m_mapCellWidth + (x + 0)]); // UP
+				}
+				if (y < m_mapCellHeight - 1)
+				{
+					if (!m_map[(y + 1) * m_mapCellWidth + (x + 0)].obstacle)
+						m_map[y * m_mapCellWidth + x].vecNeighbours.push_back(&m_map[(y + 1) * m_mapCellWidth + (x + 0)]); // DOWN
+				}
+				if (x > 0)
+				{
+					if (!m_map[(y + 0) * m_mapCellWidth + (x - 1)].obstacle)
+						m_map[y * m_mapCellWidth + x].vecNeighbours.push_back(&m_map[(y + 0) * m_mapCellWidth + (x - 1)]); // LEFT
+				}
+				if (x < m_mapCellWidth - 1)
+				{
+					if (!m_map[(y + 0) * m_mapCellWidth + (x + 1)].obstacle)
+						m_map[y * m_mapCellWidth + x].vecNeighbours.push_back(&m_map[(y + 0) * m_mapCellWidth + (x + 1)]); // RIGHT
+				}
 
-			// We can also connect diagonally
-			/*if (y>0 && x>0)
-				nodes[y*nMapWidth + x].vecNeighbours.push_back(&nodes[(y - 1) * nMapWidth + (x - 1)]);
-			if (y<nMapHeight-1 && x>0)
-				nodes[y*nMapWidth + x].vecNeighbours.push_back(&nodes[(y + 1) * nMapWidth + (x - 1)]);
-			if (y>0 && x<nMapWidth-1)
-				nodes[y*nMapWidth + x].vecNeighbours.push_back(&nodes[(y - 1) * nMapWidth + (x + 1)]);
-			if (y<nMapHeight - 1 && x<nMapWidth-1)
-				nodes[y*nMapWidth + x].vecNeighbours.push_back(&nodes[(y + 1) * nMapWidth + (x + 1)]);
-			*/
+				// We can also connect diagonally
+				/*if (y>0 && x>0)
+					nodes[y*nMapWidth + x].vecNeighbours.push_back(&nodes[(y - 1) * nMapWidth + (x - 1)]);
+				if (y<nMapHeight-1 && x>0)
+					nodes[y*nMapWidth + x].vecNeighbours.push_back(&nodes[(y + 1) * nMapWidth + (x - 1)]);
+				if (y>0 && x<nMapWidth-1)
+					nodes[y*nMapWidth + x].vecNeighbours.push_back(&nodes[(y - 1) * nMapWidth + (x + 1)]);
+				if (y<nMapHeight - 1 && x<nMapWidth-1)
+					nodes[y*nMapWidth + x].vecNeighbours.push_back(&nodes[(y + 1) * nMapWidth + (x + 1)]);
+				*/
+			}
 		}
 	}
 }
