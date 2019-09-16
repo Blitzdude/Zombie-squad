@@ -4,6 +4,7 @@ enum class StateID
 {
 	ZOMBIE_ROAM,	   // Zombie states
 	ZOMBIE_CHASE,
+	ZOMBIE_NAVIGATING,
 	PLAYER_CONTROLLED, // Player states
 	PLAYER_OVERWATCH,
 	STATE_DEAD,		   // All Actors 
@@ -11,6 +12,8 @@ enum class StateID
 };
 
 class Player;
+class Zombie;
+class Bullet;
 
 class PlayerState
 {
@@ -24,7 +27,6 @@ public:
 	virtual const StateID& GetStateID() = 0;
 };
 
-class Zombie;
 
 class ZombieState
 {
@@ -38,7 +40,6 @@ public:
 	virtual const StateID& GetStateID() = 0;
 };
 
-class Bullet;
 
 class BulletState
 {
@@ -148,6 +149,7 @@ private:
 	float m_timer;
 
 };
+
 
 class ZombieDead : public ZombieState
 {

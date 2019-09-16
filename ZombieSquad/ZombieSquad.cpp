@@ -282,32 +282,32 @@ void ZombieSquad::DoDraw()
 bool ZombieSquad::CheckVictory()
 {
 	// returns condition, that tells if game is over
-	bool gameOver = true;
+	bool allPlayersDead = true;
 	// Check if all players are dead
 	for (auto itr : m_playerHandler.GetPlayers())
 	{
-		if (!itr->GetIsHit())
+		if (itr->GetCurrentState()->GetStateID() != StateID::STATE_DEAD)
 		{
-			// players are alive -> game is not over
-			gameOver =  false;
+			// at least one player is alive -> game is not over
+			allPlayersDead =  false;
+			break;
 		}
 	}
 	
+	// if all alive players are on the goal, it's a win
 	bool win = true;
-	// if the player has won -> end the game
 	for (auto itr : m_playerHandler.GetPlayers())
 	{
-		if (!(m_currentLevel->GetCell(itr->GetPosition())->isGoal) && 
-			(itr->GetCurrentState()->GetStateID() != StateID::STATE_DEAD) )
+		if (!m_currentLevel->GetCell(itr->GetPosition())->isGoal)
 		{
+			// if even on player is outside the goal, they havent won
 			win = false;
 		}
 	}
 
 	m_isWin = win;
-	gameOver = win == true ? true : false;
+	return allPlayersDead || win;
 	// if this gets here, the game is over
-	return gameOver;
 }
 
 Player* ZombieSquad::SpawnPlayer(float xPos, float yPos, float dir, int playerNum, ZombieSquad& game, PlayerHandler& playerHandler, float offset, bool startingPlayer)
