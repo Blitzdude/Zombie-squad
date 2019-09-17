@@ -131,8 +131,8 @@ void Zombie::doMove(float dt)
 Vec2f Zombie::GetRandomCellLocation()
 {
 	// Get the current cell
-	Cell* currentCell = m_game->m_currentLevel->GetCell(GetPosition());
-	float cellSize = m_game->m_currentLevel->GetCellSize();
+	Cell* currentCell = Level::GetCell(GetPosition());
+	float cellSize = Level::GetCellSize();
 	// choose a random cell from current and neighbors
 	int r = rand() % currentCell->vecNeighbours.size(); // number between 0 - size
 	Cell* choice = nullptr;

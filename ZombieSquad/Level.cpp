@@ -1,6 +1,7 @@
 #include "Level.h"
 #include "Physics.h"
 #include <sstream>
+#include <assert.h>
 // #include <algorithm>
 
 // Convenient defines for polymap conversion
@@ -9,13 +10,25 @@ constexpr unsigned int SOUTH = 1;
 constexpr unsigned int EAST = 2;
 constexpr unsigned int WEST = 3;
 
+// static initializations
+float Level::m_cellSize = 0.0f;
+Vec2f Level::m_startPosition(0.0f, 0.0f);
+Vec2f Level::m_endPosition(0.0f, 0.0f);
+bool  Level::m_instantiated = false;
+std::vector<Edge> Level::vec_edges;
+int Level::m_mapCellWidth = 0.0f;
+int Level::m_mapCellHeight = 0.0f;
+Cell* Level::m_map = nullptr;
+
 Level::~Level()
 {
 }
 
 Level::Level(std::string path)
-	: m_startPosition(0.0f, 0.0f)
 {
+	// only one instance of level should exist
+	assert(!m_instantiated);
+	m_instantiated = true;
 	LoadTextures();
 	LoadLevel(path);
 	ConvertTileMapToPolyMap(0, 0, m_mapCellWidth, m_mapCellHeight, m_cellSize, m_mapCellWidth);
@@ -198,7 +211,7 @@ void Level::ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float fBlockWi
 {
 	// Clear "PolyMap"
 	vec_edges.clear();
-
+	assert(m_map != nullptr);
 	// Clear each cells information
 	for (int x = 0; x < w; x++)
 	{

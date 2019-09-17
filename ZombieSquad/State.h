@@ -150,6 +150,22 @@ private:
 
 };
 
+class Navigating : public ZombieState
+{
+public:
+	Navigating()
+		: m_id(StateID::ZOMBIE_NAVIGATING), m_timer(0.0f) {}
+
+	virtual ~Navigating() {};
+
+	virtual void Enter(Zombie& zombie) {}; // Not Implemented
+	virtual void Update(Zombie& zombie, float dt) override;
+
+	const StateID& GetStateID() override { return m_id; }
+private:
+	StateID m_id;
+	float m_timer;
+};
 
 class ZombieDead : public ZombieState
 {

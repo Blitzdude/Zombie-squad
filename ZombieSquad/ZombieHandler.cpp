@@ -141,7 +141,8 @@ bool ZombieHandler::ZombieSeesTarget(const Vec2f& target, const Zombie& zombie)
 		{
 			// if target can be hit with a ray, it is visible
 			Ray ray(zombie.GetPosition(), target); 
-			for (auto edge : m_game->m_currentLevel->GetEdges())
+			
+			for (auto edge : Level::GetEdges())
 			{
 				if (Physics::CheckLineIntersection(ray, edge))
 				{

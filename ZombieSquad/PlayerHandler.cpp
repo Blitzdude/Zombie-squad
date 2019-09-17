@@ -166,7 +166,7 @@ bool PlayerHandler::PlayerSeesTarget(const Vec2f& targetPos, const Player& playe
 		{
 			// if target can be hit with a ray, it is visible
 			Ray ray(player.GetPosition(), targetPos);
-			for (auto edge : m_game->m_currentLevel->GetEdges())
+			for (auto edge : Level::GetEdges())
 			{
 				if (Physics::CheckLineIntersection(ray, edge))
 				{

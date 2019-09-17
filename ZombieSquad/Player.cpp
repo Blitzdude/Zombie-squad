@@ -59,8 +59,8 @@ void Player::Draw(olc::PixelGameEngine& game)
 	game.DrawString((int32_t)GetX() + 5.0f, (int32_t)GetY() + 5.0f, std::to_string(GetDirection()));
 
 	// Draw the currently occupied cell
-	float cellSize = m_handler->m_game->m_currentLevel->GetCellSize();
-	Cell* cell = m_handler->m_game->m_currentLevel->GetCell(GetPosition());
+	float cellSize = Level::GetCellSize();
+	Cell* cell = Level::GetCell(GetPosition());
 
 	game.DrawRect(cell->xCoord * cellSize, cell->yCoord * cellSize, cellSize, cellSize, olc::MAGENTA);
 

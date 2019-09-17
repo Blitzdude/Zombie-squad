@@ -30,7 +30,6 @@ void Watching::Update(Player& player, float dt)
 			float cross = Vec2f::CrossProduct(targetZombie->GetPosition() - player.GetPosition(), player.GetDirectionVector());
 			// turn accordingly
 			cross < 0.0f ? player.TurnRight(dt) : player.TurnLeft(dt);
-
 		}
 		else 
 		{
@@ -67,13 +66,6 @@ void Roaming::Update(Zombie& zombie, float dt)
 	{
 		m_timer = 0.0f;
 		// randomize direction
-
-		// NOT USED /////////////////////////////////////////////////
-		// Pick a random cell from current one and this on
-		//float rX = ((rand() % (2 * 100)) - 100) / 100.0f; // returns value between -1.0f / 1.0f 
-		//float rY = ((rand() % (2 * 100)) - 100) / 100.0f; // returns value between -1.0f / 1.0f
-		// /////////////////////////////////////////////////////////
-
 		Vec2f r = zombie.GetRandomCellLocation();
 		zombie.SetTarget(r);
 	}
@@ -94,4 +86,13 @@ void PlayerDead::Update(Player&, float dt)
 {
 	m_deathTime += dt;
 	// Do not destroy players! just lie there... dead
+}
+
+void Navigating::Update(Zombie& zombie, float dt)
+{
+	// get path from level
+		// go to the next cell in the list
+		// if the zombie is on the current cell in the list -> pop_back
+		// repeat until list is gone. 
+	// then get the list again. 
 }

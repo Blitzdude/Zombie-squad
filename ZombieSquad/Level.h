@@ -138,14 +138,14 @@ public:
 	std::vector<std::pair<int, int>> SolveAStarPath(std::pair<int, int> startCoord, std::pair<int, int> targetCoord);
 
 	// Getters
-	float GetCellSize() { return m_cellSize; }
-	const std::vector<Edge>& GetEdges() const { return vec_edges; }
-	const Vec2f& GetStart() { return m_startPosition; }
-	const Vec2f& GetEnd() { return m_endPosition; }
-	const Vec2f GetCellCenterPos(int x, int y) 
+	static const float GetCellSize() { return m_cellSize; }
+	static const Vec2f& GetStart() { return m_startPosition; }
+	static const Vec2f GetCellCenterPos(int x, int y) 
 	{ 
 		return Vec2f(x * GetCellSize() + GetCellSize() / 2.0f, y * GetCellSize() + GetCellSize() / 2.0f); 
 	};
+	static const std::vector<Edge>& GetEdges() { return vec_edges; }
+	static const Vec2f& GetEnd() { return m_endPosition; }
 	
 	// TODO: Change naming scheme to following: 
 	// - Cell -> Returns Cell*
@@ -155,19 +155,21 @@ public:
 	int GetStartY() { return (int)(m_startPosition.y / m_cellSize); }
 	int GetNumCellsX() { return m_mapCellWidth; }
 	int GetNumCellsY() { return m_mapCellHeight; }
-	Cell* GetCell(int x, int y);
-	Cell* GetCell(Vec2f pos);
+	static Cell* GetCell(int x, int y);
+	static Cell* GetCell(Vec2f pos);
 	
 
 private:
-	int m_mapCellWidth; // Map width in cells
-	int m_mapCellHeight; // Map Height in cells
-	float m_cellSize;
-	Vec2f m_startPosition;
-	Vec2f m_endPosition;
-	Cell* m_map; // TODO: This is not very c++11
+	static bool m_instantiated;
+
+	static int m_mapCellWidth; // Map width in cells
+	static int m_mapCellHeight; // Map Height in cells
+	static float m_cellSize;
+	static Vec2f m_startPosition;
+	static Vec2f m_endPosition;
+	static std::vector<Edge> vec_edges;
+	static Cell* m_map; // TODO: This is not very c++11
 	std::array<olc::Sprite*, (size_t)SpriteId::COUNT> m_sprites;
 	std::vector<std::tuple<float, float, float>> m_vecVisibilityPolygonPoints;
-	std::vector<Edge> vec_edges;
 };
 
