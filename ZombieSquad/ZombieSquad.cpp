@@ -268,12 +268,14 @@ void ZombieSquad::DoDraw()
 			{
 
 			auto prev = std::prev(itr);
+#pragma warning (disable : 4244)
 			DrawLine(m_currentLevel->GetCellCenterPos(itr->first, itr->second).x, 
 					 m_currentLevel->GetCellCenterPos(itr->first, itr->second).y,
 					 m_currentLevel->GetCellCenterPos(prev->first, prev->second).x,
 					 m_currentLevel->GetCellCenterPos(prev->first, prev->second).y,
 					 olc::RED);
 			}
+#pragma warning (default : 4244)
 		}
 	}
 	

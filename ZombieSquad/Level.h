@@ -90,10 +90,6 @@ public:
 	*/
 	void InitPathfinding();
 
-	/// Clears pathfinding data on cells
-	/// 
-	/// Needed to be called, whenever pathfinding is done
-	void ClearPathfinding();
 
 	void ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float fBlockWidth, int pitch);
 
@@ -126,16 +122,8 @@ public:
 	/// @param start Position of the start coordinate
 	/// @param target Position of the target location
 	/// @returns returns a vector of int pairs corresponding to cells to pass through
-	std::vector<std::pair<int, int>> GetPathToTarget(const Vec2f& start, const Vec2f& target);
+	static std::vector<std::pair<int, int>> GetPathToTarget(const Vec2f& start, const Vec2f& target);
 
-	/// Solves a path using A-star
-	/// 
-	/// called by GetPathToTarget(const Vec2f&, const Vec2f&) to solve the path from starting
-	/// cell and target cell. 
-	/// @param startCoord coordinate of the starting cell
-	/// @param targetCoord coordinate of the target cell
-	/// @returns returns vector of int pairs corresponding to cells to pass through
-	std::vector<std::pair<int, int>> SolveAStarPath(std::pair<int, int> startCoord, std::pair<int, int> targetCoord);
 
 	// Getters
 	static const float GetCellSize() { return m_cellSize; }
@@ -151,14 +139,28 @@ public:
 	// - Cell -> Returns Cell*
 	// - Pos -> Returns Vec2f as Cells center?
 	// - CoordX/CoordY -> returns Cells coordinate int in array
-	int GetStartX() { return (int)(m_startPosition.x / m_cellSize); }
-	int GetStartY() { return (int)(m_startPosition.y / m_cellSize); }
-	int GetNumCellsX() { return m_mapCellWidth; }
-	int GetNumCellsY() { return m_mapCellHeight; }
+	static int GetStartX() { return (int)(m_startPosition.x / m_cellSize); }
+	static int GetStartY() { return (int)(m_startPosition.y / m_cellSize); }
+	static int GetNumCellsX() { return m_mapCellWidth; }
+	static int GetNumCellsY() { return m_mapCellHeight; }
 	static Cell* GetCell(int x, int y);
 	static Cell* GetCell(Vec2f pos);
 	
 
+private:
+	/// Clears pathfinding data on cells
+	/// 
+	/// Needed to be called, whenever pathfinding is done
+	static void ClearPathfinding();
+	
+	/// Solves a path using A-star
+	/// 
+	/// called by GetPathToTarget(const Vec2f&, const Vec2f&) to solve the path from starting
+	/// cell and target cell. 
+	/// @param startCoord coordinate of the starting cell
+	/// @param targetCoord coordinate of the target cell
+	/// @returns returns vector of int pairs corresponding to cells to pass through
+	static std::vector<std::pair<int, int>> SolveAStarPath(std::pair<int, int> startCoord, std::pair<int, int> targetCoord);
 private:
 	static bool m_instantiated;
 

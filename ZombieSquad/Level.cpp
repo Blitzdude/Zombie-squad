@@ -16,8 +16,8 @@ Vec2f Level::m_startPosition(0.0f, 0.0f);
 Vec2f Level::m_endPosition(0.0f, 0.0f);
 bool  Level::m_instantiated = false;
 std::vector<Edge> Level::vec_edges;
-int Level::m_mapCellWidth = 0.0f;
-int Level::m_mapCellHeight = 0.0f;
+int Level::m_mapCellWidth = 0;
+int Level::m_mapCellHeight = 0;
 Cell* Level::m_map = nullptr;
 
 Level::~Level()
@@ -447,9 +447,11 @@ void Level::DrawConnections(olc::PixelGameEngine& engine)
 				Vec2f cellCenter = GetCellCenterPos(x, y);
 				Vec2f neighborCenter = GetCellCenterPos(itr->xCoord, itr->yCoord);
 
+#pragma warning (disable : 4244) // Conversion from T to int32_t
 				engine.DrawLine( cellCenter.x, cellCenter.y,
 								 neighborCenter.x, neighborCenter.y,
-								 olc::WHITE, 0xF0F0F0F0F);
+								 olc::WHITE, (uint32_t)0xF0F0F0F0F);
+#pragma warning (default : 4244) 
 			}
 		}
 	}
@@ -641,6 +643,7 @@ std::vector<std::pair<int, int>> Level::SolveAStarPath(std::pair<int, int> start
 	// Reset Navigation Graph - default all node states
 	ClearPathfinding();
 
+#pragma warning (disable : 4244)
 	auto distance = [](Cell* a, Cell* b) // For convenience
 	{
 		return sqrtf((a->xCoord - b->xCoord) * (a->xCoord - b->xCoord) + (a->yCoord - b->yCoord) * (a->yCoord - b->yCoord));
@@ -650,6 +653,7 @@ std::vector<std::pair<int, int>> Level::SolveAStarPath(std::pair<int, int> start
 	{
 		return distance(a, b);
 	};
+#pragma warning (default : 4244)
 
 	// Setup starting conditions
 	
