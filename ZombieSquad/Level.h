@@ -40,6 +40,7 @@ enum class SpriteId
 */
 struct Cell
 {	
+public:
 	int edge_id[4] = {-1, -1, -1, -1};
 	bool edge_exist[4] = {false, false, false, false};
 	bool obstacle = false;
@@ -57,6 +58,7 @@ struct Cell
 	SpriteId sprId = SpriteId::NONE;
 	Cell* parentCell = nullptr;
 	std::vector<Cell*> vecNeighbours;
+
 };
 
 
@@ -145,7 +147,6 @@ public:
 	static int GetNumCellsY() { return m_mapCellHeight; }
 	static Cell* GetCell(int x, int y);
 	static Cell* GetCell(Vec2f pos);
-	
 
 private:
 	/// Clears pathfinding data on cells

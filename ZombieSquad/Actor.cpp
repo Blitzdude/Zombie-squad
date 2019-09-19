@@ -12,6 +12,7 @@ Actor::Actor()
 	m_tag		 = ActorTag::NONE;
 	m_x			 = 0.0f;
 	m_y			 = 0.0f;
+	m_hit		 = false;
 
 	m_id = m_objectCount++;
 	std::cout << "Object count is: " << m_objectCount << "\n";
@@ -22,9 +23,10 @@ Actor::~Actor()
 	m_objectCount--;
 	std::cout << "Object count is: " << m_objectCount << "\n";
 }
-
+/*
 Vec2f Actor::GetDirectionVector() const
 {
 	Vec2f ret(cosf(GetDirection()), sinf(GetDirection()));
 	return ret.GetNormalized();
 }
+*/

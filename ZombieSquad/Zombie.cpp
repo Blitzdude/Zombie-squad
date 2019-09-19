@@ -20,6 +20,8 @@ Zombie::Zombie(float x, float y, ZombieSquad& game, ZombieHandler& handler)
 
 Zombie::~Zombie()
 {
+	delete m_currentState;
+	m_currentState = nullptr;
 	std::cout << "Zombie destroyed\n";
 }
 
@@ -56,7 +58,7 @@ void Zombie::Draw(olc::PixelGameEngine& game)
 	right = right.GetNormalized() * ZOMBIE_SIGHT_RANGE + GetPosition();
 	game.DrawTriangle(GetX(), GetY(), left.x, left.y, right.x, right.y, olc::CYAN);
 	
-	game.DrawCircle(m_target.x, m_target.y, 1.0f, olc::MAGENTA);
+	game.DrawLine(m_target.x, m_target.y, GetX(), GetY(), olc::MAGENTA);
 	// get vector to target
 	Vec2f vec = m_target - GetPosition();
 
@@ -80,6 +82,7 @@ void Zombie::Chase(const Player& player)
 {
 	if (m_currentState->GetStateID() != StateID::ZOMBIE_CHASE)
 	{
+		delete m_currentState;
 		m_currentState = new Chasing(player);
 	}
 }
@@ -99,6 +102,16 @@ void Zombie::Attack(float dt)
 	Vec2f bulletSpawnPoint = GetPosition() + Vec2f(cosf(GetDirection()), sinf(GetDirection())) * (GetRadius() + 2.0f);
 	// Spawn the bullet
 	m_game->SpawnBullet(bulletSpawnPoint, GetDirection(), 1.0f, 0.0f, ActorTag::ZOMBIE);
+}
+
+void Zombie::NavigateTo(const Vec2f& target)
+{
+	if (m_currentState->GetStateID() == StateID::ZOMBIE_ROAM ||
+		m_currentState->GetStateID() == StateID::ZOMBIE_CHASE)
+	{
+		m_currentState = new Navigating(target);
+		m_currentState->Enter(*this);
+	}
 }
 
 void Zombie::doMove(float dt)
@@ -125,16 +138,16 @@ void Zombie::doMove(float dt)
 		SetPosition(GetPosition() + vec * ZOMBIE_SPEED * dt); 
 		
 	}
-	
 }
 
+// TODO: This could be moved to level
 Vec2f Zombie::GetRandomCellLocation()
 {
 	// Get the current cell
 	Cell* currentCell = Level::GetCell(GetPosition());
 	float cellSize = Level::GetCellSize();
 	// choose a random cell from current and neighbors
-	int r = rand() % currentCell->vecNeighbours.size(); // number between 0 - size
+	unsigned int r = rand() % currentCell->vecNeighbours.size(); // number between 0 - size
 	Cell* choice = nullptr;
 	if (r < currentCell->vecNeighbours.size()) 
 	{

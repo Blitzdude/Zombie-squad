@@ -70,6 +70,13 @@ Command* ZombieHandler::handleInput(Zombie& actor)
 		return new ChasePlayer(player);
 	}
 	
+	// DEBUG: testing pathfinding
+	
+	if (player != nullptr)
+	{
+		actor.NavigateTo(player->GetPosition());
+	}
+
 	return nullptr;
 }
 

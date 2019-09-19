@@ -1,8 +1,9 @@
+#include "GlobalConstants.h"
 #include "State.h"
 #include "Player.h"
 #include "Zombie.h"
 #include "Bullet.h"
-#include "GlobalConstants.h"
+#include "Level.h"
 
 void Chasing::Update(Zombie& zombie, float dt)
 {	
@@ -88,11 +89,25 @@ void PlayerDead::Update(Player&, float dt)
 	// Do not destroy players! just lie there... dead
 }
 
+void Navigating::Enter(Zombie& zombie)
+{
+	// sets a path to follow
+	m_path = Level::GetPathToTarget(zombie.GetPosition(), m_target);
+}
+
 void Navigating::Update(Zombie& zombie, float dt)
 {
-	// get path from level
-		// go to the next cell in the list
+	Vec2f nextLocation = Level::GetCellCenterPos(m_path.back().first, m_path.back().second);
+	if (Vec2f::DistanceBetween(zombie.GetPosition(), nextLocation) <= Level::GetCellSize() / 2.0f)
+	{
+		// zombie is close enough, we can change the position
+		m_path.pop_back();
 		// if the zombie is on the current cell in the list -> pop_back
 		// repeat until list is gone. 
-	// then get the list again. 
+	}
+	else {
+		zombie.SetTarget(nextLocation);
+	}
+
+	zombie.doMove(dt);
 }

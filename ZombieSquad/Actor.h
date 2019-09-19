@@ -33,7 +33,7 @@ public:
 	///
 	/// Abstract method used to draw the actor. Must be implemented by children
 	/// 
-	/// @param PixelGameEngine& game
+	/// @param game reference to 
 	/// @returns no return value
 	virtual void Draw(olc::PixelGameEngine& game) = 0;
 
@@ -44,7 +44,7 @@ public:
 	/// @param dt delta time: time elapsed since previous update
 	/// @returns no return value
 	/// @see DoUpdate()
-	virtual void Update(float fElapsedTime) = 0;
+	virtual void Update(float dt) = 0;
 	
 
 	/// Moves a player actor forward
@@ -54,7 +54,7 @@ public:
 	/// @param dt delta time: time elapsed since the previous update.
 	/// @returns no return value
 	/// @see Command()
-	virtual void MoveForward(float dt){};
+	virtual void MoveForward(float dt) {};
 
 	/// Moves a player actor backwards
 	///
@@ -111,12 +111,30 @@ public:
 	virtual void Die(float dt) {};
 
 	// Zombie commands
-
+	/// Command actor to Chase target player
+	///
+	/// Tells the actor to chase a target player
+	/// overriden by child actor objects
+	/// @param player reference to the player
+	/// @return no return values
 	virtual void Chase(const Player& player) {};
 	
-	Vec2f GetDirectionVector() const;
+	/// Command zombie to Navigate to target location
+	///
+	/// Tells the actor to chase a target player
+	/// overriden by child actor objects
+	/// @param target 
+	/// @return no return values
+	virtual void NavigateTo(const Vec2f& target) {};
+
+
 
 	// Setters/Getters
+	Vec2f GetDirectionVector() const
+	{
+		Vec2f ret(cosf(GetDirection()), sinf(GetDirection()));
+		return ret.GetNormalized();
+	}
 	float GetSpeed()			const { return m_speed; }
 	float GetX()				const { return m_x; }
 	float GetY()				const { return m_y; }

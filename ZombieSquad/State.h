@@ -36,6 +36,7 @@ public:
 	virtual ~ZombieState() {};
 
 	virtual void Update(Zombie& zombie, float dt) = 0;
+	virtual void Enter(Zombie& zombie) = 0;
 
 	virtual const StateID& GetStateID() = 0;
 };
@@ -99,7 +100,7 @@ public:
 		m_deathTime = 0.0f;
 	}
 
-	virtual void Enter(Player& player) {};	// Not implemented
+	// virtual void Enter(Player& player) {};	// Not implemented
 	virtual void Update(Player& player, float dt) override;
 	// virtual void Exit(Zombie& player) {}; // Not Implemented
 
@@ -120,7 +121,7 @@ public:
 
 	virtual ~Chasing() { m_chaseTarget = nullptr; };
 
-	virtual void Enter(Zombie& zombie) {};	// Not implemented
+	virtual void Enter(Zombie& zombie) override {};	// Not implemented
 	virtual void Update(Zombie& zombie, float dt) override;
 	// virtual void Exit(Zombie& player) {}; // Not Implemented
 
@@ -139,7 +140,7 @@ public:
 
 	virtual ~Roaming() {};
 
-	virtual void Enter(Zombie& zombie) {};	// Not implemented
+	virtual void Enter(Zombie& zombie) override {};	// Not implemented
 	virtual void Update(Zombie& zombie, float dt) override;
 	// virtual void Exit(Zombie& player) {}; // Not Implemented
 
@@ -153,16 +154,18 @@ private:
 class Navigating : public ZombieState
 {
 public:
-	Navigating()
-		: m_id(StateID::ZOMBIE_NAVIGATING), m_timer(0.0f) {}
+	Navigating(const Vec2f& target)
+		: m_id(StateID::ZOMBIE_NAVIGATING), m_timer(0.0f), m_target(target)	{}
 
 	virtual ~Navigating() {};
 
-	virtual void Enter(Zombie& zombie) {}; // Not Implemented
+	virtual void Enter(Zombie& zombie) override;
 	virtual void Update(Zombie& zombie, float dt) override;
 
 	const StateID& GetStateID() override { return m_id; }
 private:
+	Vec2f m_target;
+	std::vector<std::pair<int, int>> m_path;
 	StateID m_id;
 	float m_timer;
 };
@@ -176,7 +179,7 @@ public:
 		m_deathTime = 0.0f;
 	}
 
-	virtual void Enter(Zombie& zombie) {};	// Not implemented
+	virtual void Enter(Zombie& zombie) override {}	// Not implemented
 	virtual void Update(Zombie& zombie, float dt) override;
 	// virtual void Exit(Zombie& player) {}; // Not Implemented
 

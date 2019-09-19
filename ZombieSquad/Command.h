@@ -95,6 +95,22 @@ private:
 	const Player* m_player;
 };
 
+class NavigateToLocation : public Command
+{
+public: 
+	NavigateToLocation(Vec2f target)
+		: m_target(target)
+	{};
+
+	virtual void execute(Actor& actor, float dt) override
+	{
+		actor.NavigateTo(m_target);
+	}
+
+private:
+	Vec2f m_target;
+};
+
 class Die : public Command
 {
 public:

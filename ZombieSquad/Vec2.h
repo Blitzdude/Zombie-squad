@@ -35,7 +35,7 @@ public: // methods
 	// return the vector length
 	T Length() const
 	{
-		T ret = sqrt(SqLength());
+		T ret = sqrtf(SqLength());
 		return ret;
 	}
 

@@ -259,7 +259,7 @@ void ZombieSquad::DoDraw()
 	
 
 	// DEBUG: Draw the cells with the path
-	
+	/*
 	if (!vecDebugPath.empty())
 	{
 		for (auto itr = vecDebugPath.begin(); itr != vecDebugPath.end(); itr++)
@@ -278,6 +278,7 @@ void ZombieSquad::DoDraw()
 #pragma warning (default : 4244)
 		}
 	}
+	*/
 	
 }
 

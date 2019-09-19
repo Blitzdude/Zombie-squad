@@ -18,9 +18,9 @@ public:
 	virtual void Chase(const Player& player) override;
 	virtual void Die(float dt) override;
 	virtual void Attack(float dt) override;
+	virtual void NavigateTo(const Vec2f& target) override;
 	void doMove(float dt);
 	Vec2f GetRandomCellLocation();
-	
 
 	// Setters
 	void SetTarget(const Vec2f& newTarget) { m_target = newTarget; }
