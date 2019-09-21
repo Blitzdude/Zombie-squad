@@ -12,6 +12,8 @@ ZombieSquad::ZombieSquad()
 
 bool ZombieSquad::OnUserCreate()
 {
+	std::cout << ScreenWidth() << " , " << ScreenHeight() << "\n";
+
 	bool createSuccess = false;
 	// Load Level data
 	/*
@@ -80,8 +82,6 @@ bool ZombieSquad::OnUserCreate()
 	m_isGameOver = false;
 	m_isWin = false;
 	
-	vecDebugPath = m_currentLevel->GetPathToTarget(m_currentLevel->GetStart(), m_currentLevel->GetEnd());
-
 	// If createSuccess is false, Initializing handlers failed
 	return createSuccess;
 }

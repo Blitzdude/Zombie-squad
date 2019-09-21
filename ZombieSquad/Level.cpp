@@ -20,8 +20,8 @@ Vec2f Level::m_startPosition(0.0f, 0.0f);
 Vec2f Level::m_endPosition(0.0f, 0.0f);
 bool  Level::m_instantiated = false;
 std::vector<Edge> Level::vec_edges;
-int Level::m_mapCellWidth = 0;
-int Level::m_mapCellHeight = 0;
+int   Level::m_mapCellWidth = 0;
+int	  Level::m_mapCellHeight = 0;
 Cell* Level::m_map = nullptr;
 
 Level::~Level()
@@ -91,14 +91,16 @@ bool Level::LoadLevel(std::string filepath, float screenWidth, float screenHeigh
 				case 'S':
 				case 's':
 					GetCell(x, y)->isStart = true;
-					m_startPosition = Vec2f(x * m_cellSize + (m_cellSize / 2), y * m_cellSize + (m_cellSize / 2));
+					m_startPosition = Vec2f(x * m_cellSize + (m_cellSize / 2.0f) + m_levelOffsetX,
+											y * m_cellSize + (m_cellSize / 2.0f) + m_levelOffsetY);
 					m_map[x + y * m_mapCellWidth].obstacle = false;
 					m_map[x + y * m_mapCellWidth].sprId = SpriteId::ROAD_LEFT_RIGHT;
 					break;
 				case 'E':
 				case 'e':
 					GetCell(x, y)->isGoal = true;
-					m_endPosition = Vec2f(x * m_cellSize + (m_cellSize / 2), y * m_cellSize + (m_cellSize / 2));
+					m_endPosition = Vec2f(x * m_cellSize + (m_cellSize / 2.0f) + m_levelOffsetX,
+										  y * m_cellSize + (m_cellSize / 2.0f) + m_levelOffsetY);
 					m_map[x + y * m_mapCellWidth].obstacle = false;
 					m_map[x + y * m_mapCellWidth].sprId = SpriteId::ROAD_LEFT_RIGHT;
 					break;
@@ -280,8 +282,10 @@ void Level::ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float offsetX,
 					{
 						// Northern neighbour does not have one, so create one
 						Edge edge;
-						edge.start.x = (sx + x) * fBlockWidth; edge.start.y = (sy + y) * fBlockWidth;
-						edge.end.x = edge.start.x; edge.end.y = edge.start.y + fBlockWidth;
+						edge.start.x = (sx + x) * fBlockWidth; 
+						edge.start.y = (sy + y) * fBlockWidth;
+						edge.end.x = edge.start.x; 
+						edge.end.y = edge.start.y + fBlockWidth;
 						// the normal of the edge needs to point west
 						edge.normal.x = -1.0f;
 						edge.normal.y = 0.0f;
@@ -312,8 +316,10 @@ void Level::ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float offsetX,
 					{
 						// Northern neighbour does not have one, so create one
 						Edge edge;
-						edge.start.x = (sx + x + 1) * fBlockWidth; edge.start.y = (sy + y) * fBlockWidth;
-						edge.end.x = edge.start.x; edge.end.y = edge.start.y + fBlockWidth;
+						edge.start.x = ((sx + x + 1) * fBlockWidth); 
+						edge.start.y = ((sy + y) * fBlockWidth);
+						edge.end.x = edge.start.x; 
+						edge.end.y = edge.start.y + fBlockWidth;
 						// Normal of the edge needs to point east
 						edge.normal.x = 1.0f;
 						edge.normal.y = 0.0f;
@@ -344,8 +350,10 @@ void Level::ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float offsetX,
 					{
 						// Western neighbour does not have one, so create one
 						Edge edge;
-						edge.start.x = (sx + x) * fBlockWidth; edge.start.y = (sy + y) * fBlockWidth;
-						edge.end.x = edge.start.x + fBlockWidth; edge.end.y = edge.start.y;
+						edge.start.x = (sx + x) * fBlockWidth; 
+						edge.start.y = (sy + y) * fBlockWidth ;
+						edge.end.x = edge.start.x + fBlockWidth; 
+						edge.end.y = edge.start.y;
 						// Normal of the edge needs to point north
 						edge.normal.x = 0.0f;
 						edge.normal.y = -1.0f;
@@ -376,8 +384,10 @@ void Level::ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float offsetX,
 					{
 						// Western neighbour does not have one, so I need to create one
 						Edge edge;
-						edge.start.x = (sx + x) * fBlockWidth; edge.start.y = (sy + y + 1) * fBlockWidth;
-						edge.end.x = edge.start.x + fBlockWidth; edge.end.y = edge.start.y;
+						edge.start.x = (sx + x) * fBlockWidth; 
+						edge.start.y = (sy + y + 1) * fBlockWidth;
+						edge.end.x = edge.start.x + fBlockWidth; 
+						edge.end.y = edge.start.y;
 						// Normal of the edge needs to point north
 						edge.normal.x = 0.0f;
 						edge.normal.y = 1.0f;
@@ -394,35 +404,59 @@ void Level::ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float offsetX,
 			}
 		}
 	}
+#pragma warning (disable : 4244) // narrowing conversion from int32_t to float
 	// create the level boundary
 	// left
-#pragma warning (disable : 4244) // narrowing conversion from int32_t to float
+
 	Edge left;
-	left.start.x = sx + offsetX; left.start.y = sy + offsetY;
-	left.end.x = sx + offsetX; left.end.y = (sy + m_mapCellHeight) * fBlockWidth + offsetY;
-	left.normal.x = 1.0f; left.normal.y = 0.0f;
+	left.start.x = sx; 
+	left.start.y = sy;
+	left.end.x = sx; 
+	left.end.y = (sy + m_mapCellHeight) * fBlockWidth;
+	left.normal.x = 1.0f; 
+	left.normal.y = 0.0f;
 	vec_edges.push_back(left);
 
 	// right
 	Edge right;
-	right.start.x = (sx + m_mapCellWidth) * fBlockWidth + offsetX; right.start.y = sy + offsetY;
-	right.end.x = (sx + m_mapCellWidth) * fBlockWidth + offsetX; right.end.y = (sy + m_mapCellHeight) * fBlockWidth + offsetY;
-	right.normal.x = -1.0f; right.normal.y = 0.0f;
+	right.start.x = (sx + m_mapCellWidth) * fBlockWidth; 
+	right.start.y = sy + offsetY;
+	right.end.x = (sx + m_mapCellWidth) * fBlockWidth; 
+	right.end.y = (sy + m_mapCellHeight) * fBlockWidth;
+	right.normal.x = -1.0f; 
+	right.normal.y = 0.0f;
 	vec_edges.push_back(right);
 
 	// top
 	Edge top;
-	top.start.x = sx + offsetX; top.start.y = sy + offsetY;
-	top.end.x = (sx + m_mapCellWidth) * fBlockWidth + offsetX; top.end.y = sy + offsetY;
-	top.normal.x = 0.0f; top.normal.y = 1.0f;
+	top.start.x = sx; 
+	top.start.y = sy;
+	top.end.x = (sx + m_mapCellWidth) * fBlockWidth; 
+	top.end.y = sy;
+	top.normal.x = 0.0f; 
+	top.normal.y = 1.0f;
 	vec_edges.push_back(top);
 	
 	// bottom
 	Edge bottom;
-	bottom.start.x = sx + offsetX; bottom.start.y = (sy + m_mapCellHeight) * fBlockWidth + offsetY;
-	bottom.end.x = (sx + m_mapCellWidth) * fBlockWidth + offsetX; bottom.end.y = (sy + m_mapCellHeight) * fBlockWidth + offsetY;
-	bottom.normal.x = 0.0f; bottom.normal.y = -1.0f;
+	bottom.start.x = sx; 
+	bottom.start.y = (sy + m_mapCellHeight) * fBlockWidth;
+	bottom.end.x = (sx + m_mapCellWidth) * fBlockWidth; 
+	bottom.end.y = (sy + m_mapCellHeight) * fBlockWidth;
+	bottom.normal.x = 0.0f; 
+	bottom.normal.y = -1.0f;
 	vec_edges.push_back(bottom);
+
+	// Finally go through the edges one more time and add the calculated
+	// level offsets to the coordinates
+	for (auto& edge : vec_edges)
+	{
+		edge.start.x += offsetX;
+		edge.start.y += offsetY;
+		edge.end.x += offsetX;
+		edge.end.y += offsetY;
+	}
+
 #pragma warning (default : 4244)
 
 }
@@ -441,10 +475,9 @@ void Level::DrawPolyMap(olc::PixelGameEngine & engine)
 
 		engine.FillCircle(edgeCenter.x, edgeCenter.y, 3, olc::BLUE);
 		engine.DrawLine(edgeCenter.x, edgeCenter.y, edgeCenter.x + e.normal.x*10.0f, edgeCenter.y + e.normal.y*10.0f, olc::BLUE);
-
 	}
-#pragma warning (default : 4244)
 
+#pragma warning (default : 4244)
 }
 
 void Level::DrawConnections(olc::PixelGameEngine& engine)
@@ -621,11 +654,11 @@ void Level::DrawLevel(olc::PixelGameEngine & engine)
 
 			if (currentCell->isStart)
 			{
-				engine.DrawString(x * m_cellSize, y * m_cellSize, "Start", olc::BLUE);
+				engine.DrawString(currentCell->xPos, currentCell->yPos, "Start", olc::BLUE);
 			}
 			if (currentCell->isGoal)
 			{
-				engine.DrawString(x * m_cellSize, y * m_cellSize, "End", olc::BLUE);
+				engine.DrawString(currentCell->xPos, currentCell->yPos, "End", olc::BLUE);
 			}
 		}
 	}
@@ -762,8 +795,8 @@ Cell* Level::GetCell(int x, int y)
 
 Cell* Level::GetCell(Vec2f pos)
 {
-	int CellX = (int)(pos.x / m_cellSize);
-	int CellY = (int)(pos.y / m_cellSize);
+	int CellX = (int)((pos.x - m_levelOffsetX) / m_cellSize);
+	int CellY = (int)((pos.y - m_levelOffsetY) / m_cellSize);
 
 	return GetCell(CellX, CellY);
 }

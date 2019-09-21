@@ -1,7 +1,20 @@
 var searchData=
 [
-  ['w_390',['W',['../namespaceolc.html#aa26a067cf0db83f0b1dd587036a64be7ac1ae605c94e2d813c718148311c101d1',1,'olc']]],
-  ['watching_391',['Watching',['../class_watching.html',1,'Watching'],['../class_watching.html#ad4d313b3d2d438c98649708c072f504d',1,'Watching::Watching()']]],
-  ['west_392',['WEST',['../_level_8cpp.html#a2890031a3b565c2f8b5a6beb04303029',1,'Level.cpp']]],
-  ['width_393',['width',['../classolc_1_1_sprite.html#af055800e63204ae372ca0812e6926230',1,'olc::Sprite']]]
+  ['_7eactor_247',['~Actor',['../class_actor.html#ad807fe8f85e72ab263a0c05e3231cb39',1,'Actor']]],
+  ['_7ebullet_248',['~Bullet',['../class_bullet.html#aaeb5cb41d7db89f49007b08b41f1bfcf',1,'Bullet']]],
+  ['_7ebulletstate_249',['~BulletState',['../class_bullet_state.html#a35cc290b33e967d2f99d049e432785ac',1,'BulletState']]],
+  ['_7echasing_250',['~Chasing',['../class_chasing.html#a490442b4f0dd707d0ec6670e05062363',1,'Chasing']]],
+  ['_7ecommand_251',['~Command',['../class_command.html#a641c23ef533dd6f77d0a4ef0311598b2',1,'Command']]],
+  ['_7econtrolled_252',['~Controlled',['../class_controlled.html#abe9cc7b159792654878f90b85e86182e',1,'Controlled']]],
+  ['_7eflying_253',['~Flying',['../class_flying.html#a8f5cb3288d3c0ebf0b6641d2af4824d5',1,'Flying']]],
+  ['_7elevel_254',['~Level',['../class_level.html#a249eac1e8f19ff44134efa5e986feaca',1,'Level']]],
+  ['_7enavigating_255',['~Navigating',['../class_navigating.html#af8a3c6ccfd4352709133c20256325988',1,'Navigating']]],
+  ['_7eplayer_256',['~Player',['../class_player.html#a749d2c00e1fe0f5c2746f7505a58c062',1,'Player']]],
+  ['_7eplayerhandler_257',['~PlayerHandler',['../class_player_handler.html#a7241d0318b0c847d3b2243b70f2e1c24',1,'PlayerHandler']]],
+  ['_7eplayerstate_258',['~PlayerState',['../class_player_state.html#af84d85b70831483996081e2b9a14a8f4',1,'PlayerState']]],
+  ['_7eroaming_259',['~Roaming',['../class_roaming.html#a4e7d2f8797389a76370f8ad489fb68ef',1,'Roaming']]],
+  ['_7ewatching_260',['~Watching',['../class_watching.html#ae5c035b33615d771ddecd54a726a6f30',1,'Watching']]],
+  ['_7ezombie_261',['~Zombie',['../class_zombie.html#a7d5e6a2470bafba194f9d929576c5e27',1,'Zombie']]],
+  ['_7ezombiehandler_262',['~ZombieHandler',['../class_zombie_handler.html#acbebd7cbffe48ffc65736b109c361fbf',1,'ZombieHandler']]],
+  ['_7ezombiestate_263',['~ZombieState',['../class_zombie_state.html#aa918cf62a70c637cb196cb08116ef326',1,'ZombieState']]]
 ];

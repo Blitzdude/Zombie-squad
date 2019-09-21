@@ -1,7 +1,7 @@
 <map id="ZombieSquad" name="ZombieSquad">
-<area shape="rect" id="node1" title=" " alt="" coords="343,292,469,531"/>
-<area shape="rect" id="node2" href="$classolc_1_1_pixel_game_engine.html" title=" " alt="" coords="5,5,156,229"/>
-<area shape="rect" id="node3" href="$class_player_handler.html" title=" " alt="" coords="181,13,415,222"/>
-<area shape="rect" id="node4" href="$class_zombie_handler.html" title=" " alt="" coords="440,13,591,222"/>
-<area shape="rect" id="node5" href="$class_level.html" title="Level short description." alt="" coords="615,5,810,229"/>
+<area shape="rect" id="node1" title=" " alt="" coords="343,483,469,721"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,174,156,251"/>
+<area shape="rect" id="node3" href="$class_player_handler.html" title=" " alt="" coords="181,108,415,317"/>
+<area shape="rect" id="node4" href="$class_zombie_handler.html" title=" " alt="" coords="440,108,591,317"/>
+<area shape="rect" id="node5" href="$class_level.html" title="Level class." alt="" coords="615,5,810,420"/>
 </map>

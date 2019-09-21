@@ -1,4 +1,4 @@
 <map id="Actor::Attack" name="Actor::Attack">
-<area shape="rect" id="node1" title=" " alt="" coords="168,5,267,32"/>
+<area shape="rect" id="node1" title="Commands actor to attack." alt="" coords="168,5,267,32"/>
 <area shape="rect" id="node2" href="$class_attack.html#ae2f512f95526c4e52fb99a59c79edff0" title=" " alt="" coords="5,5,120,32"/>
 </map>

@@ -1,7 +1,7 @@
 <map id="Vec2::Normalize" name="Vec2::Normalize">
 <area shape="rect" id="node1" title=" " alt="" coords="705,107,824,133"/>
 <area shape="rect" id="node2" href="$class_zombie.html#abd3b2c61f257a09ded5c95dcb15ef847" title=" " alt="" coords="502,31,618,57"/>
-<area shape="rect" id="node5" href="$class_zombie.html#a70d0bccebcb4318c2e4619cd4c54851b" title=" " alt="" coords="509,81,611,108"/>
+<area shape="rect" id="node5" href="$class_zombie.html#a70d0bccebcb4318c2e4619cd4c54851b" title="Draws the actor." alt="" coords="509,81,611,108"/>
 <area shape="rect" id="node6" href="$class_vec2.html#ae759e52741d5a83955731cf064826f4d" title=" " alt="" coords="463,132,657,159"/>
 <area shape="rect" id="node7" href="$class_physics.html#a90f9377b8ea2880da8f772dc3c04bcf6" title=" " alt="" coords="469,183,651,209"/>
 <area shape="rect" id="node3" href="$class_chasing.html#a2c7d84ee15647b9b13a6c7d85b9b256b" title=" " alt="" coords="272,5,391,32"/>

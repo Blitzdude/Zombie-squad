@@ -1,0 +1,13 @@
+<map id="Level::GetCellSize" name="Level::GetCellSize">
+<area shape="rect" id="node1" title=" " alt="" coords="949,107,1077,133"/>
+<area shape="rect" id="node2" href="$class_player.html#ae7ac3a01c3dc2328a1f6c05967c4f8bc" title="Draws the actor." alt="" coords="747,5,843,32"/>
+<area shape="rect" id="node3" href="$class_level.html#a7867851fbcb55467cc64a2ca73f33090" title=" " alt="" coords="714,56,877,83"/>
+<area shape="rect" id="node7" href="$class_zombie.html#acf0ef42319d0d1daf89193940416e04a" title=" " alt="" coords="689,107,901,133"/>
+<area shape="rect" id="node9" href="$class_zombie_squad.html#aaea3f66c61a87dbc423e922e6941e381" title=" " alt="" coords="703,157,888,184"/>
+<area shape="rect" id="node11" href="$class_zombie_squad.html#a665df9dca792b7c92d58b0a469f3f18f" title=" " alt="" coords="700,208,891,235"/>
+<area shape="rect" id="node4" href="$class_zombie_squad.html#ac526632841b06c2f7e38150c8b363e6d" title=" " alt="" coords="248,31,403,57"/>
+<area shape="rect" id="node6" href="$class_level.html#aeec06785421d248d463b6e3f6f565378" title=" " alt="" coords="466,56,626,83"/>
+<area shape="rect" id="node5" href="$class_zombie_squad.html#ae086a8d81b15ca84408ea06b051da706" title=" " alt="" coords="5,31,200,57"/>
+<area shape="rect" id="node8" href="$class_roaming.html#a762496f9c10dcdc2957be7a161294739" title=" " alt="" coords="485,107,607,133"/>
+<area shape="rect" id="node10" href="$class_zombie_squad.html#a59deab01bf960fadd5f2862a80a2e1fe" title=" " alt="" coords="451,183,641,209"/>
+</map>

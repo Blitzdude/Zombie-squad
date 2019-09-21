@@ -35,7 +35,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Zombie Squad
-   &#160;<span id="projectnumber">0.4</span>
+   &#160;<span id="projectnumber">0.5</span>
    </div>
    <div id="projectbrief">Top down shooter, where you must make your way through a zombified city</div>
   </td>
@@ -114,7 +114,7 @@ Collaboration diagram for Cell:</div>
 <div class="dyncontent">
 <div class="center"><img src="struct_cell__coll__graph.png" border="0" usemap="#_cell_coll__map" alt="Collaboration graph"/></div>
 <map name="_cell_coll__map" id="_cell_coll__map">
-<area shape="rect" title="Cell structure." alt="" coords="5,5,103,185"/>
+<area shape="rect" title="Cell structure." alt="" coords="5,5,124,273"/>
 </map>
 </div>
 <table class="memberdecls">
@@ -130,12 +130,26 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a5b4266f1e33be151835862ee0946f1db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add0d783175466a8c4122d51262496306"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_cell.html#add0d783175466a8c4122d51262496306">isGoal</a> = false</td></tr>
 <tr class="separator:add0d783175466a8c4122d51262496306"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a79fa30066f02512739a43d6e52b56b88"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_cell.html#a79fa30066f02512739a43d6e52b56b88">xPos</a></td></tr>
-<tr class="separator:a79fa30066f02512739a43d6e52b56b88"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59f308f9db9dddf076aa9b45194a4233"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_cell.html#a59f308f9db9dddf076aa9b45194a4233">yPos</a></td></tr>
-<tr class="separator:a59f308f9db9dddf076aa9b45194a4233"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a773e22e57f4fbfb4fcc381e4255b7295"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_level_8h.html#a6f12d937dd9faa1785930de23cba9f9a">SpriteId</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_cell.html#a773e22e57f4fbfb4fcc381e4255b7295">sprId</a></td></tr>
+<tr class="memitem:ae4652e893512b4dfe4bedff192387d54"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_cell.html#ae4652e893512b4dfe4bedff192387d54">isVisited</a> = false</td></tr>
+<tr class="separator:ae4652e893512b4dfe4bedff192387d54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7119b38211a6ae14ceadef047840c096"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_cell.html#a7119b38211a6ae14ceadef047840c096">xCoord</a> = -1</td></tr>
+<tr class="separator:a7119b38211a6ae14ceadef047840c096"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6aafafb65ac94ccc9bb039b2e2e75405"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_cell.html#a6aafafb65ac94ccc9bb039b2e2e75405">yCoord</a> = -1</td></tr>
+<tr class="separator:a6aafafb65ac94ccc9bb039b2e2e75405"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7d10a18bf81aa5489cd7c0f5246892b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_cell.html#ad7d10a18bf81aa5489cd7c0f5246892b">xPos</a> = 0.0f</td></tr>
+<tr class="separator:ad7d10a18bf81aa5489cd7c0f5246892b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bfd2cf628f46d83ef7fd14ca0287a71"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_cell.html#a8bfd2cf628f46d83ef7fd14ca0287a71">yPos</a> = 0.0f</td></tr>
+<tr class="separator:a8bfd2cf628f46d83ef7fd14ca0287a71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff5d2a42c37c6aa941addba5778dcae8"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_cell.html#aff5d2a42c37c6aa941addba5778dcae8">globalGoalDist</a> = 0.0f</td></tr>
+<tr class="separator:aff5d2a42c37c6aa941addba5778dcae8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a018548f856f911156398cbfa0f43c83e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_cell.html#a018548f856f911156398cbfa0f43c83e">localGoalDist</a> = 0.0f</td></tr>
+<tr class="separator:a018548f856f911156398cbfa0f43c83e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a773e22e57f4fbfb4fcc381e4255b7295"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_level_8h.html#a6f12d937dd9faa1785930de23cba9f9a">SpriteId</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_cell.html#a773e22e57f4fbfb4fcc381e4255b7295">sprId</a> = <a class="el" href="_level_8h.html#a6f12d937dd9faa1785930de23cba9f9aab50339a10e1de285ac99d4c3990b8693">SpriteId::NONE</a></td></tr>
 <tr class="separator:a773e22e57f4fbfb4fcc381e4255b7295"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ce68d8b5b69355be0e56051c065fdd1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_cell.html">Cell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_cell.html#a8ce68d8b5b69355be0e56051c065fdd1">parentCell</a> = nullptr</td></tr>
+<tr class="separator:a8ce68d8b5b69355be0e56051c065fdd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc8bccaabc9cafe46c882bcbc89369ab"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="struct_cell.html">Cell</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_cell.html#acc8bccaabc9cafe46c882bcbc89369ab">vecNeighbours</a></td></tr>
+<tr class="separator:acc8bccaabc9cafe46c882bcbc89369ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="struct_cell.html" title="Cell structure.">Cell</a> structure. </p>
@@ -162,6 +176,20 @@ Public Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">int Cell::edge_id[4] = {-1, -1, -1, -1}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aff5d2a42c37c6aa941addba5778dcae8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff5d2a42c37c6aa941addba5778dcae8">&#9670;&nbsp;</a></span>globalGoalDist</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Cell::globalGoalDist = 0.0f</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -196,6 +224,34 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="ae4652e893512b4dfe4bedff192387d54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4652e893512b4dfe4bedff192387d54">&#9670;&nbsp;</a></span>isVisited</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Cell::isVisited = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a018548f856f911156398cbfa0f43c83e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a018548f856f911156398cbfa0f43c83e">&#9670;&nbsp;</a></span>localGoalDist</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Cell::localGoalDist = 0.0f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="abdbbe6bacc60d7bc060dbe99ae36c342"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abdbbe6bacc60d7bc060dbe99ae36c342">&#9670;&nbsp;</a></span>obstacle</h2>
 
@@ -210,6 +266,20 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a8ce68d8b5b69355be0e56051c065fdd1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ce68d8b5b69355be0e56051c065fdd1">&#9670;&nbsp;</a></span>parentCell</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_cell.html">Cell</a>* Cell::parentCell = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a773e22e57f4fbfb4fcc381e4255b7295"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a773e22e57f4fbfb4fcc381e4255b7295">&#9670;&nbsp;</a></span>sprId</h2>
 
@@ -217,35 +287,77 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="_level_8h.html#a6f12d937dd9faa1785930de23cba9f9a">SpriteId</a> Cell::sprId</td>
+          <td class="memname"><a class="el" href="_level_8h.html#a6f12d937dd9faa1785930de23cba9f9a">SpriteId</a> Cell::sprId = <a class="el" href="_level_8h.html#a6f12d937dd9faa1785930de23cba9f9aab50339a10e1de285ac99d4c3990b8693">SpriteId::NONE</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a79fa30066f02512739a43d6e52b56b88"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a79fa30066f02512739a43d6e52b56b88">&#9670;&nbsp;</a></span>xPos</h2>
+<a id="acc8bccaabc9cafe46c882bcbc89369ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc8bccaabc9cafe46c882bcbc89369ab">&#9670;&nbsp;</a></span>vecNeighbours</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int Cell::xPos</td>
+          <td class="memname">std::vector&lt;<a class="el" href="struct_cell.html">Cell</a>*&gt; Cell::vecNeighbours</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a59f308f9db9dddf076aa9b45194a4233"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a59f308f9db9dddf076aa9b45194a4233">&#9670;&nbsp;</a></span>yPos</h2>
+<a id="a7119b38211a6ae14ceadef047840c096"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7119b38211a6ae14ceadef047840c096">&#9670;&nbsp;</a></span>xCoord</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int Cell::yPos</td>
+          <td class="memname">int Cell::xCoord = -1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad7d10a18bf81aa5489cd7c0f5246892b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7d10a18bf81aa5489cd7c0f5246892b">&#9670;&nbsp;</a></span>xPos</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Cell::xPos = 0.0f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6aafafb65ac94ccc9bb039b2e2e75405"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6aafafb65ac94ccc9bb039b2e2e75405">&#9670;&nbsp;</a></span>yCoord</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Cell::yCoord = -1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8bfd2cf628f46d83ef7fd14ca0287a71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8bfd2cf628f46d83ef7fd14ca0287a71">&#9670;&nbsp;</a></span>yPos</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Cell::yPos = 0.0f</td>
         </tr>
       </table>
 </div><div class="memdoc">

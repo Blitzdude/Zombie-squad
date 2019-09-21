@@ -131,7 +131,8 @@ public:
 	static const Vec2f& GetStart() { return m_startPosition; }
 	static const Vec2f GetCellCenterPos(int x, int y) 
 	{ 
-		return Vec2f(x * GetCellSize() + GetCellSize() / 2.0f, y * GetCellSize() + GetCellSize() / 2.0f); 
+		return Vec2f((x * m_cellSize + m_cellSize / 2.0f) + m_levelOffsetX,
+					 (y * m_cellSize + m_cellSize / 2.0f) + m_levelOffsetY); 
 	};
 	static const std::vector<Edge>& GetEdges() { return vec_edges; }
 	static const Vec2f& GetEnd() { return m_endPosition; }

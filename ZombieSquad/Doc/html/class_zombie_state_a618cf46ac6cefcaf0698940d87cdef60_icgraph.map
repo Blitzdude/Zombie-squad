@@ -1,4 +1,4 @@
 <map id="ZombieState::Update" name="ZombieState::Update">
 <area shape="rect" id="node1" title=" " alt="" coords="167,5,311,32"/>
-<area shape="rect" id="node2" href="$class_zombie.html#ab62c721b21810778cb838d0584ed1839" title=" " alt="" coords="5,5,119,32"/>
+<area shape="rect" id="node2" href="$class_zombie.html#ab62c721b21810778cb838d0584ed1839" title="Updates the actor." alt="" coords="5,5,119,32"/>
 </map>

@@ -1,0 +1,16 @@
+<map id="Vec2::DistanceBetween" name="Vec2::DistanceBetween">
+<area shape="rect" id="node1" title=" " alt="" coords="1169,177,1331,204"/>
+<area shape="rect" id="node2" href="$class_zombie.html#abd3b2c61f257a09ded5c95dcb15ef847" title=" " alt="" coords="969,31,1085,57"/>
+<area shape="rect" id="node5" href="$class_zombie_handler.html#a0ccaada77514d44b528c3629244a949d" title=" " alt="" coords="937,82,1118,123"/>
+<area shape="rect" id="node6" href="$class_zombie_handler.html#ac233925a124fbfa52b91f2ec4aafde0d" title=" " alt="" coords="703,148,885,175"/>
+<area shape="rect" id="node10" href="$class_player_handler.html#a4a1ad4f728ddf2d6a1c12eee2cfd346f" title=" " alt="" coords="706,287,882,329"/>
+<area shape="rect" id="node13" href="$class_player_handler.html#a5ebcf252f2221dee29d740cc61c3b999" title=" " alt="" coords="938,317,1117,358"/>
+<area shape="rect" id="node14" href="$class_zombie_handler.html#abf58240f5e19d9f230d11d15f6301bcf" title=" " alt="" coords="933,199,1121,241"/>
+<area shape="rect" id="node3" href="$class_chasing.html#a2c7d84ee15647b9b13a6c7d85b9b256b" title=" " alt="" coords="735,5,853,32"/>
+<area shape="rect" id="node4" href="$class_roaming.html#a762496f9c10dcdc2957be7a161294739" title=" " alt="" coords="733,56,855,83"/>
+<area shape="rect" id="node7" href="$class_zombie_handler.html#a42c3f3476b2aa165e695db4b8905cda9" title=" " alt="" coords="449,148,655,175"/>
+<area shape="rect" id="node8" href="$class_zombie_squad.html#aec065debeb04f7823be4d23bd3760a52" title=" " alt="" coords="248,148,401,175"/>
+<area shape="rect" id="node9" href="$class_zombie_squad.html#ae086a8d81b15ca84408ea06b051da706" title=" " alt="" coords="5,148,200,175"/>
+<area shape="rect" id="node11" href="$class_player.html#a2f77cd8cd00652f721144100b690e1fe" title=" " alt="" coords="467,295,637,321"/>
+<area shape="rect" id="node12" href="$class_watching.html#a8097afd3ef6a60da5116c09dabca4deb" title=" " alt="" coords="261,295,388,321"/>
+</map>

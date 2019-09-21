@@ -35,7 +35,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Zombie Squad
-   &#160;<span id="projectnumber">0.4</span>
+   &#160;<span id="projectnumber">0.5</span>
    </div>
    <div id="projectbrief">Top down shooter, where you must make your way through a zombified city</div>
   </td>
@@ -106,12 +106,19 @@ $(document).ready(function(){initNavTree('struct_cell.html','');});
 <table class="directory">
   <tr class="even"><td class="entry"><a class="el" href="struct_cell.html#afa293209a1fe668498d835764f249184">edge_exist</a></td><td class="entry"><a class="el" href="struct_cell.html">Cell</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="struct_cell.html#aa05b1780414aa2b30a170fe4afbe1047">edge_id</a></td><td class="entry"><a class="el" href="struct_cell.html">Cell</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="struct_cell.html#add0d783175466a8c4122d51262496306">isGoal</a></td><td class="entry"><a class="el" href="struct_cell.html">Cell</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="struct_cell.html#a5b4266f1e33be151835862ee0946f1db">isStart</a></td><td class="entry"><a class="el" href="struct_cell.html">Cell</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="struct_cell.html#abdbbe6bacc60d7bc060dbe99ae36c342">obstacle</a></td><td class="entry"><a class="el" href="struct_cell.html">Cell</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="struct_cell.html#aff5d2a42c37c6aa941addba5778dcae8">globalGoalDist</a></td><td class="entry"><a class="el" href="struct_cell.html">Cell</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="struct_cell.html#add0d783175466a8c4122d51262496306">isGoal</a></td><td class="entry"><a class="el" href="struct_cell.html">Cell</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="struct_cell.html#a5b4266f1e33be151835862ee0946f1db">isStart</a></td><td class="entry"><a class="el" href="struct_cell.html">Cell</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="struct_cell.html#ae4652e893512b4dfe4bedff192387d54">isVisited</a></td><td class="entry"><a class="el" href="struct_cell.html">Cell</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="struct_cell.html#a018548f856f911156398cbfa0f43c83e">localGoalDist</a></td><td class="entry"><a class="el" href="struct_cell.html">Cell</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="struct_cell.html#abdbbe6bacc60d7bc060dbe99ae36c342">obstacle</a></td><td class="entry"><a class="el" href="struct_cell.html">Cell</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="struct_cell.html#a8ce68d8b5b69355be0e56051c065fdd1">parentCell</a></td><td class="entry"><a class="el" href="struct_cell.html">Cell</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="struct_cell.html#a773e22e57f4fbfb4fcc381e4255b7295">sprId</a></td><td class="entry"><a class="el" href="struct_cell.html">Cell</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="struct_cell.html#a79fa30066f02512739a43d6e52b56b88">xPos</a></td><td class="entry"><a class="el" href="struct_cell.html">Cell</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="struct_cell.html#a59f308f9db9dddf076aa9b45194a4233">yPos</a></td><td class="entry"><a class="el" href="struct_cell.html">Cell</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="struct_cell.html#acc8bccaabc9cafe46c882bcbc89369ab">vecNeighbours</a></td><td class="entry"><a class="el" href="struct_cell.html">Cell</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="struct_cell.html#a7119b38211a6ae14ceadef047840c096">xCoord</a></td><td class="entry"><a class="el" href="struct_cell.html">Cell</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="struct_cell.html#ad7d10a18bf81aa5489cd7c0f5246892b">xPos</a></td><td class="entry"><a class="el" href="struct_cell.html">Cell</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="struct_cell.html#a6aafafb65ac94ccc9bb039b2e2e75405">yCoord</a></td><td class="entry"><a class="el" href="struct_cell.html">Cell</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="struct_cell.html#a8bfd2cf628f46d83ef7fd14ca0287a71">yPos</a></td><td class="entry"><a class="el" href="struct_cell.html">Cell</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

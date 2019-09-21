@@ -1,4 +1,4 @@
 <map id="Actor::TurnLeft" name="Actor::TurnLeft">
-<area shape="rect" id="node1" title=" " alt="" coords="176,5,283,32"/>
+<area shape="rect" id="node1" title="Turns player actor left." alt="" coords="176,5,283,32"/>
 <area shape="rect" id="node2" href="$class_turn_left.html#af833be04e7dd23b7113e72e64049cf5d" title=" " alt="" coords="5,5,128,32"/>
 </map>

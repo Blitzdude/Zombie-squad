@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['isgoal_762',['isGoal',['../struct_cell.html#add0d783175466a8c4122d51262496306',1,'Cell']]],
-  ['isstart_763',['isStart',['../struct_cell.html#a5b4266f1e33be151835862ee0946f1db',1,'Cell']]]
+  ['lhs_503',['lhs',['../struct_c_c_collision.html#a30f8185e4b3f48284c5bc558d0731874',1,'CCCollision']]],
+  ['localgoaldist_504',['localGoalDist',['../struct_cell.html#a018548f856f911156398cbfa0f43c83e',1,'Cell']]]
 ];

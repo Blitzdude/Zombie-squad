@@ -1,6 +1,5 @@
 var annotated_dup =
 [
-    [ "olc", "namespaceolc.html", "namespaceolc" ],
     [ "Actor", "class_actor.html", "class_actor" ],
     [ "Attack", "class_attack.html", "class_attack" ],
     [ "Bullet", "class_bullet.html", "class_bullet" ],
@@ -20,6 +19,8 @@ var annotated_dup =
     [ "Level", "class_level.html", "class_level" ],
     [ "MoveBack", "class_move_back.html", "class_move_back" ],
     [ "MoveForward", "class_move_forward.html", "class_move_forward" ],
+    [ "NavigateToLocation", "class_navigate_to_location.html", "class_navigate_to_location" ],
+    [ "Navigating", "class_navigating.html", "class_navigating" ],
     [ "Physics", "class_physics.html", null ],
     [ "Player", "class_player.html", "class_player" ],
     [ "PlayerDead", "class_player_dead.html", "class_player_dead" ],

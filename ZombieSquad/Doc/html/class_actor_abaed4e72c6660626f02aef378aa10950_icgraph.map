@@ -1,8 +1,8 @@
 <map id="Actor::GetY" name="Actor::GetY">
 <area shape="rect" id="node1" title=" " alt="" coords="196,107,287,133"/>
-<area shape="rect" id="node2" href="$class_bullet.html#a4f39122cdbe52bd42b34e6db2acf96cc" title=" " alt="" coords="31,5,123,32"/>
-<area shape="rect" id="node3" href="$class_zombie.html#a70d0bccebcb4318c2e4619cd4c54851b" title=" " alt="" coords="26,56,127,83"/>
-<area shape="rect" id="node4" href="$class_player.html#ae7ac3a01c3dc2328a1f6c05967c4f8bc" title=" " alt="" coords="29,107,125,133"/>
-<area shape="rect" id="node5" href="$class_player.html#a935722a42ca076ddc9cad86618ca5645" title=" " alt="" coords="13,157,140,184"/>
+<area shape="rect" id="node2" href="$class_player.html#ae7ac3a01c3dc2328a1f6c05967c4f8bc" title="Draws the actor." alt="" coords="29,5,125,32"/>
+<area shape="rect" id="node3" href="$class_zombie.html#a70d0bccebcb4318c2e4619cd4c54851b" title="Draws the actor." alt="" coords="26,56,127,83"/>
+<area shape="rect" id="node4" href="$class_bullet.html#a4f39122cdbe52bd42b34e6db2acf96cc" title="Draws the bullet." alt="" coords="31,107,123,133"/>
+<area shape="rect" id="node5" href="$class_player.html#a935722a42ca076ddc9cad86618ca5645" title="Moves a player actor backwards." alt="" coords="13,157,140,184"/>
 <area shape="rect" id="node6" href="$class_player.html#a5097348f0972dc9e4e0887c529314a97" title="Moves a player actor forward." alt="" coords="5,208,148,235"/>
 </map>

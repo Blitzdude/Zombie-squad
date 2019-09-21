@@ -15,6 +15,7 @@ var files_dup =
       [ "ChangePlayer", "class_change_player.html", "class_change_player" ],
       [ "Attack", "class_attack.html", "class_attack" ],
       [ "ChasePlayer", "class_chase_player.html", "class_chase_player" ],
+      [ "NavigateToLocation", "class_navigate_to_location.html", "class_navigate_to_location" ],
       [ "Die", "class_die.html", "class_die" ]
     ] ],
     [ "GlobalConstants.h", "_global_constants_8h.html", "_global_constants_8h" ],
@@ -22,7 +23,6 @@ var files_dup =
     [ "Level.h", "_level_8h.html", "_level_8h" ],
     [ "main.cpp", "main_8cpp.html", "main_8cpp" ],
     [ "mathUtil.h", "math_util_8h.html", "math_util_8h" ],
-    [ "olcPixelGameEngine.h", "olc_pixel_game_engine_8h.html", "olc_pixel_game_engine_8h" ],
     [ "Physics.cpp", "_physics_8cpp.html", null ],
     [ "Physics.h", "_physics_8h.html", [
       [ "Physics", "class_physics.html", null ]

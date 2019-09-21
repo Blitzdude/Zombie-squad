@@ -23,16 +23,6 @@ for the JavaScript code in this file
 var NAVTREE =
 [
   [ "Zombie Squad", "index.html", [
-    [ "Namespaces", "namespaces.html", [
-      [ "Namespace List", "namespaces.html", "namespaces_dup" ],
-      [ "Namespace Members", "namespacemembers.html", [
-        [ "All", "namespacemembers.html", null ],
-        [ "Functions", "namespacemembers_func.html", null ],
-        [ "Typedefs", "namespacemembers_type.html", null ],
-        [ "Enumerations", "namespacemembers_enum.html", null ],
-        [ "Enumerator", "namespacemembers_eval.html", null ]
-      ] ]
-    ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
@@ -40,10 +30,7 @@ var NAVTREE =
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", "functions_func" ],
-        [ "Variables", "functions_vars.html", null ],
-        [ "Enumerations", "functions_enum.html", null ],
-        [ "Enumerator", "functions_eval.html", null ],
-        [ "Related Functions", "functions_rela.html", null ]
+        [ "Variables", "functions_vars.html", null ]
       ] ]
     ] ],
     [ "Files", "files.html", [
@@ -63,8 +50,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_actor_8cpp.html",
-"class_vec2.html#af6680e4d289886bb46df0481bd0de705",
-"olc_pixel_game_engine_8h.html#aa26a067cf0db83f0b1dd587036a64be7a224c0773e09bdb7fb13683fbb4eeee1a"
+"class_vec2.html#a8ef8f719932c920ac4ce11399c983d53"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

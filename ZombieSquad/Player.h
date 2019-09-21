@@ -18,10 +18,10 @@ public:
 
 	virtual void MoveForward(float dt) override;
 	virtual void MoveBack(float dt)	 override;
-	virtual void TurnRight(float dt)	 override;
+	virtual void TurnRight(float dt) override;
 	virtual void TurnLeft(float dt)	 override;
-	virtual void Attack(float dt)		 override;
-	virtual void Die(float dt)	override;
+	virtual void Attack(float dt)	 override;
+	virtual void Die(float dt)		 override;
 	virtual void ChangePlayer(bool truth) override;
 
 	PlayerState* GetCurrentState() const { return m_currentState; };

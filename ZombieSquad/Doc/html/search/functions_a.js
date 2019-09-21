@@ -1,10 +1,7 @@
 var searchData=
 [
-  ['length_630',['Length',['../class_vec2.html#a388891cf567b4693dab4497866b048d7',1,'Vec2']]],
-  ['level_631',['Level',['../class_level.html#ae5223ab9cf97336416297cca5bb2d85d',1,'Level']]],
-  ['loadfromfile_632',['LoadFromFile',['../classolc_1_1_sprite.html#a1225d529a0046ab49190db667c83d8a9',1,'olc::Sprite']]],
-  ['loadfrompgesprfile_633',['LoadFromPGESprFile',['../classolc_1_1_sprite.html#a941f8ce0b24f9694c409aeb4f47b3759',1,'olc::Sprite']]],
-  ['loadlevel_634',['LoadLevel',['../class_level.html#aa5956c6f922a79f43918aa8c46ed61e3',1,'Level']]],
-  ['loadpack_635',['LoadPack',['../classolc_1_1_resource_pack.html#a5c460a420f69cb49027dbf42d09195fb',1,'olc::ResourcePack']]],
-  ['loadtextures_636',['LoadTextures',['../class_level.html#ae67f4d0fc063c01189f1a66b921c56fb',1,'Level']]]
+  ['main_413',['main',['../main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4',1,'main.cpp']]],
+  ['manhattandistance_414',['ManhattanDistance',['../math_util_8h.html#a238d662ce4870d3e48c218bf0da81a0b',1,'mathUtil.h']]],
+  ['moveback_415',['MoveBack',['../class_actor.html#a585b5588d2ebc3e550690cfd1945391e',1,'Actor::MoveBack()'],['../class_move_back.html#a5e0fd2bb0db6ad1f92a92699066caffc',1,'MoveBack::MoveBack()'],['../class_player.html#a935722a42ca076ddc9cad86618ca5645',1,'Player::MoveBack()']]],
+  ['moveforward_416',['MoveForward',['../class_actor.html#a2a9b053f40fc0d7f2cb937013a99297b',1,'Actor::MoveForward()'],['../class_move_forward.html#a2aca7bae19491292e7fe587797bcb81f',1,'MoveForward::MoveForward()'],['../class_player.html#a5097348f0972dc9e4e0887c529314a97',1,'Player::MoveForward()']]]
 ];

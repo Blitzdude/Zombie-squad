@@ -35,7 +35,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Zombie Squad
-   &#160;<span id="projectnumber">0.4</span>
+   &#160;<span id="projectnumber">0.5</span>
    </div>
    <div id="projectbrief">Top down shooter, where you must make your way through a zombified city</div>
   </td>
@@ -100,35 +100,13 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 &#160;
 
 <h3><a id="index_a"></a>- a -</h3><ul>
-<li>a
-: <a class="el" href="structolc_1_1_pixel.html#a652a25d4bcab1f7bf627c3224842f0b1">olc::Pixel</a>
-</li>
 <li>actor
 : <a class="el" href="struct_c_e_collision.html#a09a4262e18529ffda6554ff56e3fac9b">CECollision</a>
 </li>
 </ul>
 
 
-<h3><a id="index_b"></a>- b -</h3><ul>
-<li>b
-: <a class="el" href="structolc_1_1_pixel.html#a8738f2cd490bd9c5288f37c8d19816be">olc::Pixel</a>
-</li>
-<li>bHeld
-: <a class="el" href="structolc_1_1_h_w_button.html#a6d872a5aeb23aba39103b95093c63cb7">olc::HWButton</a>
-</li>
-<li>bPressed
-: <a class="el" href="structolc_1_1_h_w_button.html#a0c379d6a109299fc0a1c872ebbb2f4d9">olc::HWButton</a>
-</li>
-<li>bReleased
-: <a class="el" href="structolc_1_1_h_w_button.html#a2576b36bdf00033f78fa1cdcabfa2a00">olc::HWButton</a>
-</li>
-</ul>
-
-
 <h3><a id="index_d"></a>- d -</h3><ul>
-<li>data
-: <a class="el" href="structolc_1_1_resource_pack_1_1s_entry.html#add8d86a3f2a818bb479fb6f8f13bab67">olc::ResourcePack::sEntry</a>
-</li>
 <li>distance
 : <a class="el" href="struct_c_e_collision.html#a90adb8357810e311d8f3434c46c2d438">CECollision</a>
 </li>
@@ -150,15 +128,8 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 
 
 <h3><a id="index_g"></a>- g -</h3><ul>
-<li>g
-: <a class="el" href="structolc_1_1_pixel.html#a14cf5612284974c409f078944fe5f6ee">olc::Pixel</a>
-</li>
-</ul>
-
-
-<h3><a id="index_h"></a>- h -</h3><ul>
-<li>height
-: <a class="el" href="classolc_1_1_sprite.html#ab05010cb1a5ff6c36267d0050d568d96">olc::Sprite</a>
+<li>globalGoalDist
+: <a class="el" href="struct_cell.html#aff5d2a42c37c6aa941addba5778dcae8">Cell</a>
 </li>
 </ul>
 
@@ -170,12 +141,18 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <li>isStart
 : <a class="el" href="struct_cell.html#a5b4266f1e33be151835862ee0946f1db">Cell</a>
 </li>
+<li>isVisited
+: <a class="el" href="struct_cell.html#ae4652e893512b4dfe4bedff192387d54">Cell</a>
+</li>
 </ul>
 
 
 <h3><a id="index_l"></a>- l -</h3><ul>
 <li>lhs
 : <a class="el" href="struct_c_c_collision.html#a30f8185e4b3f48284c5bc558d0731874">CCCollision</a>
+</li>
+<li>localGoalDist
+: <a class="el" href="struct_cell.html#a018548f856f911156398cbfa0f43c83e">Cell</a>
 </li>
 </ul>
 
@@ -203,24 +180,9 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 
 
 <h3><a id="index_n"></a>- n -</h3><ul>
-<li>n
-: <a class="el" href="structolc_1_1_pixel.html#aa9cb31c80e2822ccc726526be5801ae2">olc::Pixel</a>
-</li>
-<li>nFileOffset
-: <a class="el" href="structolc_1_1_resource_pack_1_1s_entry.html#a675f3242e82d4db379ee177b806e8388">olc::ResourcePack::sEntry</a>
-</li>
-<li>nFileSize
-: <a class="el" href="structolc_1_1_resource_pack_1_1s_entry.html#a95847b067f9223462e1aa93a5d7deb52">olc::ResourcePack::sEntry</a>
-</li>
-<li>nID
-: <a class="el" href="structolc_1_1_resource_pack_1_1s_entry.html#af4715e8cadb6327e70c8378c00c096c6">olc::ResourcePack::sEntry</a>
-</li>
 <li>normal
 : <a class="el" href="struct_c_e_collision.html#ab9a1c788c225a3d068f9aa72959d5f8b">CECollision</a>
 , <a class="el" href="struct_edge.html#af3225cd17917136b7473d46cf7fa7014">Edge</a>
-</li>
-<li>nOverdrawCount
-: <a class="el" href="classolc_1_1_sprite.html#a13cfadeccfd84ad0879750b8175bcee3">olc::Sprite</a>
 </li>
 </ul>
 
@@ -236,8 +198,8 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 
 
 <h3><a id="index_p"></a>- p -</h3><ul>
-<li>pge
-: <a class="el" href="classolc_1_1_p_g_e_x.html#a18e338600eb37618a31c01c9b92136b7">olc::PGEX</a>
+<li>parentCell
+: <a class="el" href="struct_cell.html#a8ce68d8b5b69355be0e56051c065fdd1">Cell</a>
 </li>
 <li>Player
 : <a class="el" href="class_player_handler.html#aee976d71e3f65e4eca232949253afdce">PlayerHandler</a>
@@ -252,9 +214,6 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 
 
 <h3><a id="index_r"></a>- r -</h3><ul>
-<li>r
-: <a class="el" href="structolc_1_1_pixel.html#a93ee3efde3d2b363e4e4813a490f60b4">olc::Pixel</a>
-</li>
 <li>rhs
 : <a class="el" href="struct_c_c_collision.html#a31f57fc4b3dc8e2b744fdcaafb5fbe2b">CCCollision</a>
 </li>
@@ -262,9 +221,6 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 
 
 <h3><a id="index_s"></a>- s -</h3><ul>
-<li>sAppName
-: <a class="el" href="classolc_1_1_pixel_game_engine.html#a02d0f9c50770aa38aea1448f62d3604f">olc::PixelGameEngine</a>
-</li>
 <li>sprId
 : <a class="el" href="struct_cell.html#a773e22e57f4fbfb4fcc381e4255b7295">Cell</a>
 </li>
@@ -282,31 +238,35 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 </ul>
 
 
-<h3><a id="index_w"></a>- w -</h3><ul>
-<li>width
-: <a class="el" href="classolc_1_1_sprite.html#af055800e63204ae372ca0812e6926230">olc::Sprite</a>
+<h3><a id="index_v"></a>- v -</h3><ul>
+<li>vecNeighbours
+: <a class="el" href="struct_cell.html#acc8bccaabc9cafe46c882bcbc89369ab">Cell</a>
 </li>
 </ul>
 
 
 <h3><a id="index_x"></a>- x -</h3><ul>
 <li>x
-: <a class="el" href="structolc_1_1v2d__generic.html#a2c6ce2738720f5e098c7d0bf17f33807">olc::v2d_generic&lt; T &gt;</a>
-, <a class="el" href="class_vec2.html#a8ef8f719932c920ac4ce11399c983d53">Vec2&lt; T &gt;</a>
+: <a class="el" href="class_vec2.html#a8ef8f719932c920ac4ce11399c983d53">Vec2&lt; T &gt;</a>
+</li>
+<li>xCoord
+: <a class="el" href="struct_cell.html#a7119b38211a6ae14ceadef047840c096">Cell</a>
 </li>
 <li>xPos
-: <a class="el" href="struct_cell.html#a79fa30066f02512739a43d6e52b56b88">Cell</a>
+: <a class="el" href="struct_cell.html#ad7d10a18bf81aa5489cd7c0f5246892b">Cell</a>
 </li>
 </ul>
 
 
 <h3><a id="index_y"></a>- y -</h3><ul>
 <li>y
-: <a class="el" href="structolc_1_1v2d__generic.html#a5a9c94207b2163c69a39190c320fcbdf">olc::v2d_generic&lt; T &gt;</a>
-, <a class="el" href="class_vec2.html#a7ea262a941af6b3abd284ab97658806c">Vec2&lt; T &gt;</a>
+: <a class="el" href="class_vec2.html#a7ea262a941af6b3abd284ab97658806c">Vec2&lt; T &gt;</a>
+</li>
+<li>yCoord
+: <a class="el" href="struct_cell.html#a6aafafb65ac94ccc9bb039b2e2e75405">Cell</a>
 </li>
 <li>yPos
-: <a class="el" href="struct_cell.html#a59f308f9db9dddf076aa9b45194a4233">Cell</a>
+: <a class="el" href="struct_cell.html#a8bfd2cf628f46d83ef7fd14ca0287a71">Cell</a>
 </li>
 </ul>
 </div><!-- contents -->

@@ -35,7 +35,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Zombie Squad
-   &#160;<span id="projectnumber">0.4</span>
+   &#160;<span id="projectnumber">0.5</span>
    </div>
    <div id="projectbrief">Top down shooter, where you must make your way through a zombified city</div>
   </td>
@@ -100,17 +100,17 @@ $(document).ready(function(){initNavTree('functions_g.html','');});
 <div class="textblock">Here is a list of all class members with links to the classes they belong to:</div>
 
 <h3><a id="index_g"></a>- g -</h3><ul>
-<li>g
-: <a class="el" href="structolc_1_1_pixel.html#a14cf5612284974c409f078944fe5f6ee">olc::Pixel</a>
-</li>
 <li>GetActors()
 : <a class="el" href="class_zombie_squad.html#a990d78ca8062bc6d60da1c9493e8d51a">ZombieSquad</a>
 </li>
 <li>GetCell()
-: <a class="el" href="class_level.html#a94d1f452e9a9ed94269791fb9e9155ce">Level</a>
+: <a class="el" href="class_level.html#a3f6f0bbfe58a7dd8b3f7344a34ec1b7d">Level</a>
+</li>
+<li>GetCellCenterPos()
+: <a class="el" href="class_level.html#a7867851fbcb55467cc64a2ca73f33090">Level</a>
 </li>
 <li>GetCellSize()
-: <a class="el" href="class_level.html#ad7cb25470e5f1ce24c1972b6e60ca9b4">Level</a>
+: <a class="el" href="class_level.html#a280a1c736c28d598fb96bd65a4590302">Level</a>
 </li>
 <li>GetClosestPlayer()
 : <a class="el" href="class_zombie_handler.html#a0ccaada77514d44b528c3629244a949d">ZombieHandler</a>
@@ -121,9 +121,6 @@ $(document).ready(function(){initNavTree('functions_g.html','');});
 <li>GetCurrentState()
 : <a class="el" href="class_player.html#afd1feb2207a774520e2fda96894851fa">Player</a>
 </li>
-<li>GetData()
-: <a class="el" href="classolc_1_1_sprite.html#a738086f5b093e65ff7dcf41a055326c8">olc::Sprite</a>
-</li>
 <li>GetDestroyed()
 : <a class="el" href="class_actor.html#a63e296c8a51b67541c8946281dbc734d">Actor</a>
 </li>
@@ -133,53 +130,29 @@ $(document).ready(function(){initNavTree('functions_g.html','');});
 <li>GetDirectionVector()
 : <a class="el" href="class_actor.html#ab244f1ca41fe6eaa2c586b25adff55b1">Actor</a>
 </li>
-<li>GetDrawTarget()
-: <a class="el" href="classolc_1_1_pixel_game_engine.html#ab3db7fea236e72ac30b693f6d224e719">olc::PixelGameEngine</a>
-</li>
-<li>GetDrawTargetHeight()
-: <a class="el" href="classolc_1_1_pixel_game_engine.html#afa83c05ccb2a26e68635018be28c22d9">olc::PixelGameEngine</a>
-</li>
-<li>GetDrawTargetWidth()
-: <a class="el" href="classolc_1_1_pixel_game_engine.html#a201adbbd1cc561908cbcd6e162702e59">olc::PixelGameEngine</a>
-</li>
 <li>GetEdges()
-: <a class="el" href="class_level.html#ab5baf7ed106ebb82f0e7729ac24d407b">Level</a>
+: <a class="el" href="class_level.html#af0c051a1fa3823d041a6009d1686a7e7">Level</a>
+</li>
+<li>GetEnd()
+: <a class="el" href="class_level.html#ab612694ea3ec987c78487a5fce73a3d4">Level</a>
 </li>
 <li>GetIsHit()
 : <a class="el" href="class_actor.html#a9ae2bf6c669dda79a0ae408bb40e2816">Actor</a>
-</li>
-<li>GetKey()
-: <a class="el" href="classolc_1_1_pixel_game_engine.html#a9b16a76f71a52175cb013ff9e22a2180">olc::PixelGameEngine</a>
-</li>
-<li>GetMouse()
-: <a class="el" href="classolc_1_1_pixel_game_engine.html#adf5ad31dd88bb2c1ade6eb8cbcc379cd">olc::PixelGameEngine</a>
-</li>
-<li>GetMouseWheel()
-: <a class="el" href="classolc_1_1_pixel_game_engine.html#a3662debc4f4959baeb70c10c6b440daf">olc::PixelGameEngine</a>
-</li>
-<li>GetMouseX()
-: <a class="el" href="classolc_1_1_pixel_game_engine.html#a564066e8575619cf3ab315cb5670cdf6">olc::PixelGameEngine</a>
-</li>
-<li>GetMouseY()
-: <a class="el" href="classolc_1_1_pixel_game_engine.html#af406927c77a2c96439c07f497d3da709">olc::PixelGameEngine</a>
 </li>
 <li>GetNormalized()
 : <a class="el" href="class_vec2.html#ae759e52741d5a83955731cf064826f4d">Vec2&lt; T &gt;</a>
 </li>
 <li>GetNumCellsX()
-: <a class="el" href="class_level.html#ac63f54cf477c9757d7bfe2fd2558963c">Level</a>
+: <a class="el" href="class_level.html#a7c8980872ead7e2c1827d41643c4ac64">Level</a>
 </li>
 <li>GetNumCellsY()
-: <a class="el" href="class_level.html#a84083dc2f5da48a93cdcb7df1685b631">Level</a>
+: <a class="el" href="class_level.html#ace257882c9911dfec0f6fc9f6acfe842">Level</a>
 </li>
 <li>GetOwner()
 : <a class="el" href="class_bullet.html#a3e7ead4dd21ca8222076235b8000d500">Bullet</a>
 </li>
-<li>GetPixel()
-: <a class="el" href="classolc_1_1_sprite.html#a98c4a9a357e82c4cc7458f049d79e1e9">olc::Sprite</a>
-</li>
-<li>GetPixelMode()
-: <a class="el" href="classolc_1_1_pixel_game_engine.html#ad4f95a449dc09a2650ec771e6fa83049">olc::PixelGameEngine</a>
+<li>GetPathToTarget()
+: <a class="el" href="class_level.html#abb0315baac5389e162e6aa4d9feeb9ac">Level</a>
 </li>
 <li>GetPlayers()
 : <a class="el" href="class_player_handler.html#aba6c7665c19b1c2a6a58e6f2cfd17966">PlayerHandler</a>
@@ -190,6 +163,9 @@ $(document).ready(function(){initNavTree('functions_g.html','');});
 <li>GetRadius()
 : <a class="el" href="class_actor.html#a7f01b833e5c15a83f3f15e1efd914442">Actor</a>
 </li>
+<li>GetRandomCellLocation()
+: <a class="el" href="class_zombie.html#acf0ef42319d0d1daf89193940416e04a">Zombie</a>
+</li>
 <li>GetRotated()
 : <a class="el" href="class_vec2.html#a2c2e741c3a05cb11df0b09fcd37f2811">Vec2&lt; T &gt;</a>
 </li>
@@ -197,28 +173,26 @@ $(document).ready(function(){initNavTree('functions_g.html','');});
 : <a class="el" href="class_actor.html#a2e57c90093eae1379435d53f9194c903">Actor</a>
 </li>
 <li>GetStart()
-: <a class="el" href="class_level.html#a224b70ef61f53225d9d2a70dd447bfac">Level</a>
+: <a class="el" href="class_level.html#a52575373e08d0de709651a9a7e103f14">Level</a>
 </li>
 <li>GetStartX()
-: <a class="el" href="class_level.html#a96846590cc46d892e71257dfe0e692ce">Level</a>
+: <a class="el" href="class_level.html#a623d37888f947625133828bebb76c49d">Level</a>
 </li>
 <li>GetStartY()
-: <a class="el" href="class_level.html#a7669e8d3a602f81e20788e4fce84f86a">Level</a>
+: <a class="el" href="class_level.html#adddd1412cbaa55e9282094f634049f22">Level</a>
 </li>
 <li>GetStateID()
 : <a class="el" href="class_bullet_state.html#a51d6bd85ba031f387a950a683f9e5726">BulletState</a>
 , <a class="el" href="class_chasing.html#a9837c79cd765059f5aa0f089667958b2">Chasing</a>
 , <a class="el" href="class_controlled.html#a7c540525e8729b0c688c5519423ca5bc">Controlled</a>
 , <a class="el" href="class_flying.html#a3327bbbe31e8b4c62d4a87f09bf45ebd">Flying</a>
+, <a class="el" href="class_navigating.html#a89be283ecc0b5dbdecd6e14870be42f9">Navigating</a>
 , <a class="el" href="class_player_dead.html#a8315677b96b7d88bc499eaadea12a991">PlayerDead</a>
 , <a class="el" href="class_player_state.html#ac28306fb7619776227875a124c410ccb">PlayerState</a>
 , <a class="el" href="class_roaming.html#a1fdfc5d5357ff183b3caff458795f3ce">Roaming</a>
 , <a class="el" href="class_watching.html#a1bde7187302c6e7e5b1fa1440f5fe251">Watching</a>
 , <a class="el" href="class_zombie_dead.html#a24af788516edf9cbc5f98abfbdf36a53">ZombieDead</a>
 , <a class="el" href="class_zombie_state.html#a75eddc0df0a4f2863c087568be3e3c50">ZombieState</a>
-</li>
-<li>GetStreamBuffer()
-: <a class="el" href="classolc_1_1_resource_pack.html#a21d5f613c3920565925cffb8f26dddc4">olc::ResourcePack</a>
 </li>
 <li>GetTag()
 : <a class="el" href="class_actor.html#ac7a04b439e66047a0d087f267818579f">Actor</a>
@@ -234,6 +208,9 @@ $(document).ready(function(){initNavTree('functions_g.html','');});
 </li>
 <li>GetZombies()
 : <a class="el" href="class_zombie_handler.html#af86e918941ea4a347d70d70ebd33595d">ZombieHandler</a>
+</li>
+<li>globalGoalDist
+: <a class="el" href="struct_cell.html#aff5d2a42c37c6aa941addba5778dcae8">Cell</a>
 </li>
 </ul>
 </div><!-- contents -->

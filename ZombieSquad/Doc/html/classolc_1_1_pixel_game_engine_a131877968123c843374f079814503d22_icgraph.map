@@ -1,10 +1,11 @@
 <map id="olc::PixelGameEngine::DrawLine" name="olc::PixelGameEngine::DrawLine">
-<area shape="rect" id="node1" title=" " alt="" coords="649,93,800,134"/>
-<area shape="rect" id="node2" href="$class_player.html#ae7ac3a01c3dc2328a1f6c05967c4f8bc" title=" " alt="" coords="277,12,373,39"/>
-<area shape="rect" id="node3" href="$class_zombie.html#a70d0bccebcb4318c2e4619cd4c54851b" title=" " alt="" coords="275,130,376,156"/>
-<area shape="rect" id="node4" href="$class_level.html#ae7e00c2b5622cefaf2d78c90ce20588f" title=" " alt="" coords="457,218,595,244"/>
-<area shape="rect" id="node7" href="$classolc_1_1_pixel_game_engine.html#a220f523e520e317f5656c4d3df777163" title=" " alt="" coords="451,34,601,76"/>
-<area shape="rect" id="node8" href="$classolc_1_1_pixel_game_engine.html#a2bddba9e808a8702f6af354007302c16" title=" " alt="" coords="451,152,601,193"/>
-<area shape="rect" id="node5" href="$class_zombie_squad.html#ac526632841b06c2f7e38150c8b363e6d" title=" " alt="" coords="248,218,403,244"/>
-<area shape="rect" id="node6" href="$class_zombie_squad.html#ae086a8d81b15ca84408ea06b051da706" title=" " alt="" coords="5,218,200,244"/>
+<area shape="rect" id="node1" title=" " alt="" coords="659,129,809,171"/>
+<area shape="rect" id="node2" href="$class_zombie_squad.html#ac526632841b06c2f7e38150c8b363e6d" title=" " alt="" coords="248,35,403,62"/>
+<area shape="rect" id="node4" href="$class_zombie.html#a70d0bccebcb4318c2e4619cd4c54851b" title="Draws the actor." alt="" coords="275,166,376,193"/>
+<area shape="rect" id="node5" href="$class_player.html#ae7ac3a01c3dc2328a1f6c05967c4f8bc" title="Draws the actor." alt="" coords="277,283,373,310"/>
+<area shape="rect" id="node6" href="$class_level.html#aeec06785421d248d463b6e3f6f565378" title=" " alt="" coords="451,35,611,62"/>
+<area shape="rect" id="node7" href="$class_level.html#ae7e00c2b5622cefaf2d78c90ce20588f" title=" " alt="" coords="461,86,600,113"/>
+<area shape="rect" id="node8" href="$classolc_1_1_pixel_game_engine.html#a220f523e520e317f5656c4d3df777163" title=" " alt="" coords="455,305,606,347"/>
+<area shape="rect" id="node9" href="$classolc_1_1_pixel_game_engine.html#a2bddba9e808a8702f6af354007302c16" title=" " alt="" coords="455,188,606,229"/>
+<area shape="rect" id="node3" href="$class_zombie_squad.html#ae086a8d81b15ca84408ea06b051da706" title=" " alt="" coords="5,35,200,62"/>
 </map>

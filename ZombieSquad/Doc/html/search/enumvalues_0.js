@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['a_822',['A',['../namespaceolc.html#aa26a067cf0db83f0b1dd587036a64be7a3e1af6612f2964145f438bb63073098d',1,'olc']]],
-  ['alpha_823',['ALPHA',['../structolc_1_1_pixel.html#ae9012164940526ddb09b217dbbddfd65a561bc0234492261a62a3191252692753',1,'olc::Pixel']]]
+  ['building_550',['BUILDING',['../_level_8h.html#a6f12d937dd9faa1785930de23cba9f9aa71a6834884666147c0334f0c40bc7295',1,'Level.h']]],
+  ['bullet_551',['BULLET',['../_actor_8h.html#ae12afa3ae87b86e8dcb8096a2419692aa5fb9dc502beb6f75a2175f0ea535437d',1,'Actor.h']]]
 ];

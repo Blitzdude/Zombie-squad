@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['moveback_455',['MoveBack',['../class_move_back.html',1,'']]],
-  ['moveforward_456',['MoveForward',['../class_move_forward.html',1,'']]]
+  ['navigatetolocation_283',['NavigateToLocation',['../class_navigate_to_location.html',1,'']]],
+  ['navigating_284',['Navigating',['../class_navigating.html',1,'']]]
 ];

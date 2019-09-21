@@ -35,7 +35,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Zombie Squad
-   &#160;<span id="projectnumber">0.4</span>
+   &#160;<span id="projectnumber">0.5</span>
    </div>
    <div id="projectbrief">Top down shooter, where you must make your way through a zombified city</div>
   </td>
@@ -111,51 +111,52 @@ $(document).ready(function(){initNavTree('_bullet_8h_source.html','');});
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <a class="code" href="class_bullet.html#a87077628d46db89d5a9208c85481f945">Bullet</a>(<span class="keyword">const</span> <a class="code" href="class_vec2.html">Vec2f</a>&amp; pos, <span class="keywordtype">float</span> dir, <span class="keywordtype">float</span> s, <span class="keywordtype">float</span> l, <a class="code" href="_actor_8h.html#ae12afa3ae87b86e8dcb8096a2419692a">ActorTag</a> owner);</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <a class="code" href="class_bullet.html#aaeb5cb41d7db89f49007b08b41f1bfcf">~Bullet</a>();</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_bullet.html#a4f39122cdbe52bd42b34e6db2acf96cc">Draw</a>(<a class="code" href="classolc_1_1_pixel_game_engine.html">olc::PixelGameEngine</a>&amp; game) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_bullet.html#a63ffaa8902acf59d523f9a757bdfe747">Update</a>(<span class="keywordtype">float</span> fElapsedTime) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="class_bullet.html#a510f32c1ad7a0f2765aa44ee2482c83b">   14</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="_actor_8h.html#ae12afa3ae87b86e8dcb8096a2419692a">ActorTag</a>&amp; <a class="code" href="class_bullet.html#a3e7ead4dd21ca8222076235b8000d500">GetOwner</a>() { <span class="keywordflow">return</span> m_owner; };</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keywordtype">float</span> <a class="code" href="class_bullet.html#a510f32c1ad7a0f2765aa44ee2482c83b">m_lifeTime</a>;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_bullet.html#a4f39122cdbe52bd42b34e6db2acf96cc">Draw</a>(olc::PixelGameEngine&amp; game) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <a class="code" href="_actor_8h.html#ae12afa3ae87b86e8dcb8096a2419692a">ActorTag</a> m_owner;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <a class="code" href="class_bullet_state.html">BulletState</a>* m_currentState;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keywordtype">float</span> m_radius;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;};</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_bullet.html#a539b6ae5c3e6ae431f097296371e8d31">Update</a>(<span class="keywordtype">float</span> dt) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="comment">// Getters</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="class_bullet.html#a510f32c1ad7a0f2765aa44ee2482c83b">   27</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="_actor_8h.html#ae12afa3ae87b86e8dcb8096a2419692a">ActorTag</a>&amp; <a class="code" href="class_bullet.html#a3e7ead4dd21ca8222076235b8000d500">GetOwner</a>() { <span class="keywordflow">return</span> m_owner; };</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keywordtype">float</span> <a class="code" href="class_bullet.html#a510f32c1ad7a0f2765aa44ee2482c83b">m_lifeTime</a>;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <a class="code" href="_actor_8h.html#ae12afa3ae87b86e8dcb8096a2419692a">ActorTag</a> m_owner;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <a class="code" href="class_bullet_state.html">BulletState</a>* m_currentState;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordtype">float</span> m_radius;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;};</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclass_actor_html_ab4c2acf9217d5865519a3ae37b4d4e71"><div class="ttname"><a href="class_actor.html#ab4c2acf9217d5865519a3ae37b4d4e71">Actor::SetDestroyed</a></div><div class="ttdeci">void SetDestroyed(bool truth)</div><div class="ttdef"><b>Definition:</b> Actor.h:81</div></div>
-<div class="ttc" id="aclass_actor_html_a60ffe68d16326421524797631a7db0cf"><div class="ttname"><a href="class_actor.html#a60ffe68d16326421524797631a7db0cf">Actor::SetPosition</a></div><div class="ttdeci">void SetPosition(const Vec2f &amp;pos)</div><div class="ttdef"><b>Definition:</b> Actor.h:78</div></div>
+<div class="ttc" id="aclass_actor_html_ab4c2acf9217d5865519a3ae37b4d4e71"><div class="ttname"><a href="class_actor.html#ab4c2acf9217d5865519a3ae37b4d4e71">Actor::SetDestroyed</a></div><div class="ttdeci">void SetDestroyed(bool truth)</div><div class="ttdef"><b>Definition:</b> Actor.h:163</div></div>
+<div class="ttc" id="aclass_bullet_html_a539b6ae5c3e6ae431f097296371e8d31"><div class="ttname"><a href="class_bullet.html#a539b6ae5c3e6ae431f097296371e8d31">Bullet::Update</a></div><div class="ttdeci">void Update(float dt) override</div><div class="ttdoc">Updates the bullet.</div><div class="ttdef"><b>Definition:</b> Bullet.cpp:29</div></div>
+<div class="ttc" id="aclass_actor_html_a60ffe68d16326421524797631a7db0cf"><div class="ttname"><a href="class_actor.html#a60ffe68d16326421524797631a7db0cf">Actor::SetPosition</a></div><div class="ttdeci">void SetPosition(const Vec2f &amp;pos)</div><div class="ttdef"><b>Definition:</b> Actor.h:160</div></div>
 <div class="ttc" id="aclass_vec2_html"><div class="ttname"><a href="class_vec2.html">Vec2&lt; float &gt;</a></div></div>
 <div class="ttc" id="aclass_bullet_html_aaeb5cb41d7db89f49007b08b41f1bfcf"><div class="ttname"><a href="class_bullet.html#aaeb5cb41d7db89f49007b08b41f1bfcf">Bullet::~Bullet</a></div><div class="ttdeci">~Bullet()</div><div class="ttdef"><b>Definition:</b> Bullet.cpp:18</div></div>
 <div class="ttc" id="a_actor_8h_html_ae12afa3ae87b86e8dcb8096a2419692aa5fb9dc502beb6f75a2175f0ea535437d"><div class="ttname"><a href="_actor_8h.html#ae12afa3ae87b86e8dcb8096a2419692aa5fb9dc502beb6f75a2175f0ea535437d">ActorTag::BULLET</a></div></div>
 <div class="ttc" id="a_bullet_8h_html"><div class="ttname"><a href="_bullet_8h.html">Bullet.h</a></div></div>
-<div class="ttc" id="aclass_actor_html_a4a8b6786ab249c4f0f4d9239abbd8f10"><div class="ttname"><a href="class_actor.html#a4a8b6786ab249c4f0f4d9239abbd8f10">Actor::SetRadius</a></div><div class="ttdeci">void SetRadius(float r)</div><div class="ttdef"><b>Definition:</b> Actor.h:77</div></div>
+<div class="ttc" id="aclass_actor_html_a4a8b6786ab249c4f0f4d9239abbd8f10"><div class="ttname"><a href="class_actor.html#a4a8b6786ab249c4f0f4d9239abbd8f10">Actor::SetRadius</a></div><div class="ttdeci">void SetRadius(float r)</div><div class="ttdef"><b>Definition:</b> Actor.h:159</div></div>
 <div class="ttc" id="a_global_constants_8h_html_a5c415c628ff4ba784125d5ab7200c7fd"><div class="ttname"><a href="_global_constants_8h.html#a5c415c628ff4ba784125d5ab7200c7fd">BULLET_SIZE</a></div><div class="ttdeci">constexpr float BULLET_SIZE</div><div class="ttdef"><b>Definition:</b> GlobalConstants.h:6</div></div>
-<div class="ttc" id="aclass_actor_html_abaed4e72c6660626f02aef378aa10950"><div class="ttname"><a href="class_actor.html#abaed4e72c6660626f02aef378aa10950">Actor::GetY</a></div><div class="ttdeci">float GetY() const</div><div class="ttdef"><b>Definition:</b> Actor.h:57</div></div>
+<div class="ttc" id="aclass_actor_html_abaed4e72c6660626f02aef378aa10950"><div class="ttname"><a href="class_actor.html#abaed4e72c6660626f02aef378aa10950">Actor::GetY</a></div><div class="ttdeci">float GetY() const</div><div class="ttdef"><b>Definition:</b> Actor.h:139</div></div>
 <div class="ttc" id="a_actor_8h_html"><div class="ttname"><a href="_actor_8h.html">Actor.h</a></div></div>
 <div class="ttc" id="aclass_actor_html"><div class="ttname"><a href="class_actor.html">Actor</a></div><div class="ttdoc">Abstract base class for all actors.</div><div class="ttdef"><b>Definition:</b> Actor.h:25</div></div>
-<div class="ttc" id="aclass_actor_html_a7f01b833e5c15a83f3f15e1efd914442"><div class="ttname"><a href="class_actor.html#a7f01b833e5c15a83f3f15e1efd914442">Actor::GetRadius</a></div><div class="ttdeci">float GetRadius() const</div><div class="ttdef"><b>Definition:</b> Actor.h:60</div></div>
-<div class="ttc" id="aclassolc_1_1_pixel_game_engine_html_a483f56606fbbf3ab4850554491a853bd"><div class="ttname"><a href="classolc_1_1_pixel_game_engine.html#a483f56606fbbf3ab4850554491a853bd">olc::PixelGameEngine::FillCircle</a></div><div class="ttdeci">void FillCircle(int32_t x, int32_t y, int32_t radius, Pixel p=olc::WHITE)</div><div class="ttdef"><b>Definition:</b> olcPixelGameEngine.h:1333</div></div>
+<div class="ttc" id="aclass_actor_html_a7f01b833e5c15a83f3f15e1efd914442"><div class="ttname"><a href="class_actor.html#a7f01b833e5c15a83f3f15e1efd914442">Actor::GetRadius</a></div><div class="ttdeci">float GetRadius() const</div><div class="ttdef"><b>Definition:</b> Actor.h:142</div></div>
 <div class="ttc" id="aclass_bullet_html"><div class="ttname"><a href="class_bullet.html">Bullet</a></div><div class="ttdef"><b>Definition:</b> Bullet.h:5</div></div>
-<div class="ttc" id="aclass_bullet_html_a510f32c1ad7a0f2765aa44ee2482c83b"><div class="ttname"><a href="class_bullet.html#a510f32c1ad7a0f2765aa44ee2482c83b">Bullet::m_lifeTime</a></div><div class="ttdeci">float m_lifeTime</div><div class="ttdef"><b>Definition:</b> Bullet.h:14</div></div>
+<div class="ttc" id="aclass_bullet_html_a510f32c1ad7a0f2765aa44ee2482c83b"><div class="ttname"><a href="class_bullet.html#a510f32c1ad7a0f2765aa44ee2482c83b">Bullet::m_lifeTime</a></div><div class="ttdeci">float m_lifeTime</div><div class="ttdef"><b>Definition:</b> Bullet.h:27</div></div>
 <div class="ttc" id="aclass_bullet_html_a87077628d46db89d5a9208c85481f945"><div class="ttname"><a href="class_bullet.html#a87077628d46db89d5a9208c85481f945">Bullet::Bullet</a></div><div class="ttdeci">Bullet(const Vec2f &amp;pos, float dir, float s, float l, ActorTag owner)</div><div class="ttdef"><b>Definition:</b> Bullet.cpp:5</div></div>
-<div class="ttc" id="aclass_bullet_html_a63ffaa8902acf59d523f9a757bdfe747"><div class="ttname"><a href="class_bullet.html#a63ffaa8902acf59d523f9a757bdfe747">Bullet::Update</a></div><div class="ttdeci">void Update(float fElapsedTime) override</div><div class="ttdef"><b>Definition:</b> Bullet.cpp:29</div></div>
 <div class="ttc" id="a_actor_8h_html_ae12afa3ae87b86e8dcb8096a2419692a"><div class="ttname"><a href="_actor_8h.html#ae12afa3ae87b86e8dcb8096a2419692a">ActorTag</a></div><div class="ttdeci">ActorTag</div><div class="ttdef"><b>Definition:</b> Actor.h:12</div></div>
-<div class="ttc" id="aclass_actor_html_ae2a8d2900f5cfe4fde246712b41dc2c4"><div class="ttname"><a href="class_actor.html#ae2a8d2900f5cfe4fde246712b41dc2c4">Actor::SetTag</a></div><div class="ttdeci">void SetTag(ActorTag tag)</div><div class="ttdef"><b>Definition:</b> Actor.h:80</div></div>
-<div class="ttc" id="aclass_actor_html_a0d6296d772235e005c04d345bdbd1c10"><div class="ttname"><a href="class_actor.html#a0d6296d772235e005c04d345bdbd1c10">Actor::GetX</a></div><div class="ttdeci">float GetX() const</div><div class="ttdef"><b>Definition:</b> Actor.h:56</div></div>
-<div class="ttc" id="aclass_actor_html_a155029c6ea99d39630391eef2d25c2b3"><div class="ttname"><a href="class_actor.html#a155029c6ea99d39630391eef2d25c2b3">Actor::SetDirection</a></div><div class="ttdeci">void SetDirection(float dir)</div><div class="ttdef"><b>Definition:</b> Actor.h:68</div></div>
-<div class="ttc" id="aclass_actor_html_a6e39d9621240707a110380a6262781bc"><div class="ttname"><a href="class_actor.html#a6e39d9621240707a110380a6262781bc">Actor::SetSpeed</a></div><div class="ttdeci">void SetSpeed(float s)</div><div class="ttdef"><b>Definition:</b> Actor.h:65</div></div>
-<div class="ttc" id="aclassolc_1_1_pixel_game_engine_html"><div class="ttname"><a href="classolc_1_1_pixel_game_engine.html">olc::PixelGameEngine</a></div><div class="ttdef"><b>Definition:</b> olcPixelGameEngine.h:401</div></div>
+<div class="ttc" id="aclass_actor_html_ae2a8d2900f5cfe4fde246712b41dc2c4"><div class="ttname"><a href="class_actor.html#ae2a8d2900f5cfe4fde246712b41dc2c4">Actor::SetTag</a></div><div class="ttdeci">void SetTag(ActorTag tag)</div><div class="ttdef"><b>Definition:</b> Actor.h:162</div></div>
+<div class="ttc" id="aclass_actor_html_a0d6296d772235e005c04d345bdbd1c10"><div class="ttname"><a href="class_actor.html#a0d6296d772235e005c04d345bdbd1c10">Actor::GetX</a></div><div class="ttdeci">float GetX() const</div><div class="ttdef"><b>Definition:</b> Actor.h:138</div></div>
+<div class="ttc" id="aclass_actor_html_a155029c6ea99d39630391eef2d25c2b3"><div class="ttname"><a href="class_actor.html#a155029c6ea99d39630391eef2d25c2b3">Actor::SetDirection</a></div><div class="ttdeci">void SetDirection(float dir)</div><div class="ttdef"><b>Definition:</b> Actor.h:150</div></div>
+<div class="ttc" id="aclass_actor_html_a6e39d9621240707a110380a6262781bc"><div class="ttname"><a href="class_actor.html#a6e39d9621240707a110380a6262781bc">Actor::SetSpeed</a></div><div class="ttdeci">void SetSpeed(float s)</div><div class="ttdef"><b>Definition:</b> Actor.h:147</div></div>
 <div class="ttc" id="a_global_constants_8h_html"><div class="ttname"><a href="_global_constants_8h.html">GlobalConstants.h</a></div></div>
-<div class="ttc" id="aclass_bullet_state_html"><div class="ttname"><a href="class_bullet_state.html">BulletState</a></div><div class="ttdef"><b>Definition:</b> State.h:43</div></div>
-<div class="ttc" id="aclass_bullet_html_a4f39122cdbe52bd42b34e6db2acf96cc"><div class="ttname"><a href="class_bullet.html#a4f39122cdbe52bd42b34e6db2acf96cc">Bullet::Draw</a></div><div class="ttdeci">void Draw(olc::PixelGameEngine &amp;game) override</div><div class="ttdef"><b>Definition:</b> Bullet.cpp:24</div></div>
-<div class="ttc" id="aclass_bullet_html_a3e7ead4dd21ca8222076235b8000d500"><div class="ttname"><a href="class_bullet.html#a3e7ead4dd21ca8222076235b8000d500">Bullet::GetOwner</a></div><div class="ttdeci">const ActorTag &amp; GetOwner()</div><div class="ttdef"><b>Definition:</b> Bullet.h:14</div></div>
+<div class="ttc" id="aclass_bullet_state_html"><div class="ttname"><a href="class_bullet_state.html">BulletState</a></div><div class="ttdef"><b>Definition:</b> State.h:44</div></div>
+<div class="ttc" id="aclass_bullet_html_a4f39122cdbe52bd42b34e6db2acf96cc"><div class="ttname"><a href="class_bullet.html#a4f39122cdbe52bd42b34e6db2acf96cc">Bullet::Draw</a></div><div class="ttdeci">void Draw(olc::PixelGameEngine &amp;game) override</div><div class="ttdoc">Draws the bullet.</div><div class="ttdef"><b>Definition:</b> Bullet.cpp:24</div></div>
+<div class="ttc" id="aclass_bullet_html_a3e7ead4dd21ca8222076235b8000d500"><div class="ttname"><a href="class_bullet.html#a3e7ead4dd21ca8222076235b8000d500">Bullet::GetOwner</a></div><div class="ttdeci">const ActorTag &amp; GetOwner()</div><div class="ttdef"><b>Definition:</b> Bullet.h:27</div></div>
 <div class="ttc" id="a_state_8h_html"><div class="ttname"><a href="_state_8h.html">State.h</a></div></div>
 <div class="ttc" id="aclass_bullet_state_html_a9fcc011385aa163192ca82d9ba6af914"><div class="ttname"><a href="class_bullet_state.html#a9fcc011385aa163192ca82d9ba6af914">BulletState::Update</a></div><div class="ttdeci">virtual void Update(Bullet &amp;bullet, float dt)=0</div></div>
-<div class="ttc" id="aclass_flying_html"><div class="ttname"><a href="class_flying.html">Flying</a></div><div class="ttdef"><b>Definition:</b> State.h:172</div></div>
+<div class="ttc" id="aclass_flying_html"><div class="ttname"><a href="class_flying.html">Flying</a></div><div class="ttdef"><b>Definition:</b> State.h:191</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>

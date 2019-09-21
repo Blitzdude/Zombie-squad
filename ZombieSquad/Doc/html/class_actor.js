@@ -19,6 +19,7 @@ var class_actor =
     [ "GetY", "class_actor.html#abaed4e72c6660626f02aef378aa10950", null ],
     [ "MoveBack", "class_actor.html#a585b5588d2ebc3e550690cfd1945391e", null ],
     [ "MoveForward", "class_actor.html#a2a9b053f40fc0d7f2cb937013a99297b", null ],
+    [ "NavigateTo", "class_actor.html#a02c1d662fd83ff164fb7a42ae558bc07", null ],
     [ "SetDestroyed", "class_actor.html#ab4c2acf9217d5865519a3ae37b4d4e71", null ],
     [ "SetDirection", "class_actor.html#a155029c6ea99d39630391eef2d25c2b3", null ],
     [ "SetIsHit", "class_actor.html#a04c07d5811b3642ae4478cf908dcb6dc", null ],
@@ -31,6 +32,6 @@ var class_actor =
     [ "SetY", "class_actor.html#a388f9eefe8dc5eda584f95baaab5c724", null ],
     [ "TurnLeft", "class_actor.html#a7226a58cc0bf36ec16c15bc4bce1f781", null ],
     [ "TurnRight", "class_actor.html#a39163b8c954a8273d70db6c1376d00b5", null ],
-    [ "Update", "class_actor.html#a090fc2e5c60163f50b0bf3c1fb0e0019", null ],
+    [ "Update", "class_actor.html#a2435384a0a49e0577b5bbc6377966a0b", null ],
     [ "m_id", "class_actor.html#a4edf80b568a4b7182e597de30192c3ee", null ]
 ];

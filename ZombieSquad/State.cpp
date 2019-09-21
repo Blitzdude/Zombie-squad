@@ -97,16 +97,19 @@ void Navigating::Enter(Zombie& zombie)
 
 void Navigating::Update(Zombie& zombie, float dt)
 {
-	Vec2f nextLocation = Level::GetCellCenterPos(m_path.back().first, m_path.back().second);
-	if (Vec2f::DistanceBetween(zombie.GetPosition(), nextLocation) <= Level::GetCellSize() / 2.0f)
+	if (!m_path.empty())
 	{
-		// zombie is close enough, we can change the position
-		m_path.pop_back();
-		// if the zombie is on the current cell in the list -> pop_back
-		// repeat until list is gone. 
-	}
-	else {
-		zombie.SetTarget(nextLocation);
+		Vec2f nextLocation = Level::GetCellCenterPos(m_path.back().first, m_path.back().second);
+		if (Vec2f::DistanceBetween(zombie.GetPosition(), nextLocation) <= Level::GetCellSize() / 2.0f)
+		{
+			// zombie is close enough, we can change the position
+			m_path.pop_back();
+			// if the zombie is on the current cell in the list -> pop_back
+			// repeat until list is gone. 
+		}
+		else {
+			zombie.SetTarget(nextLocation);
+		}
 	}
 
 	zombie.doMove(dt);

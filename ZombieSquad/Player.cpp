@@ -62,7 +62,10 @@ void Player::Draw(olc::PixelGameEngine& game)
 	float cellSize = Level::GetCellSize();
 	Cell* cell = Level::GetCell(GetPosition());
 
-	game.DrawRect(cell->xCoord * cellSize, cell->yCoord * cellSize, cellSize, cellSize, olc::MAGENTA);
+	game.DrawRect(cell->xPos, cell->yPos, cellSize, cellSize, olc::MAGENTA);
+	game.DrawCircle(Level::GetCellCenterPos(cell->xCoord, cell->yCoord).x,
+		Level::GetCellCenterPos(cell->xCoord, cell->yCoord).y,
+		3.0f, olc::CYAN);
 
 #pragma warning (default : 4244)
 }

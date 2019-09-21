@@ -1,12 +1,9 @@
 var searchData=
 [
-  ['perp_660',['perp',['../structolc_1_1v2d__generic.html#aba20982b1d6692c490963279be150a0e',1,'olc::v2d_generic']]],
-  ['pixel_661',['Pixel',['../structolc_1_1_pixel.html#a75ef9e180289d861dfa6687faa248345',1,'olc::Pixel::Pixel()'],['../structolc_1_1_pixel.html#ae3aa52cc074553950b84ed778e353333',1,'olc::Pixel::Pixel(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha=255)'],['../structolc_1_1_pixel.html#ad6ddaba5806de8b26fea03fa6f7b0edf',1,'olc::Pixel::Pixel(uint32_t p)']]],
-  ['pixelgameengine_662',['PixelGameEngine',['../classolc_1_1_pixel_game_engine.html#afe9d685732305246c3fcb361ae3c4bc6',1,'olc::PixelGameEngine']]],
-  ['player_663',['Player',['../class_player.html#a84321ec9e1d357f8f77440fb9bf5e04e',1,'Player']]],
-  ['playerdead_664',['PlayerDead',['../class_player_dead.html#a0ce7cbd13c26cf63232a4692de3a732b',1,'PlayerDead']]],
-  ['playerhandler_665',['PlayerHandler',['../class_player_handler.html#aba3351c5d5de5fed455fc86194d27bbd',1,'PlayerHandler']]],
-  ['playerseestarget_666',['PlayerSeesTarget',['../class_player_handler.html#a5ebcf252f2221dee29d740cc61c3b999',1,'PlayerHandler']]],
-  ['playerstate_667',['PlayerState',['../class_player_state.html#a6d3de3f57e9db4ec34e5a7403fc03868',1,'PlayerState']]],
-  ['polarangle_668',['PolarAngle',['../class_vec2.html#a99b61b2c3a3c5cca31e64e410d6cfc81',1,'Vec2']]]
+  ['rad2degrees_440',['Rad2Degrees',['../math_util_8h.html#a6f490fd70a7ebce74b87c6c89aaab5f2',1,'mathUtil.h']]],
+  ['ray_441',['Ray',['../struct_ray.html#a2e3d2c29f2df4ab3da10da79d4acb852',1,'Ray::Ray()'],['../struct_ray.html#a1cbf261fa14140d72fb00b97a25ab306',1,'Ray::Ray(Vec2f s, Vec2f e)'],['../struct_ray.html#a8e46b1356e03d968ffd813076d6818b2',1,'Ray::Ray(const Ray &amp;other)']]],
+  ['removedestroyed_442',['RemoveDestroyed',['../class_zombie_handler.html#a3f8f971a399cd4db985cf6bd8934b77c',1,'ZombieHandler']]],
+  ['resolvecirclecircle_443',['resolveCircleCircle',['../class_physics.html#a90f9377b8ea2880da8f772dc3c04bcf6',1,'Physics']]],
+  ['resolveedgecircle_444',['resolveEdgeCircle',['../class_physics.html#a48427673247922a5b1eca5f7f280a6b5',1,'Physics']]],
+  ['roaming_445',['Roaming',['../class_roaming.html#a2eab065ad1e9993e3fc2a9cb895506e9',1,'Roaming']]]
 ];

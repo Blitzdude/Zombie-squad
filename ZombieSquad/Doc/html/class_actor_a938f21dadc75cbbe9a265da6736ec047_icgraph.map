@@ -1,15 +1,15 @@
 <map id="Actor::GetDirection" name="Actor::GetDirection">
 <area shape="rect" id="node1" title=" " alt="" coords="1388,336,1521,363"/>
-<area shape="rect" id="node2" href="$class_zombie.html#a110eab4d05c31a24b18b8eb1920338f7" title=" " alt="" coords="1199,83,1310,109"/>
-<area shape="rect" id="node3" href="$class_player.html#adbee801ea557f00fa020ecb5ec0be926" title=" " alt="" coords="499,336,605,363"/>
+<area shape="rect" id="node2" href="$class_zombie.html#a110eab4d05c31a24b18b8eb1920338f7" title="Commands actor to attack." alt="" coords="1199,83,1310,109"/>
+<area shape="rect" id="node3" href="$class_player.html#adbee801ea557f00fa020ecb5ec0be926" title="Commands actor to attack." alt="" coords="499,336,605,363"/>
 <area shape="rect" id="node5" href="$class_zombie.html#abd3b2c61f257a09ded5c95dcb15ef847" title=" " alt="" coords="969,52,1085,79"/>
-<area shape="rect" id="node8" href="$class_zombie.html#a70d0bccebcb4318c2e4619cd4c54851b" title=" " alt="" coords="977,285,1078,312"/>
-<area shape="rect" id="node9" href="$class_player.html#ae7ac3a01c3dc2328a1f6c05967c4f8bc" title=" " alt="" coords="1207,285,1303,312"/>
+<area shape="rect" id="node8" href="$class_zombie.html#a70d0bccebcb4318c2e4619cd4c54851b" title="Draws the actor." alt="" coords="977,285,1078,312"/>
+<area shape="rect" id="node9" href="$class_player.html#ae7ac3a01c3dc2328a1f6c05967c4f8bc" title="Draws the actor." alt="" coords="1207,285,1303,312"/>
 <area shape="rect" id="node10" href="$class_actor.html#ab244f1ca41fe6eaa2c586b25adff55b1" title=" " alt="" coords="1169,184,1340,211"/>
-<area shape="rect" id="node19" href="$class_player.html#a935722a42ca076ddc9cad86618ca5645" title=" " alt="" coords="1191,387,1318,413"/>
+<area shape="rect" id="node19" href="$class_player.html#a935722a42ca076ddc9cad86618ca5645" title="Moves a player actor backwards." alt="" coords="1191,387,1318,413"/>
 <area shape="rect" id="node20" href="$class_player.html#a5097348f0972dc9e4e0887c529314a97" title="Moves a player actor forward." alt="" coords="1183,437,1326,464"/>
-<area shape="rect" id="node21" href="$class_player.html#af7e13d1fb5bab1a7fabe220c9583ef9c" title=" " alt="" coords="495,513,609,540"/>
-<area shape="rect" id="node22" href="$class_player.html#ade3b45768307319943c4b7870cc00392" title=" " alt="" coords="966,437,1089,464"/>
+<area shape="rect" id="node21" href="$class_player.html#af7e13d1fb5bab1a7fabe220c9583ef9c" title="Turns player actor left." alt="" coords="495,513,609,540"/>
+<area shape="rect" id="node22" href="$class_player.html#ade3b45768307319943c4b7870cc00392" title="Turns player actor right." alt="" coords="966,437,1089,464"/>
 <area shape="rect" id="node23" href="$class_flying.html#adeadd49215e437b54fef4911f72b4b3b" title=" " alt="" coords="1201,589,1308,616"/>
 <area shape="rect" id="node4" href="$class_watching.html#a8097afd3ef6a60da5116c09dabca4deb" title=" " alt="" coords="261,336,388,363"/>
 <area shape="rect" id="node6" href="$class_chasing.html#a2c7d84ee15647b9b13a6c7d85b9b256b" title=" " alt="" coords="735,5,853,32"/>

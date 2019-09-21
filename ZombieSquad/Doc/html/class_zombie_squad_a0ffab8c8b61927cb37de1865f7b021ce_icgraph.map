@@ -1,6 +1,6 @@
 <map id="ZombieSquad::SpawnBullet" name="ZombieSquad::SpawnBullet">
 <area shape="rect" id="node1" title=" " alt="" coords="339,31,520,57"/>
-<area shape="rect" id="node2" href="$class_zombie.html#a110eab4d05c31a24b18b8eb1920338f7" title=" " alt="" coords="180,5,291,32"/>
-<area shape="rect" id="node3" href="$class_player.html#adbee801ea557f00fa020ecb5ec0be926" title=" " alt="" coords="183,56,288,83"/>
+<area shape="rect" id="node2" href="$class_zombie.html#a110eab4d05c31a24b18b8eb1920338f7" title="Commands actor to attack." alt="" coords="180,5,291,32"/>
+<area shape="rect" id="node3" href="$class_player.html#adbee801ea557f00fa020ecb5ec0be926" title="Commands actor to attack." alt="" coords="183,56,288,83"/>
 <area shape="rect" id="node4" href="$class_watching.html#a8097afd3ef6a60da5116c09dabca4deb" title=" " alt="" coords="5,56,132,83"/>
 </map>
