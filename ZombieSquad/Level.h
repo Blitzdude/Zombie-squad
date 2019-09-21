@@ -79,10 +79,10 @@ public:
 	// visibility polygon calculation
 	// A* pathfinding routines
 
-	Level(std::string path);
+	Level(std::string path, float screenWidth, float screenHeight);
 	~Level();
 
-	bool LoadLevel(std::string filepath);
+	bool LoadLevel(std::string filepath, float screenWidth, float screenHeight);
 	bool LoadTextures();
 
 	/// Initialize Path finding 
@@ -92,8 +92,7 @@ public:
 	*/
 	void InitPathfinding();
 
-
-	void ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float fBlockWidth, int pitch);
+	void ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float offsetX, float offsetY, float fBlockWidth, int pitch);
 
 	void DrawPolyMap(olc::PixelGameEngine& engine);
 	void DrawConnections(olc::PixelGameEngine& engine);
@@ -168,6 +167,10 @@ private:
 	static int m_mapCellWidth; // Map width in cells
 	static int m_mapCellHeight; // Map Height in cells
 	static float m_cellSize;
+	static float m_levelWidth;
+	static float m_levelHeight;
+	static float m_levelOffsetX;
+	static float m_levelOffsetY;
 	static Vec2f m_startPosition;
 	static Vec2f m_endPosition;
 	static std::vector<Edge> vec_edges;

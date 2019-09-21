@@ -20,7 +20,7 @@ bool ZombieSquad::OnUserCreate()
 		goal location
 	*/
 
-	m_currentLevel = new Level("level4.txt");
+	m_currentLevel = new Level("level4.txt", (float)ScreenWidth(), (float)ScreenHeight());
 	m_currentLevel->InitPathfinding();
 	// Generate Edge data from tile map
 	/*

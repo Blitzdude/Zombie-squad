@@ -12,6 +12,10 @@ constexpr unsigned int WEST = 3;
 
 // static initializations
 float Level::m_cellSize = 0.0f;
+float Level::m_levelHeight = 0.0f;
+float Level::m_levelWidth = 0.0f;
+float Level::m_levelOffsetX = 0.0f;
+float Level::m_levelOffsetY = 0.0f;
 Vec2f Level::m_startPosition(0.0f, 0.0f);
 Vec2f Level::m_endPosition(0.0f, 0.0f);
 bool  Level::m_instantiated = false;
@@ -24,17 +28,17 @@ Level::~Level()
 {
 }
 
-Level::Level(std::string path)
+Level::Level(std::string path, float screenWidth, float screenHeight)
 {
 	// only one instance of level should exist
 	assert(!m_instantiated);
 	m_instantiated = true;
 	LoadTextures();
-	LoadLevel(path);
-	ConvertTileMapToPolyMap(0, 0, m_mapCellWidth, m_mapCellHeight, m_cellSize, m_mapCellWidth);
+	LoadLevel(path, screenWidth, screenHeight);
+	ConvertTileMapToPolyMap(0, 0, m_mapCellWidth, m_mapCellHeight, m_levelOffsetX, m_levelOffsetY, m_cellSize, m_mapCellWidth);
 }
 
-bool Level::LoadLevel(std::string filepath)
+bool Level::LoadLevel(std::string filepath, float screenWidth, float screenHeight)
 {
 	// open the file
 	std::ifstream input(filepath);
@@ -57,6 +61,15 @@ bool Level::LoadLevel(std::string filepath)
 	std::cout << line;
 	// create the map array
 	m_map = new Cell[m_mapCellWidth * m_mapCellHeight];
+
+	// calculate the size of the level x and y width
+	m_levelWidth = m_mapCellWidth * m_cellSize;
+	m_levelHeight = m_mapCellHeight * m_cellSize;
+
+	// calculate the x and y offset for centering the lever
+	
+	m_levelOffsetX = (screenWidth  / 2.0f) - (m_levelWidth  / 2.0f);
+	m_levelOffsetY = (screenHeight / 2.0f) - (m_levelHeight / 2.0f);
 
 	// read following lines char by char
 	char data;
@@ -98,8 +111,8 @@ bool Level::LoadLevel(std::string filepath)
 			// add Cells coordinates
 			m_map[x + y * m_mapCellWidth].xCoord = x;
 			m_map[x + y * m_mapCellWidth].yCoord = y;
-			m_map[x + y * m_mapCellWidth].xPos = x * m_cellSize;
-			m_map[x + y * m_mapCellWidth].yPos = y * m_cellSize;
+			m_map[x + y * m_mapCellWidth].xPos = x * m_cellSize + m_levelOffsetX;
+			m_map[x + y * m_mapCellWidth].yPos = y * m_cellSize + m_levelOffsetY;
 		}
 	}
 
@@ -191,8 +204,6 @@ void Level::InitPathfinding()
 	}
 }
 
-
-
 void Level::ClearPathfinding()
 {
 	for (int x = 0; x < m_mapCellWidth; x++)
@@ -207,7 +218,7 @@ void Level::ClearPathfinding()
 	}
 }
 
-void Level::ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float fBlockWidth, int pitch)
+void Level::ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float offsetX, float offsetY, float fBlockWidth, int pitch)
 {
 	// Clear "PolyMap"
 	vec_edges.clear();
@@ -387,29 +398,29 @@ void Level::ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float fBlockWi
 	// left
 #pragma warning (disable : 4244) // narrowing conversion from int32_t to float
 	Edge left;
-	left.start.x = sx; left.start.y = sy;
-	left.end.x = sx; left.end.y = (sy + m_mapCellHeight) * fBlockWidth;
+	left.start.x = sx + offsetX; left.start.y = sy + offsetY;
+	left.end.x = sx + offsetX; left.end.y = (sy + m_mapCellHeight) * fBlockWidth + offsetY;
 	left.normal.x = 1.0f; left.normal.y = 0.0f;
 	vec_edges.push_back(left);
 
 	// right
 	Edge right;
-	right.start.x = (sx + m_mapCellWidth) * fBlockWidth; right.start.y = sy;
-	right.end.x = (sx + m_mapCellWidth) * fBlockWidth; right.end.y = (sy + m_mapCellHeight) * fBlockWidth;
+	right.start.x = (sx + m_mapCellWidth) * fBlockWidth + offsetX; right.start.y = sy + offsetY;
+	right.end.x = (sx + m_mapCellWidth) * fBlockWidth + offsetX; right.end.y = (sy + m_mapCellHeight) * fBlockWidth + offsetY;
 	right.normal.x = -1.0f; right.normal.y = 0.0f;
 	vec_edges.push_back(right);
 
 	// top
 	Edge top;
-	top.start.x = sx; top.start.y = sy;
-	top.end.x = (sx + m_mapCellWidth) * fBlockWidth; top.end.y = sy;
+	top.start.x = sx + offsetX; top.start.y = sy + offsetY;
+	top.end.x = (sx + m_mapCellWidth) * fBlockWidth + offsetX; top.end.y = sy + offsetY;
 	top.normal.x = 0.0f; top.normal.y = 1.0f;
 	vec_edges.push_back(top);
 	
 	// bottom
 	Edge bottom;
-	bottom.start.x = sx; bottom.start.y = (sy + m_mapCellHeight) * fBlockWidth;
-	bottom.end.x = (sx + m_mapCellWidth) * fBlockWidth; bottom.end.y = (sy + m_mapCellHeight) * fBlockWidth;
+	bottom.start.x = sx + offsetX; bottom.start.y = (sy + m_mapCellHeight) * fBlockWidth + offsetY;
+	bottom.end.x = (sx + m_mapCellWidth) * fBlockWidth + offsetX; bottom.end.y = (sy + m_mapCellHeight) * fBlockWidth + offsetY;
 	bottom.normal.x = 0.0f; bottom.normal.y = -1.0f;
 	vec_edges.push_back(bottom);
 #pragma warning (default : 4244)
@@ -604,14 +615,15 @@ void Level::DrawLevel(olc::PixelGameEngine & engine)
 	{
 		for (int y = 0; y < m_mapCellHeight; y++)
 		{
-			engine.DrawSprite(x * m_cellSize, y * m_cellSize,
-				m_sprites[(size_t)m_map[y * m_mapCellWidth + x].sprId]);
+			Cell* currentCell = GetCell(x, y);
+			engine.DrawSprite(currentCell->xPos, currentCell->yPos,
+				m_sprites[(size_t)currentCell->sprId]);
 
-			if (GetCell(x, y)->isStart)
+			if (currentCell->isStart)
 			{
 				engine.DrawString(x * m_cellSize, y * m_cellSize, "Start", olc::BLUE);
 			}
-			if (GetCell(x, y)->isGoal)
+			if (currentCell->isGoal)
 			{
 				engine.DrawString(x * m_cellSize, y * m_cellSize, "End", olc::BLUE);
 			}
