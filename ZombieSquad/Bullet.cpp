@@ -11,7 +11,7 @@ Bullet::Bullet(const Vec2f& pos, float dir, float s, float l, ActorTag owner)
 	SetPosition(pos);
 	SetDirection(dir);
 	SetSpeed(s);
-	SetRadius(BULLET_SIZE);
+	SetRadius(BULLET_SIZE * GAME_SCALE);
 	SetTag(ActorTag::BULLET);
 }
 

@@ -1,5 +1,6 @@
 #include "Level.h"
 #include "Physics.h"
+#include "GlobalConstants.h"
 #include <sstream>
 #include <assert.h>
 // #include <algorithm>
@@ -60,6 +61,8 @@ bool Level::LoadLevel(std::string filepath, float screenWidth, float screenHeigh
 		std::cout << "error reading file";
 		return false;
 	};
+
+	m_cellSize *= GAME_SCALE;
 	std::cout << line;
 	// create the map array
 	m_map = new Cell[m_mapCellWidth * m_mapCellHeight];
@@ -654,15 +657,15 @@ void Level::DrawLevel(olc::PixelGameEngine & engine)
 		{
 			Cell* currentCell = GetCell(x, y);
 			engine.DrawSprite(currentCell->xPos, currentCell->yPos,
-				m_sprites[(size_t)currentCell->sprId]);
+				m_sprites[(size_t)currentCell->sprId], GAME_SCALE);
 
 			if (currentCell->isStart)
 			{
-				engine.DrawString(currentCell->xPos, currentCell->yPos, "Start", olc::BLUE);
+				engine.DrawString(currentCell->xPos, currentCell->yPos, "Start", olc::BLUE, GAME_SCALE);
 			}
 			if (currentCell->isGoal)
 			{
-				engine.DrawString(currentCell->xPos, currentCell->yPos, "End", olc::BLUE);
+				engine.DrawString(currentCell->xPos, currentCell->yPos, "End", olc::BLUE, GAME_SCALE);
 			}
 		}
 	}

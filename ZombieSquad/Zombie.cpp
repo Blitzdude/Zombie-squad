@@ -12,7 +12,7 @@ Zombie::Zombie(float x, float y, ZombieSquad& game, ZombieHandler& handler)
 	SetX(x);
 	SetY(y);
 	m_target = GetPosition();
-	SetRadius(ZOMBIE_SIZE);
+	SetRadius(ZOMBIE_SIZE * GAME_SCALE);
 	SetDirection(0.0f);
 	SetTag(ActorTag::ZOMBIE);
 	std::cout << "Zombie created\n";

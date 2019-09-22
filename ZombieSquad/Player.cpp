@@ -12,7 +12,7 @@ Player::Player(float x, float y, float dir, ZombieSquad& game, PlayerHandler& pl
 	SetDestroyed(false);
 	SetX(x); 
 	SetY(y);
-	SetRadius(PLAYER_SIZE);
+	SetRadius(PLAYER_SIZE * GAME_SCALE);
 	SetDirection(dir);
 	SetTag(ActorTag::PLAYER);
 	m_fireRate = PLAYER_FIRING_RATE;
@@ -56,7 +56,8 @@ void Player::Draw(olc::PixelGameEngine& game)
 		(int32_t)(GetY() + sinf(GetDirection())*GetRadius()),
 		olc::BLUE);
 
-	game.DrawString((int32_t)GetX() + 5.0f, (int32_t)GetY() + 5.0f, std::to_string(GetDirection()));
+	game.DrawString((int32_t)GetX() + 5.0f, (int32_t)GetY() + 5.0f,
+		std::to_string(GetDirection()), olc::WHITE, GAME_SCALE);
 
 	// Draw the currently occupied cell
 	float cellSize = Level::GetCellSize();

@@ -1,6 +1,6 @@
 #pragma once
 #include "mathUtil.h"
-constexpr float GAME_SCALE = 1.0f;
+constexpr int GAME_SCALE = 1;
 // Sizes
 constexpr float PLAYER_SIZE = 6.0f;
 constexpr float ZOMBIE_SIZE = 6.0f;
