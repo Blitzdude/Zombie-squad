@@ -141,8 +141,8 @@ public:
 	// - Cell -> Returns Cell*
 	// - Pos -> Returns Vec2f as Cells center?
 	// - CoordX/CoordY -> returns Cells coordinate int in array
-	static int GetStartX() { return (int)(m_startPosition.x / m_cellSize); }
-	static int GetStartY() { return (int)(m_startPosition.y / m_cellSize); }
+	static int GetStartX() { return m_startCoordX; }
+	static int GetStartY() { return m_startCoordY; }
 	static int GetNumCellsX() { return m_mapCellWidth; }
 	static int GetNumCellsY() { return m_mapCellHeight; }
 	static Cell* GetCell(int x, int y);
@@ -173,6 +173,8 @@ private:
 	static float m_levelOffsetX;
 	static float m_levelOffsetY;
 	static Vec2f m_startPosition;
+	static int m_startCoordX;
+	static int m_startCoordY;
 	static Vec2f m_endPosition;
 	static std::vector<Edge> vec_edges;
 	static Cell* m_map; // TODO: This is not very c++11

@@ -62,17 +62,23 @@ bool ZombieSquad::OnUserCreate()
 		- Add zombies to unoccupied cells
 	*/
 
+	int debugx = m_currentLevel->GetStartX(); // Debug
+	int debugy = m_currentLevel->GetStartY(); // Debug
+	int highest = 0;						  // Debug
+	int zombiesSpawned = 0;					  // Debug
 	for (int y = 0; y < m_currentLevel->GetNumCellsY(); y++)
 	{
 		for (int x = 0; x < m_currentLevel->GetNumCellsX(); x++)
 		{
 			int distance = ManhattanDistance(m_currentLevel->GetStartX(), m_currentLevel->GetStartY(), x, y);
+			highest = highest < distance ? distance : highest; // Debug
 			if (distance > MINIMUM_DISTANCE && m_currentLevel->GetCell(x, y)->obstacle == false)
 			{
 				int numZombies = rand() % 2;
 				for (int i = 0; i <= numZombies; i++)
 				{
 					SpawnZombie(x, y, i * 0.5f);
+					zombiesSpawned++;
 				}
 			}
 		}
@@ -328,8 +334,10 @@ Player* ZombieSquad::SpawnPlayer(float xPos, float yPos, float dir, int playerNu
 void ZombieSquad::SpawnZombie(int xCell, int yCell, float offset)
 {
 	float size = m_currentLevel->GetCellSize();
-	float xPos = (xCell * size) + (size / 2.0f) + offset;
-	float yPos = (yCell * size) + (size / 2.0f);
+	Vec2f center = Level::GetCellCenterPos(xCell, yCell);
+	
+	float xPos = center.x + offset;
+	float yPos = center.y;
 	Zombie* zomb = new Zombie(xPos, yPos, *this, m_zombieHandler);
 	vecActorsToAdd.push_back(zomb);
 	m_zombieHandler.AddZombie(zomb);

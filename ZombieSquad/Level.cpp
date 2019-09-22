@@ -17,6 +17,8 @@ float Level::m_levelWidth = 0.0f;
 float Level::m_levelOffsetX = 0.0f;
 float Level::m_levelOffsetY = 0.0f;
 Vec2f Level::m_startPosition(0.0f, 0.0f);
+int   Level::m_startCoordX = 0;
+int   Level::m_startCoordY = 0;
 Vec2f Level::m_endPosition(0.0f, 0.0f);
 bool  Level::m_instantiated = false;
 std::vector<Edge> Level::vec_edges;
@@ -91,6 +93,8 @@ bool Level::LoadLevel(std::string filepath, float screenWidth, float screenHeigh
 				case 'S':
 				case 's':
 					GetCell(x, y)->isStart = true;
+					m_startCoordX = x;
+					m_startCoordY = y;
 					m_startPosition = Vec2f(x * m_cellSize + (m_cellSize / 2.0f) + m_levelOffsetX,
 											y * m_cellSize + (m_cellSize / 2.0f) + m_levelOffsetY);
 					m_map[x + y * m_mapCellWidth].obstacle = false;
