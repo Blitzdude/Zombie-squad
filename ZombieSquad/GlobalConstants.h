@@ -12,7 +12,7 @@ constexpr float ZOMBIE_ATTACK_SPEED = 0.75f;
 constexpr float PLAYER_FIRING_RATE = 0.5f;
 // Ranges
 constexpr float ATTACK_RANGE = 16.0f;
-constexpr int MINIMUM_DISTANCE = 8;
+constexpr int MINIMUM_DISTANCE = 10;
 constexpr float ZOMBIE_SIGHT_FOV_RAD = 45.0f * PI / 180.0f;
 constexpr float PLAYER_SIGHT_FOV_RAD = 45.0f * PI / 180.0f;
 constexpr float ZOMBIE_SIGHT_RANGE = 200.0f; // variable to control enemy sight range

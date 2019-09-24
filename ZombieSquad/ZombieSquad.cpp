@@ -74,7 +74,7 @@ bool ZombieSquad::OnUserCreate()
 			highest = highest < distance ? distance : highest; // Debug
 			if (distance > MINIMUM_DISTANCE && m_currentLevel->GetCell(x, y)->obstacle == false)
 			{
-				int numZombies = rand() % 2;
+				int numZombies = 0; // rand() % 2;
 				for (int i = 0; i <= numZombies; i++)
 				{
 					SpawnZombie(x, y, i * 0.5f);
@@ -264,27 +264,6 @@ void ZombieSquad::DoDraw()
 	}
 	
 
-	// DEBUG: Draw the cells with the path
-	/*
-	if (!vecDebugPath.empty())
-	{
-		for (auto itr = vecDebugPath.begin(); itr != vecDebugPath.end(); itr++)
-		{
-			if (itr != vecDebugPath.begin())
-			{
-
-			auto prev = std::prev(itr);
-#pragma warning (disable : 4244)
-			DrawLine(m_currentLevel->GetCellCenterPos(itr->first, itr->second).x, 
-					 m_currentLevel->GetCellCenterPos(itr->first, itr->second).y,
-					 m_currentLevel->GetCellCenterPos(prev->first, prev->second).x,
-					 m_currentLevel->GetCellCenterPos(prev->first, prev->second).y,
-					 olc::RED);
-			}
-#pragma warning (default : 4244)
-		}
-	}
-	*/
 	
 }
 
@@ -319,7 +298,8 @@ bool ZombieSquad::CheckVictory()
 	// if this gets here, the game is over
 }
 
-Player* ZombieSquad::SpawnPlayer(float xPos, float yPos, float dir, int playerNum, ZombieSquad& game, PlayerHandler& playerHandler, float offset, bool startingPlayer)
+Player* ZombieSquad::SpawnPlayer(float xPos, float yPos, float dir, int playerNum, 
+	ZombieSquad& game, PlayerHandler& playerHandler, float offset, bool startingPlayer)
 {
 	float size = m_currentLevel->GetCellSize();
 	// float xPos = (x * size) + (size / 2.0f) + offset;

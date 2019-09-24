@@ -56,7 +56,6 @@ Command* ZombieHandler::handleInput(Zombie& actor)
 		return new Die();
 	}
 
-	// If zombie can see player, chase them
 	const Player* player = GetClosestPlayer(actor);
 	// if zombie is close enough to attack, attack
 	if (player != nullptr && 
@@ -64,18 +63,20 @@ Command* ZombieHandler::handleInput(Zombie& actor)
 	{
 		return new Attack();
 	}
-	else if (player != nullptr &&
+	if (player != nullptr &&
 		ZombieSeesTarget(player->GetPosition(), actor))
 	{
+		// If zombie can see player, chase them
 		return new ChasePlayer(player);
 	}
 	
 	// DEBUG: testing pathfinding
-	
+	/*
 	if (player != nullptr)
 	{
 		actor.NavigateTo(player->GetPosition());
 	}
+	*/
 
 	return nullptr;
 }
@@ -92,8 +93,7 @@ const Player* ZombieHandler::GetClosestPlayer(Zombie& zombie)
 	}
 	if (m_player2->GetCurrentState()->GetStateID() != StateID::STATE_DEAD &&
 		Vec2f::DistanceBetween(Zpos, m_player2->GetPosition()) <
-		Vec2f::DistanceBetween(Zpos, m_player1->GetPosition())
-		)
+		Vec2f::DistanceBetween(Zpos, m_player1->GetPosition()) )
 	{
 		// Check if player2 is closer then player1 and not dead
 		ret = m_player2;

@@ -7,8 +7,15 @@
 
 void Chasing::Update(Zombie& zombie, float dt)
 {	
-	zombie.SetTarget(m_chaseTarget->GetPosition());
-	zombie.doMove(dt);
+	if (zombie.SeesTarget())
+	{
+		zombie.SetTarget(m_chaseTarget->GetPosition());
+		zombie.doMove(dt);
+	}
+	else
+	{
+		zombie.LostTarget();
+	}
 }
 
 void Controlled::Update(Player& player, float dt)

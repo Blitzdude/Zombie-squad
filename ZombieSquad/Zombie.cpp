@@ -36,6 +36,10 @@ void Zombie::Draw(olc::PixelGameEngine& game)
 	{
 		pix = olc::DARK_YELLOW;
 	}
+	else if (m_currentState->GetStateID() == StateID::ZOMBIE_NAVIGATING)
+	{
+		pix = olc::DARK_BLUE;
+	}
 	else if (m_currentState->GetStateID() == StateID::STATE_DEAD)
 	{
 		pix = olc::DARK_RED;
@@ -112,6 +116,16 @@ void Zombie::NavigateTo(const Vec2f& target)
 		m_currentState = new Navigating(target);
 		m_currentState->Enter(*this);
 	}
+}
+
+bool Zombie::SeesTarget()
+{
+	return m_handler->ZombieSeesTarget(m_target, *this);
+}
+
+void Zombie::LostTarget()
+{
+	m_currentState = new Navigating(m_target);
 }
 
 void Zombie::doMove(float dt)
