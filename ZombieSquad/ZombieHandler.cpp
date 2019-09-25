@@ -6,31 +6,31 @@
 #include "Physics.h"
 
 ZombieHandler::ZombieHandler(ZombieSquad& engine)
-	: m_player1(nullptr), m_player2(nullptr), m_player3(nullptr), m_game(&engine)
+	: m_game(&engine)
 {
 }
 
 ZombieHandler::~ZombieHandler()
 {
 	// We are only clearing, because we are not responsible for players
-	m_player1 = nullptr;
-	m_player2 = nullptr;
-	m_player3 = nullptr;
+	m_vecPlayers.clear();
 }
 
 bool ZombieHandler::Init(Player& p1, Player& p2, Player& p3)
 {
 	bool success = true;
-	m_player1 = &p1;
-	m_player2 = &p2;
-	m_player3 = &p3;
 
-	if (m_player1 == nullptr &&
-		m_player2 == nullptr &&
-		m_player3 == nullptr)
+	m_vecPlayers.push_back(&p1);
+	m_vecPlayers.push_back(&p2);
+	m_vecPlayers.push_back(&p3);
+
+	for (auto itr : m_vecPlayers)
 	{
-		std::cout << "One or more players were nullptrs \n";
-		success = false;
+		if (itr == nullptr)
+		{
+			std::cout << "One or more players were nullptrs \n";
+			success = false;
+		}
 	}
 
 	return success;
@@ -56,28 +56,27 @@ Command* ZombieHandler::handleInput(Zombie& actor)
 		return new Die();
 	}
 
-	const Player* player = GetClosestPlayer(actor);
-	// if zombie is close enough to attack, attack
-	if (player != nullptr && 
-		Vec2f::DistanceBetween(actor.GetPosition(), player->GetPosition()) < 20.0f)
+
+	for (auto player : m_vecPlayers)
 	{
-		return new Attack();
-	}
-	if (player != nullptr &&
-		ZombieSeesTarget(player->GetPosition(), actor))
-	{
-		// If zombie can see player, chase them
-		return new ChasePlayer(player);
+		// if zombie is close enough to attack, attack
+		if (player != nullptr && 
+			Vec2f::DistanceBetween(actor.GetPosition(), player->GetPosition()) < ATTACK_RANGE)
+		{
+			return new Attack();
+		}
+		if (player != nullptr &&
+			ZombieSeesTarget(player->GetPosition(), actor))
+		{
+			// If zombie can see player, chase them
+			if (player->GetCurrentState()->GetStateID() != StateID::ZOMBIE_CHASE)
+			{
+				return new ChasePlayer(player);
+			}
+		}
 	}
 	
-	// DEBUG: testing pathfinding
-	/*
-	if (player != nullptr)
-	{
-		actor.NavigateTo(player->GetPosition());
-	}
-	*/
-
+	// if zombie has no target, navigate to the last place
 	return nullptr;
 }
 
@@ -85,26 +84,21 @@ const Player* ZombieHandler::GetClosestPlayer(Zombie& zombie)
 {
 	Player* ret = nullptr;
 	Vec2f Zpos = zombie.GetPosition();
+	// initialize distance to max
+	float distance = std::numeric_limits<float>::max();
 
-	if (m_player1->GetCurrentState()->GetStateID() != StateID::STATE_DEAD)
+	for (auto itr : m_vecPlayers)
 	{
-		// Check player 1 isn't dead
-		ret = m_player1;
+		if (Vec2f::DistanceBetween(itr->GetPosition(), zombie.GetPosition()) < distance)
+		{
+			if (itr->GetCurrentState()->GetStateID() != StateID::STATE_DEAD)
+			{
+				distance = Vec2f::DistanceBetween(itr->GetPosition(), zombie.GetPosition());
+				ret = itr;
+			}
+		}
 	}
-	if (m_player2->GetCurrentState()->GetStateID() != StateID::STATE_DEAD &&
-		Vec2f::DistanceBetween(Zpos, m_player2->GetPosition()) <
-		Vec2f::DistanceBetween(Zpos, m_player1->GetPosition()) )
-	{
-		// Check if player2 is closer then player1 and not dead
-		ret = m_player2;
-	}
-	if (m_player3->GetCurrentState()->GetStateID() != StateID::STATE_DEAD &&
-		Vec2f::DistanceBetween(Zpos, m_player3->GetPosition()) <
-		Vec2f::DistanceBetween(Zpos, m_player2->GetPosition()) )
-	{
-		// Check if player3 is closer then player2
-		ret = m_player3;
-	}
+
 	// If all of these fail, All players are dead -> return nullptr
 	return ret;
 }

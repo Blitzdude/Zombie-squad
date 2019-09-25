@@ -13,7 +13,8 @@ Zombie::Zombie(float x, float y, ZombieSquad& game, ZombieHandler& handler)
 	SetY(y);
 	m_target = GetPosition();
 	SetRadius(ZOMBIE_SIZE * GAME_SCALE);
-	SetDirection(0.0f);
+	float randomDir = ((rand() % 101) / 100.0f) * PI2;
+	SetDirection(randomDir);
 	SetTag(ActorTag::ZOMBIE);
 	std::cout << "Zombie created\n";
 }
@@ -63,6 +64,7 @@ void Zombie::Draw(olc::PixelGameEngine& game)
 	game.DrawTriangle(GetX(), GetY(), left.x, left.y, right.x, right.y, olc::CYAN);
 	
 	game.DrawLine(m_target.x, m_target.y, GetX(), GetY(), olc::MAGENTA);
+
 	// get vector to target
 	Vec2f vec = m_target - GetPosition();
 
@@ -70,8 +72,15 @@ void Zombie::Draw(olc::PixelGameEngine& game)
 	vec.Normalize();
 	float angle = std::abs(Vec2f::AngleBetween(vec, GetDirectionVector()));
 
+	// draw the reference vector for angle
 	game.DrawLine(GetX(), GetY(), vec.x*8.0f + GetX(), vec.y*8.0f + GetY());
 	game.DrawString(GetX(), GetY(), std::to_string(angle));
+
+	// Get closest player
+	const Player* closestPlayer = m_handler->GetClosestPlayer(*this);
+	game.DrawLine(GetX(), GetY(), 
+				  closestPlayer->GetPosition().x, closestPlayer->GetPosition().y);
+
 
 #pragma warning (default : 4244) // reenable the warning
 
@@ -123,10 +132,6 @@ bool Zombie::SeesTarget()
 	return m_handler->ZombieSeesTarget(m_target, *this);
 }
 
-void Zombie::LostTarget()
-{
-	m_currentState = new Navigating(m_target);
-}
 
 void Zombie::doMove(float dt)
 {
@@ -153,6 +158,23 @@ void Zombie::doMove(float dt)
 		
 	}
 }
+
+void Zombie::doRoam()
+{
+	m_currentState = new Roaming();
+}
+
+void Zombie::doNavigateTo()
+{
+	if (m_currentState->GetStateID() == StateID::ZOMBIE_CHASE)
+	{
+		delete m_currentState;
+		m_currentState = new Navigating(m_target);
+		m_currentState->Enter(*this);
+	}
+}
+
+
 
 // TODO: This could be moved to level
 Vec2f Zombie::GetRandomCellLocation()

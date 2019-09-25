@@ -19,4 +19,5 @@ constexpr float ZOMBIE_SIGHT_RANGE = 200.0f; // variable to control enemy sight 
 
 // Timings
 constexpr float TIME_UNTIL_CHANGE_DIR = 5.0f;
+constexpr float MIN_TIME_UNTIL_CHANGE_DIR = 1.0f;
 constexpr float DYING_TIME = 0.5f;

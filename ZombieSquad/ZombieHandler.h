@@ -32,8 +32,6 @@ private:
 	ZombieSquad* m_game;
 
 	std::vector<Zombie*> m_vecZombies;
-	Player* m_player1; // TODO: Convert to get a list of players
-	Player* m_player2;
-	Player* m_player3;
+	std::vector<Player*> m_vecPlayers;
 };
 

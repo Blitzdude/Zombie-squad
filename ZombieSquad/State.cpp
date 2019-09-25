@@ -14,7 +14,8 @@ void Chasing::Update(Zombie& zombie, float dt)
 	}
 	else
 	{
-		zombie.LostTarget();
+		// go to navigate to
+		zombie.doNavigateTo();
 	}
 }
 
@@ -70,12 +71,14 @@ void Roaming::Update(Zombie& zombie, float dt)
 {
 	// add to timer
 	m_timer += dt;
-	if (m_timer >= TIME_UNTIL_CHANGE_DIR)
+	if (m_timer >= m_timeToChangeDir)
 	{
 		m_timer = 0.0f;
 		// randomize direction
 		Vec2f r = zombie.GetRandomCellLocation();
 		zombie.SetTarget(r);
+		// randomize timer
+		m_timeToChangeDir = (((std::rand() % 101) / 100.0f) * TIME_UNTIL_CHANGE_DIR) + MIN_TIME_UNTIL_CHANGE_DIR;
 	}
 
 	zombie.doMove(dt);
@@ -114,10 +117,16 @@ void Navigating::Update(Zombie& zombie, float dt)
 			// if the zombie is on the current cell in the list -> pop_back
 			// repeat until list is gone. 
 		}
-		else {
+		else 
+		{
 			zombie.SetTarget(nextLocation);
+			zombie.doMove(dt);
 		}
 	}
+	else 
+	{
+		// the path has been finished, go to roam state
+		zombie.doRoam();
+	}
 
-	zombie.doMove(dt);
 }

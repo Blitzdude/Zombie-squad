@@ -1,5 +1,6 @@
 #pragma once
 #include "Command.h"
+#include "GlobalConstants.h"
 enum class StateID
 {
 	ZOMBIE_ROAM,	   // Zombie states
@@ -135,8 +136,10 @@ class Roaming : public ZombieState
 {
 public:
 	Roaming()
-		: m_id(StateID::ZOMBIE_ROAM), m_timer(0.0f)
-	{}
+		: m_id(StateID::ZOMBIE_ROAM), m_timer(0.0f), m_timeToChangeDir(0.0f)
+	{
+		m_timeToChangeDir = (((std::rand() % 101) / 100.0f) * TIME_UNTIL_CHANGE_DIR) + MIN_TIME_UNTIL_CHANGE_DIR;
+	}
 
 	virtual ~Roaming() {};
 
@@ -148,6 +151,7 @@ public:
 private:
 	StateID m_id;
 	float m_timer;
+	float m_timeToChangeDir;
 
 };
 

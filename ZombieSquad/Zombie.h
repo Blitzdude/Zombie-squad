@@ -19,15 +19,21 @@ public:
 	virtual void Die(float dt) override;
 	virtual void Attack(float dt) override;
 	virtual void NavigateTo(const Vec2f& target) override;
+	
 	bool SeesTarget();
-	void LostTarget();
+
 	void doMove(float dt);
+	void doRoam();
+	void doNavigateTo();
 	Vec2f GetRandomCellLocation();
 
 	// Setters
+	void SetHasTarget(bool truth) { m_hasTarget = truth; }
 	void SetTarget(const Vec2f& newTarget) { m_target = newTarget; }
+	bool GetHasTarget() { return m_hasTarget; }
 private:
-	
+	bool m_hasTarget = false;
+
 	ZombieState* m_currentState; 
 	ZombieHandler* m_handler;
 	ZombieSquad* m_game; // Needed for bullet spawning
