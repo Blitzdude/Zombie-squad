@@ -69,7 +69,7 @@ Command* ZombieHandler::handleInput(Zombie& actor)
 			ZombieSeesTarget(player->GetPosition(), actor))
 		{
 			// If zombie can see player, chase them
-			if (player->GetCurrentState()->GetStateID() != StateID::ZOMBIE_CHASE)
+			if (player->GetCurrentState()->GetStateID() != StateID::STATE_DEAD)
 			{
 				return new ChasePlayer(player);
 			}

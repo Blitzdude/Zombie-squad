@@ -12,6 +12,7 @@ Bullet::Bullet(const Vec2f& pos, float dir, float s, float l, ActorTag owner)
 	SetDirection(dir);
 	SetSpeed(s);
 	SetRadius(BULLET_SIZE * GAME_SCALE);
+	SetColor(olc::YELLOW);
 	SetTag(ActorTag::BULLET);
 }
 
@@ -23,7 +24,7 @@ Bullet::~Bullet()
 
 void Bullet::Draw(olc::PixelGameEngine& game)
 {
-	game.FillCircle((int32_t)GetX(), (int32_t)GetY(), (int32_t)GetRadius());
+	game.FillCircle((int32_t)GetX(), (int32_t)GetY(), (int32_t)GetRadius(), GetColor());
 }
 
 void Bullet::Update(float fElapsedTime)

@@ -135,15 +135,16 @@ public:
 		Vec2f ret(cosf(GetDirection()), sinf(GetDirection()));
 		return ret.GetNormalized();
 	}
-	float GetSpeed()			const { return m_speed; }
-	float GetX()				const { return m_x; }
-	float GetY()				const { return m_y; }
-	float GetDirection()		const { return m_dir; }
-	Vec2f GetPosition()			const { return Vec2f( m_x, m_y); }
-	float GetRadius()			const { return m_radius; }
-	const ActorTag& GetTag()	const { return m_tag; }
-	bool GetDestroyed()			const { return m_destroyed; }
-	bool GetIsHit()				const { return m_hit; }
+	float GetSpeed()				const { return m_speed; }
+	float GetX()					const { return m_x; }
+	float GetY()					const { return m_y; }
+	float GetDirection()			const { return m_dir; }
+	Vec2f GetPosition()				const { return Vec2f( m_x, m_y); }
+	float GetRadius()				const { return m_radius; }
+	const ActorTag& GetTag()		const { return m_tag; }
+	bool GetDestroyed()				const { return m_destroyed; }
+	bool GetIsHit()					const { return m_hit; }
+	const olc::Pixel& GetColor()	const { return m_color; }
 	
 	void SetSpeed(float s)				{ m_speed = s; }
 	void SetX(float x)					{ m_x = x; }
@@ -163,6 +164,7 @@ public:
 	void SetTag(ActorTag tag)			{ m_tag = tag; }
 	void SetDestroyed(bool truth)		{ m_destroyed = truth; }
 	void SetIsHit(bool truth)			{ m_hit = truth; }
+	void SetColor(olc::Pixel color)		{ m_color = color; }
 
 	static unsigned int m_objectCount;
 	unsigned int m_id;
@@ -176,4 +178,5 @@ private:
 	float m_dir;
 	float m_radius;
 	ActorTag m_tag;
+	olc::Pixel m_color;
 };

@@ -15,7 +15,9 @@ Zombie::Zombie(float x, float y, ZombieSquad& game, ZombieHandler& handler)
 	SetRadius(ZOMBIE_SIZE * GAME_SCALE);
 	float randomDir = ((rand() % 101) / 100.0f) * PI2;
 	SetDirection(randomDir);
+	SetColor(olc::GREEN);
 	SetTag(ActorTag::ZOMBIE);
+	
 	std::cout << "Zombie created\n";
 }
 
@@ -31,23 +33,8 @@ void Zombie::Draw(olc::PixelGameEngine& game)
 {
 #pragma warning (disable : 4244) // Disable conversion from 'float' to 'int32_t' warning
 
-	// TODO: Size should be a variable, static maybe? 
-	olc::Pixel pix = olc::DARK_GREEN;
-	if (m_currentState->GetStateID() == StateID::ZOMBIE_CHASE)
-	{
-		pix = olc::DARK_YELLOW;
-	}
-	else if (m_currentState->GetStateID() == StateID::ZOMBIE_NAVIGATING)
-	{
-		pix = olc::DARK_BLUE;
-	}
-	else if (m_currentState->GetStateID() == StateID::STATE_DEAD)
-	{
-		pix = olc::DARK_RED;
-	}
-	
 	// Draw zombie
-	game.FillCircle((int32_t)GetX(), (int32_t)GetY(), (int32_t)GetRadius(), pix);
+	game.FillCircle((int32_t)GetX(), (int32_t)GetY(), (int32_t)GetRadius(), GetColor());
 
 	// Draw look direction
 	game.DrawLine((int32_t)GetX(), (int32_t)GetY(),
@@ -73,7 +60,7 @@ void Zombie::Draw(olc::PixelGameEngine& game)
 	float angle = std::abs(Vec2f::AngleBetween(vec, GetDirectionVector()));
 
 	// draw the reference vector for angle
-	game.DrawLine(GetX(), GetY(), vec.x*8.0f + GetX(), vec.y*8.0f + GetY());
+	// game.DrawLine(GetX(), GetY(), vec.x*8.0f + GetX(), vec.y*8.0f + GetY());
 	game.DrawString(GetX(), GetY(), std::to_string(angle));
 
 	// Get closest player
@@ -93,10 +80,11 @@ void Zombie::Update(float dt)
 
 void Zombie::Chase(const Player& player)
 {
-	if (m_currentState->GetStateID() != StateID::ZOMBIE_CHASE)
+	if (m_currentState->GetStateID() == StateID::ZOMBIE_ROAM ||
+		m_currentState->GetStateID() == StateID::ZOMBIE_NAVIGATING)
 	{
-		delete m_currentState;
 		m_currentState = new Chasing(player);
+		m_currentState->Enter(*this);
 	}
 }
 
@@ -106,10 +94,20 @@ void Zombie::Die(float dt)
 	{
 		delete m_currentState;
 		m_currentState = new ZombieDead();
+		m_currentState->Enter(*this);
 	}
 }
 
 void Zombie::Attack(float dt)
+{
+	if (m_currentState->GetStateID() == StateID::ZOMBIE_CHASE)
+	{
+		m_currentState = new ZombieAttacking();
+		m_currentState->Enter(*this);
+	}
+}
+
+void Zombie::SpawnBullet(float dt)
 {
 	// calculate position for bullet 
 	Vec2f bulletSpawnPoint = GetPosition() + Vec2f(cosf(GetDirection()), sinf(GetDirection())) * (GetRadius() + 2.0f);
@@ -119,8 +117,7 @@ void Zombie::Attack(float dt)
 
 void Zombie::NavigateTo(const Vec2f& target)
 {
-	if (m_currentState->GetStateID() == StateID::ZOMBIE_ROAM ||
-		m_currentState->GetStateID() == StateID::ZOMBIE_CHASE)
+	if (m_currentState->GetStateID() == StateID::ZOMBIE_CHASE)
 	{
 		m_currentState = new Navigating(target);
 		m_currentState->Enter(*this);
@@ -162,6 +159,7 @@ void Zombie::doMove(float dt)
 void Zombie::doRoam()
 {
 	m_currentState = new Roaming();
+	m_currentState->Enter(*this);
 }
 
 void Zombie::doNavigateTo()
@@ -173,8 +171,6 @@ void Zombie::doNavigateTo()
 		m_currentState->Enter(*this);
 	}
 }
-
-
 
 // TODO: This could be moved to level
 Vec2f Zombie::GetRandomCellLocation()

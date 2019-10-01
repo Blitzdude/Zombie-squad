@@ -6,6 +6,7 @@ enum class StateID
 	ZOMBIE_ROAM,	   // Zombie states
 	ZOMBIE_CHASE,
 	ZOMBIE_NAVIGATING,
+	ZOMBIE_ATTACKING,
 	PLAYER_CONTROLLED, // Player states
 	PLAYER_OVERWATCH,
 	STATE_DEAD,		   // All Actors 
@@ -23,6 +24,7 @@ public:
 	PlayerState() {}
 	virtual ~PlayerState() {}
 
+	virtual void Enter(Player& player) = 0;
 	virtual void Update(Player& player, float dt) = 0;
 
 	virtual const StateID& GetStateID() = 0;
@@ -65,7 +67,7 @@ public:
 	{}
 	virtual ~Controlled() {};
 
-	virtual void Enter(Player& player) {};
+	virtual void Enter(Player& player) override;
 	virtual void Update(Player&, float dt) override;
 	// virtual void Exit(Player& player) {}; // Not Implemented
 
@@ -82,7 +84,7 @@ public:
 	{}
 	virtual ~Watching() {};
 
-	virtual void Enter(Player& player) {};
+	virtual void Enter(Player& player) override;
 	virtual void Update(Player& player, float dt) override;
 	// virtual void Exit(Player& player) {}; // Not Implemented
 
@@ -101,7 +103,7 @@ public:
 		m_deathTime = 0.0f;
 	}
 
-	// virtual void Enter(Player& player) {};	// Not implemented
+	virtual void Enter(Player& player) override; 
 	virtual void Update(Player& player, float dt) override;
 	// virtual void Exit(Zombie& player) {}; // Not Implemented
 
@@ -122,7 +124,7 @@ public:
 
 	virtual ~Chasing() { m_chaseTarget = nullptr; };
 
-	virtual void Enter(Zombie& zombie) override {};	// Not implemented
+	virtual void Enter(Zombie& zombie) override;
 	virtual void Update(Zombie& zombie, float dt) override;
 	// virtual void Exit(Zombie& player) {}; // Not Implemented
 
@@ -143,7 +145,7 @@ public:
 
 	virtual ~Roaming() {};
 
-	virtual void Enter(Zombie& zombie) override {};	// Not implemented
+	virtual void Enter(Zombie& zombie) override;
 	virtual void Update(Zombie& zombie, float dt) override;
 	// virtual void Exit(Zombie& player) {}; // Not Implemented
 
@@ -183,7 +185,7 @@ public:
 		m_deathTime = 0.0f;
 	}
 
-	virtual void Enter(Zombie& zombie) override {}	// Not implemented
+	virtual void Enter(Zombie& zombie) override; 	
 	virtual void Update(Zombie& zombie, float dt) override;
 	// virtual void Exit(Zombie& player) {}; // Not Implemented
 
@@ -191,6 +193,23 @@ public:
 private:
 	StateID m_id;
 	float m_deathTime;
+};
+
+class ZombieAttacking : public ZombieState
+{
+public:
+	ZombieAttacking()
+		: m_id(StateID::ZOMBIE_ATTACKING), m_timer(0.0f)
+	{}
+
+	virtual void Enter(Zombie& zombie) override;
+	virtual void Update(Zombie& zombie, float dt) override;
+	// virtual void Exit(Zombie& player) {}; // Not Implemented
+
+	const StateID& GetStateID() override { return m_id; }
+private:
+	StateID m_id;
+	float m_timer;
 };
 
 

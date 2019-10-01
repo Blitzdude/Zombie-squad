@@ -5,6 +5,11 @@
 #include "Bullet.h"
 #include "Level.h"
 
+void Chasing::Enter(Zombie& zombie)
+{
+	zombie.SetColor(olc::DARK_YELLOW);
+}
+
 void Chasing::Update(Zombie& zombie, float dt)
 {	
 	if (zombie.SeesTarget())
@@ -15,13 +20,24 @@ void Chasing::Update(Zombie& zombie, float dt)
 	else
 	{
 		// go to navigate to
+		zombie.SetTarget(m_chaseTarget->GetPosition());
 		zombie.doNavigateTo();
 	}
+}
+
+void Controlled::Enter(Player& player)
+{
+	player.SetColor(olc::CYAN);
 }
 
 void Controlled::Update(Player& player, float dt)
 {
 	// Take input commands
+}
+
+void Watching::Enter(Player& player)
+{
+	player.SetColor(olc::WHITE);
 }
 
 void Watching::Update(Player& player, float dt)
@@ -67,6 +83,11 @@ void Flying::Update(Bullet& bullet, float dt)
 	}
 }
 
+void Roaming::Enter(Zombie& zombie)
+{
+	zombie.SetColor(olc::GREEN);
+}
+
 void Roaming::Update(Zombie& zombie, float dt)
 {
 	// add to timer
@@ -84,6 +105,11 @@ void Roaming::Update(Zombie& zombie, float dt)
 	zombie.doMove(dt);
 }
 
+void ZombieDead::Enter(Zombie& zombie)
+{
+	zombie.SetColor(olc::DARK_RED);
+}
+
 void ZombieDead::Update(Zombie& zombie, float dt)
 {
 	m_deathTime += dt;
@@ -91,6 +117,11 @@ void ZombieDead::Update(Zombie& zombie, float dt)
 	{
 		zombie.SetDestroyed(true);
 	}
+}
+
+void PlayerDead::Enter(Player& player)
+{
+	player.SetColor(olc::DARK_RED);
 }
 
 void PlayerDead::Update(Player&, float dt)
@@ -103,6 +134,7 @@ void Navigating::Enter(Zombie& zombie)
 {
 	// sets a path to follow
 	m_path = Level::GetPathToTarget(zombie.GetPosition(), m_target);
+	zombie.SetColor(olc::DARK_BLUE);
 }
 
 void Navigating::Update(Zombie& zombie, float dt)
@@ -129,4 +161,25 @@ void Navigating::Update(Zombie& zombie, float dt)
 		zombie.doRoam();
 	}
 
+}
+
+void ZombieAttacking::Enter(Zombie& zombie)
+{
+	zombie.SetColor(olc::DARK_RED);
+}
+
+void ZombieAttacking::Update(Zombie& zombie, float dt)
+{
+	m_timer += dt;
+
+	if (m_timer >= ZOMBIE_ATTACK_SPEED * 2.0f)
+	{
+		// time to go back to roaming
+		zombie.doRoam();
+	}
+	else if (m_timer >= ZOMBIE_ATTACK_SPEED)
+	{
+		zombie.SpawnBullet(dt);
+		zombie.SetColor(olc::DARK_GREY);
+	}
 }

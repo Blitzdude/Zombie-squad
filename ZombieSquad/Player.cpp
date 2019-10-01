@@ -21,9 +21,11 @@ Player::Player(float x, float y, float dir, ZombieSquad& game, PlayerHandler& pl
 	if (startingPlayer)
 	{
 		m_currentState = new Controlled();
+		m_currentState->Enter(*this);
 	}
 	else {
 		m_currentState = new Watching();
+		m_currentState->Enter(*this);
 	}
 	std::cout << "Player created\n";
 }
@@ -39,6 +41,7 @@ Player::~Player()
 
 void Player::Draw(olc::PixelGameEngine& game)
 {
+	/*
 	olc::Pixel pix;
 	pix = m_currentState->GetStateID() != StateID::PLAYER_CONTROLLED ? olc::WHITE : olc::CYAN;
 
@@ -46,10 +49,11 @@ void Player::Draw(olc::PixelGameEngine& game)
 	{
 		pix = olc::VERY_DARK_RED;
 	}
+	*/
 
 #pragma warning (disable : 4244) // converting from float to int32_t
 
-	game.FillCircle((int32_t)GetX(), (int32_t)GetY(), (int32_t)GetRadius(), pix);
+	game.FillCircle((int32_t)GetX(), (int32_t)GetY(), (int32_t)GetRadius(), GetColor());
 
 	game.DrawLine((int32_t)GetX(), (int32_t)GetY(),
 		(int32_t)(GetX() + cosf(GetDirection())*GetRadius()),
@@ -116,6 +120,7 @@ void Player::Die(float dt)
 	if (m_currentState->GetStateID() != StateID::STATE_DEAD)
 	{
 		m_currentState = new PlayerDead();
+		m_currentState->Enter(*this);
 	}
 }
 
@@ -125,10 +130,12 @@ void Player::ChangePlayer(bool truth)
 	{
 		// This becomes the controlled player
 		m_currentState = new Controlled();
+		m_currentState->Enter(*this);
 	}
 	else {
 		// this becomes an npc character
 		m_currentState = new Watching();
+		m_currentState->Enter(*this);
 	}
 }
 

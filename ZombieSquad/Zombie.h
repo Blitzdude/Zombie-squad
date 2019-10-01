@@ -22,17 +22,18 @@ public:
 	
 	bool SeesTarget();
 
+	void SpawnBullet(float dt);
 	void doMove(float dt);
 	void doRoam();
 	void doNavigateTo();
 	Vec2f GetRandomCellLocation();
 
 	// Setters
-	void SetHasTarget(bool truth) { m_hasTarget = truth; }
+	// void SetHasTarget(bool truth) { m_hasTarget = truth; }
 	void SetTarget(const Vec2f& newTarget) { m_target = newTarget; }
-	bool GetHasTarget() { return m_hasTarget; }
+	// bool GetHasTarget() { return m_hasTarget; }
 private:
-	bool m_hasTarget = false;
+	//bool m_hasTarget = false;
 
 	ZombieState* m_currentState; 
 	ZombieHandler* m_handler;
