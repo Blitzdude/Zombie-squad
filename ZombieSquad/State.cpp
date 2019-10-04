@@ -177,9 +177,10 @@ void ZombieAttacking::Update(Zombie& zombie, float dt)
 		// time to go back to roaming
 		zombie.doRoam();
 	}
-	else if (m_timer >= ZOMBIE_ATTACK_SPEED)
+	else if (m_timer >= ZOMBIE_ATTACK_SPEED && !m_hasAttacked)
 	{
 		zombie.SpawnBullet(dt);
 		zombie.SetColor(olc::DARK_GREY);
+		m_hasAttacked = true;
 	}
 }

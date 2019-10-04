@@ -65,8 +65,6 @@ void Zombie::Draw(olc::PixelGameEngine& game)
 
 	// Get closest player
 	const Player* closestPlayer = m_handler->GetClosestPlayer(*this);
-	game.DrawLine(GetX(), GetY(), 
-				  closestPlayer->GetPosition().x, closestPlayer->GetPosition().y);
 
 
 #pragma warning (default : 4244) // reenable the warning

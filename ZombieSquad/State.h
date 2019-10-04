@@ -199,7 +199,7 @@ class ZombieAttacking : public ZombieState
 {
 public:
 	ZombieAttacking()
-		: m_id(StateID::ZOMBIE_ATTACKING), m_timer(0.0f)
+		: m_id(StateID::ZOMBIE_ATTACKING), m_timer(0.0f), m_hasAttacked(false)
 	{}
 
 	virtual void Enter(Zombie& zombie) override;
@@ -210,6 +210,7 @@ public:
 private:
 	StateID m_id;
 	float m_timer;
+	bool m_hasAttacked;
 };
 
 
