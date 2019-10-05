@@ -27,10 +27,20 @@ Level
 enum class SpriteId
 {
 	NONE = -1,
-	ROAD_LEFT_RIGHT,
-	ROAD_UP_DOWN,
 	ROAD_CROSS,
+	ROAD_RIGHT,
+	ROAD_UP,
+	ROAD_CORNER_UP_RIGHT,
+	ROAD_CORNER_UP_LEFT,
+	ROAD_CORNER_DOWN_RIGHT,
+	ROAD_CORNER_DOWN_LEFT,
+	ROAD_T_UP,
+	ROAD_T_DOWN,
+	ROAD_T_RIGHT,
+	ROAD_T_LEFT,
 	BUILDING,
+	ROOF,
+	GOAL,
 	COUNT
 };
 
@@ -43,7 +53,7 @@ struct Cell
 public:
 	int edge_id[4] = {-1, -1, -1, -1};
 	bool edge_exist[4] = {false, false, false, false};
-	bool obstacle = false;
+	bool isObstacle = false;
 	bool isStart = false;
 	bool isGoal = false;
 	bool isVisited = false;
@@ -60,8 +70,6 @@ public:
 	std::vector<Cell*> vecNeighbours;
 
 };
-
-
 
 /**
 * Level class
@@ -149,11 +157,14 @@ public:
 	static Cell* GetCell(Vec2f pos);
 
 private:
+
+
 	/// Clears pathfinding data on cells
 	/// 
 	/// Needed to be called, whenever pathfinding is done
 	static void ClearPathfinding();
 	
+	void SetLevelTiles();
 	/// Solves a path using A-star
 	/// 
 	/// called by GetPathToTarget(const Vec2f&, const Vec2f&) to solve the path from starting

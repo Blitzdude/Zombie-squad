@@ -45,7 +45,7 @@ Command * PlayerHandler::handleInput()
 	if (m_game->GetKey(olc::A).bHeld) return buttonA;
 	if (m_game->GetKey(olc::S).bHeld) return buttonS;
 	if (m_game->GetKey(olc::D).bHeld) return buttonD;
-	if (m_game->GetKey(olc::SPACE).bReleased) return buttonSpace;
+	if (m_game->GetKey(olc::SPACE).bHeld) return buttonSpace;
 
 	if (m_game->GetKey(olc::K1).bReleased)
 	{

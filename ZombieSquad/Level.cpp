@@ -37,7 +37,12 @@ Level::Level(std::string path, float screenWidth, float screenHeight)
 	assert(!m_instantiated);
 	m_instantiated = true;
 	LoadTextures();
-	LoadLevel(path, screenWidth, screenHeight);
+	// load level should crash if something goes wrong
+	if (!LoadLevel(path, screenWidth, screenHeight))
+	{
+		std::cout << "something went wrong when loading level\n";
+	}
+
 	ConvertTileMapToPolyMap(0, 0, m_mapCellWidth, m_mapCellHeight, m_levelOffsetX, m_levelOffsetY, m_cellSize, m_mapCellWidth);
 }
 
@@ -58,12 +63,12 @@ bool Level::LoadLevel(std::string filepath, float screenWidth, float screenHeigh
 	std::istringstream iss(line);
 	if (!(iss >> m_mapCellWidth >> m_mapCellHeight >> m_cellSize))
 	{
-		std::cout << "error reading file";
+		std::cout << "error reading file\n";
 		return false;
 	};
 
 	m_cellSize *= GAME_SCALE;
-	std::cout << line;
+	std::cout << line << "\n";
 	// create the map array
 	m_map = new Cell[m_mapCellWidth * m_mapCellHeight];
 
@@ -85,12 +90,13 @@ bool Level::LoadLevel(std::string filepath, float screenWidth, float screenHeigh
 		{
 			if (!input.eof())
 			{
+				// TODO: remove spriteId setting from here
 				input >> data;
 				switch (data)
 				{
 				case 'C':
 				case 'c':
-					m_map[x + y * m_mapCellWidth].obstacle = true;
+					m_map[x + y * m_mapCellWidth].isObstacle = true;
 					m_map[x + y * m_mapCellWidth].sprId = SpriteId::BUILDING;
 					break;
 				case 'S':
@@ -100,20 +106,20 @@ bool Level::LoadLevel(std::string filepath, float screenWidth, float screenHeigh
 					m_startCoordY = y;
 					m_startPosition = Vec2f(x * m_cellSize + (m_cellSize / 2.0f) + m_levelOffsetX,
 											y * m_cellSize + (m_cellSize / 2.0f) + m_levelOffsetY);
-					m_map[x + y * m_mapCellWidth].obstacle = false;
-					m_map[x + y * m_mapCellWidth].sprId = SpriteId::ROAD_LEFT_RIGHT;
+					m_map[x + y * m_mapCellWidth].isObstacle = false;
+					m_map[x + y * m_mapCellWidth].sprId = SpriteId::ROAD_RIGHT;
 					break;
 				case 'E':
 				case 'e':
 					GetCell(x, y)->isGoal = true;
 					m_endPosition = Vec2f(x * m_cellSize + (m_cellSize / 2.0f) + m_levelOffsetX,
 										  y * m_cellSize + (m_cellSize / 2.0f) + m_levelOffsetY);
-					m_map[x + y * m_mapCellWidth].obstacle = false;
-					m_map[x + y * m_mapCellWidth].sprId = SpriteId::ROAD_LEFT_RIGHT;
+					m_map[x + y * m_mapCellWidth].isObstacle = false;
+					m_map[x + y * m_mapCellWidth].sprId = SpriteId::ROAD_RIGHT;
 					break;
 				default:
-					m_map[x + y * m_mapCellWidth].obstacle = false;
-					m_map[x + y * m_mapCellWidth].sprId = SpriteId::ROAD_LEFT_RIGHT;
+					m_map[x + y * m_mapCellWidth].isObstacle = false;
+					m_map[x + y * m_mapCellWidth].sprId = SpriteId::ROAD_RIGHT;
 					break;
 				}
 			}
@@ -128,34 +134,52 @@ bool Level::LoadLevel(std::string filepath, float screenWidth, float screenHeigh
 	// close the file
 	input.close();
 
+	SetLevelTiles();
+
 	return true;
 }
 
 // Returns true, if all textures were loaded succesfully
 bool Level::LoadTextures()
 {
-	m_sprites[(size_t)SpriteId::ROAD_LEFT_RIGHT] = new olc::Sprite("resources/road_right.png");
-	if (m_sprites[(size_t)SpriteId::ROAD_LEFT_RIGHT] == nullptr)
-	{
-		return false;
-	}
+	size_t numSpritesLoaded = 0;
 
-	m_sprites[(size_t)SpriteId::ROAD_UP_DOWN] = new olc::Sprite("resources/road_up.png");
-	if (m_sprites[(size_t)SpriteId::ROAD_UP_DOWN] == nullptr)
-	{
-		return false;
-	}
+	// lambda function for simplifying the loading
+	auto loadTexture = [&](std::string path, SpriteId sprId) {
 
-	m_sprites[(size_t)SpriteId::ROAD_CROSS] = new olc::Sprite("resources/road_cross.png");
-	if (m_sprites[(size_t)SpriteId::ROAD_CROSS] == nullptr)
-	{
-		return false;
-	}
+		m_sprites[(size_t)sprId] = new olc::Sprite(path);
+		if (m_sprites[(size_t)sprId] == nullptr)
+		{
+			std::cout << "Failed to load sprite " << (size_t)sprId << "\n";
+		}
+		else 
+		{
+			numSpritesLoaded++;
+		}
+	};
+
+	// Load the files using the above lambda function
+	loadTexture("resources/road_cross.png",		 SpriteId::ROAD_CROSS);
+	loadTexture("resources/road_right.png",		 SpriteId::ROAD_RIGHT);
+	loadTexture("resources/road_up.png",		 SpriteId::ROAD_UP);
+	loadTexture("resources/road_up_right.png",   SpriteId::ROAD_CORNER_UP_RIGHT);
+	loadTexture("resources/road_up_left.png",    SpriteId::ROAD_CORNER_UP_LEFT);
+	loadTexture("resources/road_down_right.png", SpriteId::ROAD_CORNER_DOWN_RIGHT);
+	loadTexture("resources/road_down_left.png",  SpriteId::ROAD_CORNER_DOWN_LEFT);
+	loadTexture("resources/road_t_up.png",       SpriteId::ROAD_T_UP);
+	loadTexture("resources/road_t_down.png",     SpriteId::ROAD_T_DOWN);
+	loadTexture("resources/road_t_right.png",    SpriteId::ROAD_T_RIGHT);
+	loadTexture("resources/road_t_left.png",	 SpriteId::ROAD_T_LEFT);
+	loadTexture("resources/building.png",		 SpriteId::BUILDING);
+	loadTexture("resources/roof.png",			 SpriteId::ROOF);
+	loadTexture("resources/goal.png",			 SpriteId::GOAL);
 
 
-	m_sprites[(size_t)SpriteId::BUILDING] = new olc::Sprite("resources/building.png");
-	if (m_sprites[(size_t)SpriteId::BUILDING] == nullptr)
+	// Check we loaded all the sprites
+	if (numSpritesLoaded != (size_t)SpriteId::COUNT)
 	{
+		std::cout << "failed to load all sprites, are there some missing?\n"
+			<< "loaded: " << numSpritesLoaded << " Count: " << (size_t)SpriteId::COUNT << "\n";
 		return false;
 	}
 
@@ -175,26 +199,26 @@ void Level::InitPathfinding()
 		{
 			// check that cell we are adding is not an obstacle
 			// Important for zombie behaviour
-			if (!m_map[y * m_mapCellWidth + x].obstacle)
+			if (!m_map[y * m_mapCellWidth + x].isObstacle)
 			{
 				if (y > 0)
 				{
-					if (!m_map[(y - 1) * m_mapCellWidth + (x + 0)].obstacle)
+					if (!m_map[(y - 1) * m_mapCellWidth + (x + 0)].isObstacle)
 						m_map[y * m_mapCellWidth + x].vecNeighbours.push_back(&m_map[(y - 1) * m_mapCellWidth + (x + 0)]); // UP
 				}
 				if (y < m_mapCellHeight - 1)
 				{
-					if (!m_map[(y + 1) * m_mapCellWidth + (x + 0)].obstacle)
+					if (!m_map[(y + 1) * m_mapCellWidth + (x + 0)].isObstacle)
 						m_map[y * m_mapCellWidth + x].vecNeighbours.push_back(&m_map[(y + 1) * m_mapCellWidth + (x + 0)]); // DOWN
 				}
 				if (x > 0)
 				{
-					if (!m_map[(y + 0) * m_mapCellWidth + (x - 1)].obstacle)
+					if (!m_map[(y + 0) * m_mapCellWidth + (x - 1)].isObstacle)
 						m_map[y * m_mapCellWidth + x].vecNeighbours.push_back(&m_map[(y + 0) * m_mapCellWidth + (x - 1)]); // LEFT
 				}
 				if (x < m_mapCellWidth - 1)
 				{
-					if (!m_map[(y + 0) * m_mapCellWidth + (x + 1)].obstacle)
+					if (!m_map[(y + 0) * m_mapCellWidth + (x + 1)].isObstacle)
 						m_map[y * m_mapCellWidth + x].vecNeighbours.push_back(&m_map[(y + 0) * m_mapCellWidth + (x + 1)]); // RIGHT
 				}
 
@@ -223,6 +247,90 @@ void Level::ClearPathfinding()
 			m_map[y * m_mapCellWidth + x].localGoalDist = INFINITY;
 			m_map[y * m_mapCellWidth + x].parentCell = nullptr;
 			m_map[y * m_mapCellWidth + x].isVisited = false;
+		}
+	}
+}
+
+void Level::SetLevelTiles()
+{
+
+	// this is a convenience map when we start loading road tiles
+	std::map<unsigned char, SpriteId> roadTypeSelectionMap;
+	roadTypeSelectionMap.emplace(0,  SpriteId::ROAD_CROSS);
+	roadTypeSelectionMap.emplace(1,  SpriteId::ROAD_UP);
+	roadTypeSelectionMap.emplace(2,  SpriteId::ROAD_UP);
+	roadTypeSelectionMap.emplace(3,  SpriteId::ROAD_UP);
+	roadTypeSelectionMap.emplace(4,  SpriteId::ROAD_RIGHT);
+	roadTypeSelectionMap.emplace(5,  SpriteId::ROAD_CORNER_UP_RIGHT);
+	roadTypeSelectionMap.emplace(6,  SpriteId::ROAD_CORNER_DOWN_RIGHT);
+	roadTypeSelectionMap.emplace(7,  SpriteId::ROAD_T_RIGHT);
+	roadTypeSelectionMap.emplace(8,  SpriteId::ROAD_RIGHT);
+	roadTypeSelectionMap.emplace(9,  SpriteId::ROAD_CORNER_UP_LEFT);
+	roadTypeSelectionMap.emplace(10, SpriteId::ROAD_CORNER_DOWN_LEFT);
+	roadTypeSelectionMap.emplace(11, SpriteId::ROAD_T_LEFT);
+	roadTypeSelectionMap.emplace(12, SpriteId::ROAD_RIGHT);
+	roadTypeSelectionMap.emplace(13, SpriteId::ROAD_T_UP);
+	roadTypeSelectionMap.emplace(14, SpriteId::ROAD_T_DOWN);
+	roadTypeSelectionMap.emplace(15, SpriteId::ROAD_CROSS);
+
+
+	for (int x = 0; x < m_mapCellWidth; x++)
+	{
+		for (int y = 0; y < m_mapCellHeight; y++)
+		{
+			Cell* currentCell = GetCell(x, y);
+		
+			// convenient indices, if index would go out of bounds, set it to nullptr
+			Cell* north		  = y > 0				    ? GetCell(x, y - 1) : nullptr;
+			Cell* south		  = y < m_mapCellHeight - 1 ? GetCell(x, y + 1) : nullptr;
+			Cell* east		  = x < m_mapCellWidth  - 1 ? GetCell(x + 1, y) : nullptr;
+			Cell* west		  = x > 0				    ? GetCell(x - 1, y) : nullptr;
+
+			
+			// is the tile an obstacle
+			if (currentCell->isObstacle)
+			{
+				// we are placing a building tile here, so we just need to check if the south is an obstacle
+				if (south != nullptr && south->isObstacle)
+				{
+					currentCell->sprId = SpriteId::ROOF;
+				}
+				else 
+				{
+					currentCell->sprId = SpriteId::BUILDING;
+				}
+			}
+			else if (currentCell->isGoal)
+			{
+				// Goal tile
+				currentCell->sprId = SpriteId::GOAL;
+			}
+			else 
+			{
+				// We are going to do some binary trickery when determing if what kind of 
+				// road tile we need
+				// basically we check north, south, east and west neighbor for opennes
+				// and use an unsigned char to record the result like so
+				//	0	 0	   0	 0
+				// west east south north
+
+				// then according to the value, we select the corresponding tile
+				// from the roadTypeSelectionMap
+
+				unsigned char roadTile = 0; // 00000000b
+
+				if (north != nullptr && !north->isObstacle) 
+					roadTile |= (1 << 0);
+				if (south != nullptr && !south->isObstacle)
+					roadTile |= (1 << 1);
+				if (east != nullptr && !east->isObstacle)
+					roadTile |= (1 << 2);
+				if (west != nullptr && !west->isObstacle)
+					roadTile |= (1 << 3);
+
+				// set the current road considering the the value
+				currentCell->sprId = roadTypeSelectionMap[roadTile];
+			}
 		}
 	}
 }
@@ -271,10 +379,10 @@ void Level::ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float offsetX,
 			// South - y + 1 == m_height / y + 1 < m_height
 
 			// If this cell exists, check if it needs edges
-			if (m_map[i].obstacle)
+			if (m_map[i].isObstacle)
 			{
 				// If this cell has no western neighbour (or neighbor is outside map), it needs a western edge
-				if (!west_in || !m_map[west].obstacle)
+				if (!west_in || !m_map[west].isObstacle)
 				{
 					// It can either extend it from its northern neighbour if they have
 					// one, or It can start a new one. Also check we are not accessing data outside the array
@@ -308,7 +416,7 @@ void Level::ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float offsetX,
 				}
 
 				// If this cell dont have an eastern neignbour (or neighbor is outside map), It needs a eastern edge
-				if (!east_in || !m_map[east].obstacle)
+				if (!east_in || !m_map[east].isObstacle)
 				{
 					// It can either extend it from its northern neighbour if they have
 					// one, or It can start a new one. Also check we are not accessing data outside the array
@@ -342,7 +450,7 @@ void Level::ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float offsetX,
 				}
 
 				// If this cell doesnt have a northern neignbour (or neighbor is outside map), It needs a northern edge
-				if (!north_in || !m_map[north].obstacle)
+				if (!north_in || !m_map[north].isObstacle)
 				{
 					// It can either extend it from its western neighbour if they have
 					// one, or It can start a new one. Also check we are not accessing data outside the array
@@ -376,7 +484,7 @@ void Level::ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float offsetX,
 				}
 
 				// If this cell doesnt have a southern neignbour (or neighbor is outside map), It needs a southern edge
-				if (!south_in || !m_map[south].obstacle)
+				if (!south_in || !m_map[south].isObstacle)
 				{
 					// It can either extend it from its western neighbour if they have
 					// one, or It can start a new one. Also check we are not accessing data outside the array
@@ -657,15 +765,11 @@ void Level::DrawLevel(olc::PixelGameEngine & engine)
 		{
 			Cell* currentCell = GetCell(x, y);
 			engine.DrawSprite(currentCell->xPos, currentCell->yPos,
-				m_sprites[(size_t)currentCell->sprId], GAME_SCALE);
+				m_sprites[(size_t)currentCell->sprId]);
 
 			if (currentCell->isStart)
 			{
 				engine.DrawString(currentCell->xPos, currentCell->yPos, "Start", olc::BLUE, GAME_SCALE);
-			}
-			if (currentCell->isGoal)
-			{
-				engine.DrawString(currentCell->xPos, currentCell->yPos, "End", olc::BLUE, GAME_SCALE);
 			}
 		}
 	}
@@ -749,7 +853,7 @@ std::vector<std::pair<int, int>> Level::SolveAStarPath(std::pair<int, int> start
 		{
 			// ... and only if the neighbour is not visited and is 
 			// not an obstacle, add it to NotTested List
-			if (!nodeNeighbour->isVisited && nodeNeighbour->obstacle == false)
+			if (!nodeNeighbour->isVisited && nodeNeighbour->isObstacle == false)
 				listNotTestedNodes.push_back(nodeNeighbour);
 
 			// Calculate the neighbours potential lowest parent distance

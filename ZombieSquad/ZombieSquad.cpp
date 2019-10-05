@@ -72,7 +72,7 @@ bool ZombieSquad::OnUserCreate()
 		{
 			int distance = ManhattanDistance(m_currentLevel->GetStartX(), m_currentLevel->GetStartY(), x, y);
 			highest = highest < distance ? distance : highest; // Debug
-			if (distance > MINIMUM_DISTANCE && m_currentLevel->GetCell(x, y)->obstacle == false)
+			if (distance > MINIMUM_DISTANCE && m_currentLevel->GetCell(x, y)->isObstacle == false)
 			{
 				int numZombies = 0; // rand() % 2;
 				for (int i = 0; i <= numZombies; i++)

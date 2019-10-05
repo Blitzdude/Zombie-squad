@@ -84,14 +84,14 @@ void Player::Update(float dt)
 
 void Player::MoveForward(float dt)
 {
-	SetX(GetX() + cosf(GetDirection())*100.0f* dt);
-	SetY(GetY() + sinf(GetDirection())*100.0f* dt);
+	SetX(GetX() + cosf(GetDirection()) * PLAYER_SPEED * dt);
+	SetY(GetY() + sinf(GetDirection()) * PLAYER_SPEED * dt);
 }
 
 void Player::MoveBack(float dt)
 {
-	SetX(GetX() - cosf(GetDirection())*100.0f* dt);
-	SetY(GetY() - sinf(GetDirection())*100.0f* dt);
+	SetX(GetX() - cosf(GetDirection()) * PLAYER_SPEED * dt);
+	SetY(GetY() - sinf(GetDirection()) * PLAYER_SPEED * dt);
 }
 
 void Player::TurnRight(float dt)

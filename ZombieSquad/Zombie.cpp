@@ -43,10 +43,10 @@ void Zombie::Draw(olc::PixelGameEngine& game)
 		olc::RED);
 
 	// Draw Sight Range
-	Vec2f left = GetDirectionVector().GetRotated(ZOMBIE_SIGHT_FOV_RAD / 2.0f);
+	Vec2f left = GetDirectionVector().GetRotated(ZOMBIE_SIGHT_FOV_RAD);
 	left = left.GetNormalized() * ZOMBIE_SIGHT_RANGE + GetPosition();
 
-	Vec2f right = GetDirectionVector().GetRotated(-ZOMBIE_SIGHT_FOV_RAD / 2.0f);
+	Vec2f right = GetDirectionVector().GetRotated(-ZOMBIE_SIGHT_FOV_RAD);
 	right = right.GetNormalized() * ZOMBIE_SIGHT_RANGE + GetPosition();
 	game.DrawTriangle(GetX(), GetY(), left.x, left.y, right.x, right.y, olc::CYAN);
 	
