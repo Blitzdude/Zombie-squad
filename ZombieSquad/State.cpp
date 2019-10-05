@@ -122,6 +122,7 @@ void ZombieDead::Update(Zombie& zombie, float dt)
 void PlayerDead::Enter(Player& player)
 {
 	player.SetColor(olc::DARK_RED);
+
 }
 
 void PlayerDead::Update(Player&, float dt)

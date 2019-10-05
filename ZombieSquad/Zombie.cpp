@@ -86,7 +86,7 @@ void Zombie::Chase(const Player& player)
 	}
 }
 
-void Zombie::Die(float dt)
+void Zombie::Die(float)
 {
 	if (m_currentState->GetStateID() != StateID::STATE_DEAD)
 	{
@@ -96,7 +96,7 @@ void Zombie::Die(float dt)
 	}
 }
 
-void Zombie::Attack(float dt)
+void Zombie::Attack(float)
 {
 	if (m_currentState->GetStateID() == StateID::ZOMBIE_CHASE)
 	{
@@ -105,7 +105,7 @@ void Zombie::Attack(float dt)
 	}
 }
 
-void Zombie::SpawnBullet(float dt)
+void Zombie::SpawnBullet(float)
 {
 	// calculate position for bullet 
 	Vec2f bulletSpawnPoint = GetPosition() + Vec2f(cosf(GetDirection()), sinf(GetDirection())) * (GetRadius() + 2.0f);

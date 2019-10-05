@@ -41,15 +41,6 @@ Player::~Player()
 
 void Player::Draw(olc::PixelGameEngine& game)
 {
-	/*
-	olc::Pixel pix;
-	pix = m_currentState->GetStateID() != StateID::PLAYER_CONTROLLED ? olc::WHITE : olc::CYAN;
-
-	if (m_currentState->GetStateID() == StateID::STATE_DEAD)
-	{
-		pix = olc::VERY_DARK_RED;
-	}
-	*/
 
 #pragma warning (disable : 4244) // converting from float to int32_t
 
@@ -104,7 +95,7 @@ void Player::TurnLeft(float dt)
 	SetDirection(GetDirection() - 2.0f* dt);
 }
 
-void Player::Attack(float dt)
+void Player::Attack(float)
 {	// if cooldown -> fire shot
 	if (m_lastTimeFired >= m_fireRate)
 	{
@@ -115,7 +106,7 @@ void Player::Attack(float dt)
 	}
 }
 
-void Player::Die(float dt)
+void Player::Die(float)
 {
 	if (m_currentState->GetStateID() != StateID::STATE_DEAD)
 	{

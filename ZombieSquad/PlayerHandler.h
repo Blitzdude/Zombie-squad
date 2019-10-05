@@ -24,6 +24,8 @@ public:
 	const Zombie* GetClosestVisibleZombiePosition(const Player& player);
 	bool PlayerSeesTarget(const Vec2f& targetPos, const Player& player);
 
+	// TODO: Remove?
+	void ChangeToAlivePlayer();
 	const std::array<Player*, 3> GetPlayers() { return m_players; }
 
 private:

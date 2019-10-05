@@ -47,14 +47,16 @@ Command * PlayerHandler::handleInput()
 	if (m_game->GetKey(olc::D).bHeld) return buttonD;
 	if (m_game->GetKey(olc::SPACE).bHeld) return buttonSpace;
 
-	if (m_game->GetKey(olc::K1).bReleased)
+	if (m_game->GetKey(olc::K1).bReleased && 
+			m_players[0]->GetCurrentState()->GetStateID() != StateID::STATE_DEAD)
 	{
 		buttonChangeFalse->execute(*m_selectedPlayer, 0.0f);
 		m_selectedPlayer = m_players[0];
 		buttonChangeTrue->execute(*m_selectedPlayer, 0.0f);
 		return nullptr;
 	}
-	else if (m_game->GetKey(olc::K2).bReleased)
+	else if (m_game->GetKey(olc::K2).bReleased&&
+		m_players[1]->GetCurrentState()->GetStateID() != StateID::STATE_DEAD)
 	{
 		buttonChangeFalse->execute(*m_selectedPlayer, 0.0f);
 		m_selectedPlayer = m_players[1];
@@ -62,7 +64,8 @@ Command * PlayerHandler::handleInput()
 
 		return nullptr;
 	}
-	else if (m_game->GetKey(olc::K3).bReleased)
+	else if (m_game->GetKey(olc::K3).bReleased&&
+		m_players[2]->GetCurrentState()->GetStateID() != StateID::STATE_DEAD)
 	{
 		buttonChangeFalse->execute(*m_selectedPlayer, 0.0f);
 		m_selectedPlayer = m_players[2];
@@ -82,7 +85,12 @@ void PlayerHandler::HandlePlayers(float fElapsedTime)
 	// if player state is controlled and command is not nullptr
 	// else if player state is overwatch
 	// check if zombies are close and fire at them
-	Command* command = handleInput();
+
+	// We also need to make sure, we have a controlled player
+	// otherwise we need to make one of the players into the controlled state
+	bool hasControlledPlayer = false;
+
+	Command* input = handleInput();
 	for (auto& p : m_players)
 	{
 		if (p->GetIsHit())
@@ -91,17 +99,28 @@ void PlayerHandler::HandlePlayers(float fElapsedTime)
 			Command* youMustDie = new Die();
 			youMustDie->execute(*p, fElapsedTime);
 		}
-		else if (command && p->GetCurrentState()->GetStateID() == StateID::PLAYER_CONTROLLED)
+		else if (input && p->GetCurrentState()->GetStateID() == StateID::PLAYER_CONTROLLED)
 		{
-			command->execute(*p, fElapsedTime);
+			input->execute(*p, fElapsedTime);
 		}
-		else if (p->GetCurrentState()->GetStateID() == StateID::PLAYER_OVERWATCH)
+
+		if (p->GetCurrentState()->GetStateID() == StateID::PLAYER_CONTROLLED)
 		{
-			// check if zombies are in front of the player and in range
-			// GetClosestZombie()
+			hasControlledPlayer = true;
 		}
 	}
 	
+	if (!hasControlledPlayer)
+	{
+		for (auto& p : m_players)
+		{
+			if (p->GetCurrentState()->GetStateID() != StateID::STATE_DEAD)
+			{
+				buttonChangeTrue->execute(*p, 0.0f);
+				break;
+			}
+		}
+	}
 }
 
 void PlayerHandler::bindButtons()
@@ -184,3 +203,4 @@ bool PlayerHandler::PlayerSeesTarget(const Vec2f& targetPos, const Player& playe
 		return false;
 	}
 }
+
