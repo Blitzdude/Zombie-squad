@@ -55,7 +55,7 @@ Command * PlayerHandler::handleInput()
 		buttonChangeTrue->execute(*m_selectedPlayer, 0.0f);
 		return nullptr;
 	}
-	else if (m_game->GetKey(olc::K2).bReleased&&
+	else if (m_game->GetKey(olc::K2).bReleased &&
 		m_players[1]->GetCurrentState()->GetStateID() != StateID::STATE_DEAD)
 	{
 		buttonChangeFalse->execute(*m_selectedPlayer, 0.0f);
@@ -64,7 +64,7 @@ Command * PlayerHandler::handleInput()
 
 		return nullptr;
 	}
-	else if (m_game->GetKey(olc::K3).bReleased&&
+	else if (m_game->GetKey(olc::K3).bReleased &&
 		m_players[2]->GetCurrentState()->GetStateID() != StateID::STATE_DEAD)
 	{
 		buttonChangeFalse->execute(*m_selectedPlayer, 0.0f);
@@ -88,8 +88,6 @@ void PlayerHandler::HandlePlayers(float fElapsedTime)
 
 	// We also need to make sure, we have a controlled player
 	// otherwise we need to make one of the players into the controlled state
-	bool hasControlledPlayer = false;
-
 	Command* input = handleInput();
 	for (auto& p : m_players)
 	{
@@ -104,19 +102,16 @@ void PlayerHandler::HandlePlayers(float fElapsedTime)
 			input->execute(*p, fElapsedTime);
 		}
 
-		if (p->GetCurrentState()->GetStateID() == StateID::PLAYER_CONTROLLED)
-		{
-			hasControlledPlayer = true;
-		}
 	}
 	
-	if (!hasControlledPlayer)
+	if (m_selectedPlayer->GetCurrentState()->GetStateID() == StateID::STATE_DEAD)
 	{
 		for (auto& p : m_players)
 		{
 			if (p->GetCurrentState()->GetStateID() != StateID::STATE_DEAD)
 			{
 				buttonChangeTrue->execute(*p, 0.0f);
+				m_selectedPlayer = p;
 				break;
 			}
 		}
@@ -132,9 +127,6 @@ void PlayerHandler::bindButtons()
 
 	buttonChangeTrue = new ChangePlayer(true);
 	buttonChangeFalse = new ChangePlayer(false);
-	// buttonKey1 = new ChangePlayer(); // TODO: We only need one
-	// buttonKey2 = new ChangePlayer();
-	// buttonKey3 = new ChangePlayer();
 
 	buttonSpace = new Attack();
 }

@@ -11,7 +11,7 @@ class Bullet;
 class Player : public Actor
 {
 public:
-	Player(float x, float y, float dir, ZombieSquad& game, PlayerHandler& player_handler, bool startingPlayer = false);
+	Player(float x, float y, float dir, int playerNum, ZombieSquad& game, PlayerHandler& player_handler, bool startingPlayer = false);
 	~Player();
 	virtual void Draw(olc::PixelGameEngine& game) override;
 	virtual void Update(float dt) override;
@@ -35,6 +35,7 @@ private:
 	ZombieSquad* m_game; // Needed for bullet spawning
 	float m_fireRate;
 	float m_lastTimeFired;
+	int m_playerNumber;
 
 	//Bullet* m_gun; // Which kind of bullets to spawn when firing // Not implemented
 };

@@ -6,8 +6,8 @@
 #include <iostream>
 
 
-Player::Player(float x, float y, float dir, ZombieSquad& game, PlayerHandler& player_handler, bool startingPlayer)
-	: m_game(&game), m_handler(&player_handler)
+Player::Player(float x, float y, float dir, int playerNum, ZombieSquad& game, PlayerHandler& player_handler, bool startingPlayer)
+	: m_game(&game), m_handler(&player_handler), m_playerNumber(playerNum)
 {
 	SetDestroyed(false);
 	SetX(x); 
@@ -44,24 +44,20 @@ void Player::Draw(olc::PixelGameEngine& game)
 
 #pragma warning (disable : 4244) // converting from float to int32_t
 
+	// player circle
 	game.FillCircle((int32_t)GetX(), (int32_t)GetY(), (int32_t)GetRadius(), GetColor());
 
+	// look direction
 	game.DrawLine((int32_t)GetX(), (int32_t)GetY(),
 		(int32_t)(GetX() + cosf(GetDirection())*GetRadius()),
 		(int32_t)(GetY() + sinf(GetDirection())*GetRadius()),
 		olc::BLUE);
 
+	// players number
 	game.DrawString((int32_t)GetX() + 5.0f, (int32_t)GetY() + 5.0f,
-		std::to_string(GetDirection()), olc::WHITE, GAME_SCALE);
+		std::to_string(m_playerNumber), olc::WHITE, GAME_SCALE);
 
-	// Draw the currently occupied cell
-	float cellSize = Level::GetCellSize();
-	Cell* cell = Level::GetCell(GetPosition());
-
-	game.DrawRect(cell->xPos, cell->yPos, cellSize, cellSize, olc::MAGENTA);
-	game.DrawCircle(Level::GetCellCenterPos(cell->xCoord, cell->yCoord).x,
-		Level::GetCellCenterPos(cell->xCoord, cell->yCoord).y,
-		3.0f, olc::CYAN);
+	
 
 #pragma warning (default : 4244)
 }

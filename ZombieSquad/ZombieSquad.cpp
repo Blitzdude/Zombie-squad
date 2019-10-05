@@ -256,14 +256,12 @@ void ZombieSquad::DoDraw()
 	Clear(olc::BLACK);
 
 	m_currentLevel->DrawLevel(*this);
-	m_currentLevel->DrawPolyMap(*this);
-	m_currentLevel->DrawConnections(*this);
+	// m_currentLevel->DrawPolyMap(*this);
+	// m_currentLevel->DrawConnections(*this);
 	for (auto& itr : vecActors)
 	{
 		itr->Draw(*this);
 	}
-	
-
 	
 }
 
@@ -288,8 +286,11 @@ bool ZombieSquad::CheckVictory()
 	{
 		if (!m_currentLevel->GetCell(itr->GetPosition())->isGoal)
 		{
-			// if even on player is outside the goal, they havent won
-			win = false;
+			// if even on alive player is outside the goal, they havent won
+			if (itr->GetCurrentState()->GetStateID() != StateID::STATE_DEAD)
+			{
+				win	= false;
+			}
 		}
 	}
 
@@ -304,7 +305,7 @@ Player* ZombieSquad::SpawnPlayer(float xPos, float yPos, float dir, int playerNu
 	float size = m_currentLevel->GetCellSize();
 	// float xPos = (x * size) + (size / 2.0f) + offset;
 	// float yPos = (y * size) + (size / 2.0f);
-	Player* player = new Player(xPos + offset, yPos, dir, game, playerHandler, startingPlayer);
+	Player* player = new Player(xPos + offset, yPos, dir, playerNum + 1, game, playerHandler, startingPlayer);
 	// add player's directly to game, because it's the first thing we do.
 	m_playerHandler.addPlayer(player, playerNum);
 	vecActors.push_back(player);
