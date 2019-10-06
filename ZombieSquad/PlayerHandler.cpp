@@ -196,3 +196,29 @@ bool PlayerHandler::PlayerSeesTarget(const Vec2f& targetPos, const Player& playe
 	}
 }
 
+int PlayerHandler::NumberOfPlayersAlive()
+{
+	int num = 0;
+	for (auto itr : m_players)
+	{
+		if (itr->GetCurrentState()->GetStateID() != StateID::STATE_DEAD)
+		{
+			num++;
+		}
+	}
+	return num;
+}
+
+int PlayerHandler::NumberOfPlayersOnGoal()
+{
+	int num = 0;
+	for (auto itr : m_players)
+	{
+		if (Level::GetCell(itr->GetPosition())->isGoal)
+		{
+			num++;
+		}
+	}
+	return num;
+}
+

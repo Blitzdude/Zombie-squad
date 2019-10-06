@@ -258,6 +258,11 @@ void ZombieSquad::DoDraw()
 
 bool ZombieSquad::CheckVictory()
 {
+	if (m_playerHandler.NumberOfPlayersAlive() <= 0);
+}
+/*
+bool ZombieSquad::CheckVictory()
+{
 	// returns condition, that tells if game is over
 	bool allPlayersDead = true;
 	// Check if all players are dead
@@ -289,6 +294,7 @@ bool ZombieSquad::CheckVictory()
 	return allPlayersDead || win;
 	// if this gets here, the game is over
 }
+*/
 
 Player* ZombieSquad::SpawnPlayer(float xPos, float yPos, float dir, int playerNum, 
 	ZombieSquad& game, PlayerHandler& playerHandler, float offset, bool startingPlayer)
