@@ -90,14 +90,12 @@ bool Level::LoadLevel(std::string filepath, float screenWidth, float screenHeigh
 		{
 			if (!input.eof())
 			{
-				// TODO: remove spriteId setting from here
 				input >> data;
 				switch (data)
 				{
 				case 'C':
 				case 'c':
 					m_map[x + y * m_mapCellWidth].isObstacle = true;
-					m_map[x + y * m_mapCellWidth].sprId = SpriteId::BUILDING;
 					break;
 				case 'S':
 				case 's':
@@ -107,7 +105,6 @@ bool Level::LoadLevel(std::string filepath, float screenWidth, float screenHeigh
 					m_startPosition = Vec2f(x * m_cellSize + (m_cellSize / 2.0f) + m_levelOffsetX,
 											y * m_cellSize + (m_cellSize / 2.0f) + m_levelOffsetY);
 					m_map[x + y * m_mapCellWidth].isObstacle = false;
-					m_map[x + y * m_mapCellWidth].sprId = SpriteId::ROAD_RIGHT;
 					break;
 				case 'E':
 				case 'e':
@@ -115,11 +112,9 @@ bool Level::LoadLevel(std::string filepath, float screenWidth, float screenHeigh
 					m_endPosition = Vec2f(x * m_cellSize + (m_cellSize / 2.0f) + m_levelOffsetX,
 										  y * m_cellSize + (m_cellSize / 2.0f) + m_levelOffsetY);
 					m_map[x + y * m_mapCellWidth].isObstacle = false;
-					m_map[x + y * m_mapCellWidth].sprId = SpriteId::ROAD_RIGHT;
 					break;
 				default:
 					m_map[x + y * m_mapCellWidth].isObstacle = false;
-					m_map[x + y * m_mapCellWidth].sprId = SpriteId::ROAD_RIGHT;
 					break;
 				}
 			}

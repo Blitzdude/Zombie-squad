@@ -15,7 +15,7 @@ Zombie::Zombie(float x, float y, ZombieSquad& game, ZombieHandler& handler)
 	SetRadius(ZOMBIE_SIZE * GAME_SCALE);
 	float randomDir = ((rand() % 101) / 100.0f) * PI2;
 	SetDirection(randomDir);
-	SetColor(olc::GREEN);
+	SetColor(olc::DARK_GREEN);
 	SetTag(ActorTag::ZOMBIE);
 	
 	std::cout << "Zombie created\n";
@@ -42,17 +42,26 @@ void Zombie::Draw(olc::PixelGameEngine& game)
 		(int32_t)(GetY() + sinf(GetDirection()) * GetRadius()),
 		olc::RED);
 
-	// Draw Sight Range
+	const float VISION_LINES_LENGTH = 50.0f;
+
+	// Draw vision cone lines
 	Vec2f left = GetDirectionVector().GetRotated(ZOMBIE_SIGHT_FOV_RAD);
-	left = left.GetNormalized() * ZOMBIE_SIGHT_RANGE + GetPosition();
+	left = left.GetNormalized() * VISION_LINES_LENGTH + GetPosition();
+	game.DrawLine((int32_t)GetX(), (int32_t)GetY(), (int32_t)left.x, (int32_t)left.y, olc::CYAN);
+
 
 	Vec2f right = GetDirectionVector().GetRotated(-ZOMBIE_SIGHT_FOV_RAD);
-	right = right.GetNormalized() * ZOMBIE_SIGHT_RANGE + GetPosition();
-	game.DrawTriangle(GetX(), GetY(), left.x, left.y, right.x, right.y, olc::CYAN);
+	right = right.GetNormalized() * VISION_LINES_LENGTH + GetPosition();
+	game.DrawLine((int32_t)GetX(), (int32_t)GetY(), (int32_t)right.x, (int32_t)right.y, olc::CYAN);
+
 	
+	// game.DrawTriangle(GetX(), GetY(), left.x, left.y, right.x, right.y, olc::CYAN);
+	
+	// Draw line to current target
 	game.DrawLine(m_target.x, m_target.y, GetX(), GetY(), olc::MAGENTA);
 
 	// get vector to target
+	/*
 	Vec2f vec = m_target - GetPosition();
 
 	// normalize vector
@@ -62,6 +71,8 @@ void Zombie::Draw(olc::PixelGameEngine& game)
 	// draw the reference vector for angle
 	// game.DrawLine(GetX(), GetY(), vec.x*8.0f + GetX(), vec.y*8.0f + GetY());
 	game.DrawString(GetX(), GetY(), std::to_string(angle));
+
+	*/
 
 	// Get closest player
 	const Player* closestPlayer = m_handler->GetClosestPlayer(*this);
@@ -143,7 +154,7 @@ void Zombie::doMove(float dt)
 		float cross = Vec2f::CrossProduct(vec, GetDirectionVector());
 		float dir = cross > 0.0f ? -1.0f : 1.0f; // Magically determined
 
-		SetDirection(GetDirection() + 0.5f * dir * dt);
+		SetDirection(GetDirection() + ZOMBIE_TURN_SPEED * dir * dt);
 	}
 	
 	if (Vec2f::DistanceBetween(GetPosition(), m_target) > ATTACK_RANGE 

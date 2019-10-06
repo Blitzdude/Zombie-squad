@@ -23,10 +23,3 @@ Actor::~Actor()
 	m_objectCount--;
 	std::cout << "Object count is: " << m_objectCount << "\n";
 }
-/*
-Vec2f Actor::GetDirectionVector() const
-{
-	Vec2f ret(cosf(GetDirection()), sinf(GetDirection()));
-	return ret.GetNormalized();
-}
-*/

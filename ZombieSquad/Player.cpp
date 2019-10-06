@@ -83,12 +83,12 @@ void Player::MoveBack(float dt)
 
 void Player::TurnRight(float dt)
 {
-	SetDirection(GetDirection() + 2.0f* dt);
+	SetDirection(GetDirection() + PLAYER_TURN_SPEED * dt);
 }
 
 void Player::TurnLeft(float dt)
 {
-	SetDirection(GetDirection() - 2.0f* dt);
+	SetDirection(GetDirection() - PLAYER_TURN_SPEED * dt);
 }
 
 void Player::Attack(float)

@@ -15,46 +15,26 @@ bool ZombieSquad::OnUserCreate()
 	std::cout << ScreenWidth() << " , " << ScreenHeight() << "\n";
 
 	bool createSuccess = false;
-	// Load Level data
-	/*
-		world width, height, blockwidth
-		start location
-		goal location
-	*/
 
+	// Load Level data
 	m_currentLevel = new Level("level4.txt", (float)ScreenWidth(), (float)ScreenHeight());
 	m_currentLevel->InitPathfinding();
-	// Generate Edge data from tile map
-	/*
-		see lineOfSight demo
-	*/
 
-	// Put player characters into the game
-	/*
-		Set xy-coordinates
-		Set size
-		Give control to player
-	*/
-
+	
 	float startX = m_currentLevel->GetStart().x;
 	float startY = m_currentLevel->GetStart().y;
 
+	// Put player characters into the game
 	// Player 1
 	Player* player1 = SpawnPlayer(startX, startY, 0.0f, 0, *this, m_playerHandler, 0.0f, true);
-
 	// Player 2
 	Player* player2 = SpawnPlayer(startX, startY, 0.0f, 1, *this, m_playerHandler, 3.0f);
-
 	// Player 3
 	Player* player3 = SpawnPlayer(startX, startY, 0.0f, 2, *this, m_playerHandler, 6.0f);
 
-
-	// Initialize the ZombieHandler
+	// Initialize handlers
 	createSuccess = m_zombieHandler.Init(*player1, *player2, *player3);
 	createSuccess = m_playerHandler.Init(m_zombieHandler);
-	player1 = nullptr;
-	player2 = nullptr;
-	player3 = nullptr;
 
 	// Populate Level with zombies
 	/*
@@ -62,10 +42,9 @@ bool ZombieSquad::OnUserCreate()
 		- Add zombies to unoccupied cells
 	*/
 
-	int debugx = m_currentLevel->GetStartX(); // Debug
-	int debugy = m_currentLevel->GetStartY(); // Debug
 	int highest = 0;						  // Debug
 	int zombiesSpawned = 0;					  // Debug
+
 	for (int y = 0; y < m_currentLevel->GetNumCellsY(); y++)
 	{
 		for (int x = 0; x < m_currentLevel->GetNumCellsX(); x++)
@@ -74,7 +53,7 @@ bool ZombieSquad::OnUserCreate()
 			highest = highest < distance ? distance : highest; // Debug
 			if (distance > MINIMUM_DISTANCE && m_currentLevel->GetCell(x, y)->isObstacle == false)
 			{
-				int numZombies = 0; // rand() % 2;
+				int numZombies = rand() % 2;
 				for (int i = 0; i <= numZombies; i++)
 				{
 					SpawnZombie(x, y, i * 0.5f);
@@ -262,6 +241,18 @@ void ZombieSquad::DoDraw()
 	{
 		itr->Draw(*this);
 	}
+
+	// Draw instruction text
+	const int TEXT_X_POSITION = 2;
+	const int TEXT_Y_POSITION = ScreenHeight() - 46;
+	const std::string INSTRUCTION_TEXT =
+		"1 2 3-keys: Change characters\n"
+		"W/A/S/D-keys: Move forward/back. Turn left/right\n"
+		"Space: Shoot\n"
+		"Esc-key: Exit game\n"
+		"Get to the safe house and try not to die. Get as many of you can to the safe house alive";
+	
+	DrawString(TEXT_X_POSITION, TEXT_Y_POSITION, INSTRUCTION_TEXT);
 	
 }
 

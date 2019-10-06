@@ -85,7 +85,7 @@ void Flying::Update(Bullet& bullet, float dt)
 
 void Roaming::Enter(Zombie& zombie)
 {
-	zombie.SetColor(olc::GREEN);
+	zombie.SetColor(olc::DARK_GREEN);
 }
 
 void Roaming::Update(Zombie& zombie, float dt)
@@ -161,7 +161,6 @@ void Navigating::Update(Zombie& zombie, float dt)
 		// the path has been finished, go to roam state
 		zombie.doRoam();
 	}
-
 }
 
 void ZombieAttacking::Enter(Zombie& zombie)

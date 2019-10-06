@@ -147,22 +147,26 @@ public:
 	 * @param target Position of the target location
 	 */
 	static std::vector<std::pair<int, int>> GetPathToTarget(const Vec2f& start, const Vec2f& target);
-
-	// Getters
-	static const float GetCellSize() { return m_cellSize; }
-	static const Vec2f& GetStart() { return m_startPosition; }
-	static const Vec2f GetCellCenterPos(int x, int y) 
-	{ 
-		return Vec2f((x * m_cellSize + m_cellSize / 2.0f) + m_levelOffsetX,
-					 (y * m_cellSize + m_cellSize / 2.0f) + m_levelOffsetY); 
-	};
-	static const std::vector<Edge>& GetEdges() { return vec_edges; }
-	static const Vec2f& GetEnd() { return m_endPosition; }
 	
 	// TODO: Change naming scheme to following: 
 	// - Cell -> Returns Cell*
 	// - Pos -> Returns Vec2f as Cells center?
 	// - CoordX/CoordY -> returns Cells coordinate int in array
+
+	/// Gets the size of a single cell
+	static const float GetCellSize() { return m_cellSize; }
+	/// Gets the level coordinate of the level start
+	static const Vec2f& GetStart() { return m_startPosition; }
+	/// Gets the level coordinate of the level goal
+	static const Vec2f& GetEnd() { return m_endPosition; }
+	/// gets the center position of a single cell
+	static const Vec2f GetCellCenterPos(int x, int y) 
+	{ 
+		return Vec2f((x * m_cellSize + m_cellSize / 2.0f) + m_levelOffsetX,
+					 (y * m_cellSize + m_cellSize / 2.0f) + m_levelOffsetY); 
+	};
+	/// Gets all edges of the level 
+	static const std::vector<Edge>& GetEdges() { return vec_edges; }
 	static int GetStartX() { return m_startCoordX; }
 	static int GetStartY() { return m_startCoordY; }
 	static int GetNumCellsX() { return m_mapCellWidth; }
@@ -171,7 +175,6 @@ public:
 	static Cell* GetCell(Vec2f pos);
 
 private:
-
 
 	/// Clears pathfinding data on cells
 	/// 
@@ -202,7 +205,7 @@ private:
 	static int m_startCoordY;
 	static Vec2f m_endPosition;
 	static std::vector<Edge> vec_edges;
-	static Cell* m_map; // TODO: This is not very c++11
+	static Cell* m_map;
 	std::array<olc::Sprite*, (size_t)SpriteId::COUNT> m_sprites;
 	std::vector<std::tuple<float, float, float>> m_vecVisibilityPolygonPoints;
 };
