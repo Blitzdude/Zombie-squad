@@ -15,15 +15,15 @@ Level
 	- map of sprites needed to draw <id, olc::sprite>
 */
 
-/// Sprite ID
+/** 
+ * This is used by level to determine, which sprite to draw in the cell
+ */
 
-/*  This is used to determine by level, which sprite to draw in the cell
-*/
-
-
-/// Sprite id Enum class
-/// 
-/// Sprite id is a numbered Enum class by level to determine the Sprite to draw on the cell
+/** 
+ * SpriteId Enum class
+ *
+ * SpriteId is a numbered Enum class by level to determine the Sprite to draw on the cell
+ */ 
 enum class SpriteId
 {
 	NONE = -1,
@@ -44,9 +44,12 @@ enum class SpriteId
 	COUNT
 };
 
-/// Cell structure
 
-/* Game world is composed of Cells. They hold edge information and other information
+/** 
+* Cell struct for cell and pathfinding information
+*
+* Game world is composed of Cells. Each cell holds all necessary
+* information used by the level and pathfinding 
 */
 struct Cell
 {	
@@ -74,19 +77,29 @@ public:
 /**
 * Level class
 *
-* Level is responsible for everything involved with the level 
+* Level is responsible for everything involved with the level: 
+* SpriteId's, Pathfinding etc. 
+*
+* Level is a static class, meaning it has static methods, that can be
+* accessed by any object in the game. These methods are related to getting 
+* current cell, level size and etc. 
+*
+* Only on instance of Level should ever exist, and game should break on an
+* assert if an instance of class already exists, when the constructor is called
+* Level doesn't use a singleton pattern, because it doesn't have a private constructor
+* and it's methods are accessed through static calls with Level:: namespace
 */
 class Level
 {
 public:
-	// size of cell
-	// map width, height in cells
-	
-	// cell array
-	// edge array
-	// visibility polygon calculation
-	// A* pathfinding routines
 
+	/**
+	 * Level construtor
+	 * 
+	 * constructs the level object and initializes level data
+	 * @param path path to level level.txt file
+	 * @param screenWidth, screenHeight width and height of the screen used for centering the level
+	 */
 	Level(std::string path, float screenWidth, float screenHeight);
 	~Level();
 
@@ -104,35 +117,36 @@ public:
 
 	void DrawPolyMap(olc::PixelGameEngine& engine);
 	void DrawConnections(olc::PixelGameEngine& engine);
-	/// Not Implemented
-	///
-	///
+
+	/** NOT IMPLEMENTED
 	void CalculateVisibilityPolygon(float ox, float oy, float radius, float direction, float fovRad); 
-	
-	/// Not Implemented
-	///
-	///
+	*/
+
+	/** NOT IMPLEMENTED
 	void DrawVisibilityPolygon(const std::vector<std::tuple<float, float, float>>& points); 
-	// bool CheckLineIntersection(IntersectResult* point, Ray& e1, Edge& e2);
+	*/
 	
-	/// Not Implemented
-	///
-	///
+	/** NOT IMPLEMENTED
 	bool CheckIfVisible(float ox, float oy, float radius); // Not implemented
-	/// Draws the level
-	///
-	/// Used for drawing the level
-	/// @param engine Reference to the game engine class
+	*/
+	
+	/**
+	 * Draws the level
+	 *
+	 * Used for drawing the level
+	 * @param engine Reference to the game engine class
+	 */
 	void DrawLevel(olc::PixelGameEngine& engine);
 	
-	/// Gets path as vector of int pairs
-	///
-	/// Uses A*-algorithm to find the path from start location to target location
-	/// @param start Position of the start coordinate
-	/// @param target Position of the target location
-	/// @returns returns a vector of int pairs corresponding to cells to pass through
+	/**
+	 * Gets path as vector of int pairs
+	 *
+	 * Uses A*-algorithm to find the path from start location to target location
+	 * @param start Position of the start coordinate
+	 * @returns returns a vector of int pairs corresponding to cells to pass through
+	 * @param target Position of the target location
+	 */
 	static std::vector<std::pair<int, int>> GetPathToTarget(const Vec2f& start, const Vec2f& target);
-
 
 	// Getters
 	static const float GetCellSize() { return m_cellSize; }

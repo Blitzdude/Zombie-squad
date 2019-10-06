@@ -616,6 +616,9 @@ void Level::DrawConnections(olc::PixelGameEngine& engine)
 	}
 }
 
+/** NOT IMPLEMENTED
+
+NOTE: Currently this isn't implemented in the project. Might implementit in a later time
 void Level::CalculateVisibilityPolygon(float ox, float oy, float radius, float direction, float fovRad)
 {
 	// Get rid of existing polygon
@@ -753,6 +756,7 @@ void Level::CalculateVisibilityPolygon(float ox, float oy, float radius, float d
 	// to the back of the array
 	m_vecVisibilityPolygonPoints.push_back({ Vec2f::PolarAngle({cosf(direction) + ox, sinf(direction) + oy }), ox, oy });
 }
+*/
 
 void Level::DrawLevel(olc::PixelGameEngine & engine)
 {
