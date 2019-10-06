@@ -344,5 +344,7 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database 
 healthchecksdb
-/ZombieSquad/Doc/rtf
+
+/ZombieSquad/doc/html
+/ZombieSquad/doc/rtf
 
