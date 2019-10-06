@@ -2,15 +2,15 @@
 #include "State.h"
 #include "GlobalConstants.h"
 
-Bullet::Bullet(const Vec2f& pos, float dir, float s, float l, ActorTag owner)
-	: m_lifeTime(l), m_radius(0.0f), m_owner(owner)
+Bullet::Bullet(const Vec2f& pos, float dir, float speed, float lifeTime, ActorTag owner)
+	: m_lifeTime(lifeTime), m_radius(0.0f), m_owner(owner)
 {
 	std::cout << "Bullet created\n";
 	m_currentState = new Flying();
 	SetDestroyed(false);
 	SetPosition(pos);
 	SetDirection(dir);
-	SetSpeed(s);
+	SetSpeed(speed);
 	SetRadius(BULLET_SIZE * GAME_SCALE);
 	SetColor(olc::YELLOW);
 	SetTag(ActorTag::BULLET);

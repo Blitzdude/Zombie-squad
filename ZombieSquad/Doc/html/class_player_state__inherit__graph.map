@@ -1,6 +1,0 @@
-<map id="PlayerState" name="PlayerState">
-<area shape="rect" id="node1" title=" " alt="" coords="133,5,252,127"/>
-<area shape="rect" id="node2" href="$class_controlled.html" title=" " alt="" coords="5,175,113,311"/>
-<area shape="rect" id="node3" href="$class_player_dead.html" title=" " alt="" coords="138,182,247,303"/>
-<area shape="rect" id="node4" href="$class_watching.html" title=" " alt="" coords="271,175,378,311"/>
-</map>

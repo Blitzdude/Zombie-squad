@@ -1,7 +1,0 @@
-<map id="Player::Attack" name="Player::Attack">
-<area shape="rect" id="node1" title=" " alt="" coords="5,81,111,108"/>
-<area shape="rect" id="node2" href="$class_actor.html#a938f21dadc75cbbe9a265da6736ec047" title=" " alt="" coords="183,5,316,32"/>
-<area shape="rect" id="node3" href="$class_actor.html#a6430dd6201a54e633403c30ecb366b71" title=" " alt="" coords="185,56,314,83"/>
-<area shape="rect" id="node4" href="$class_actor.html#a7f01b833e5c15a83f3f15e1efd914442" title=" " alt="" coords="188,107,311,133"/>
-<area shape="rect" id="node5" href="$class_zombie_squad.html#a0ffab8c8b61927cb37de1865f7b021ce" title=" " alt="" coords="159,157,340,184"/>
-</map>

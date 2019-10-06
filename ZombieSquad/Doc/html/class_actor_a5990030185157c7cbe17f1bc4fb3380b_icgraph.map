@@ -1,4 +1,0 @@
-<map id="Actor::Chase" name="Actor::Chase">
-<area shape="rect" id="node1" title="Command actor to Chase target player." alt="" coords="204,5,303,32"/>
-<area shape="rect" id="node2" href="$class_chase_player.html#a0b10147c7705750e8afe76ed48a44dcc" title=" " alt="" coords="5,5,156,32"/>
-</map>

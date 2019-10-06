@@ -1,6 +1,0 @@
-<map id="Actor::SetRadius" name="Actor::SetRadius">
-<area shape="rect" id="node1" title=" " alt="" coords="168,56,289,83"/>
-<area shape="rect" id="node2" href="$class_bullet.html#a87077628d46db89d5a9208c85481f945" title=" " alt="" coords="15,5,111,32"/>
-<area shape="rect" id="node3" href="$class_player.html#a84321ec9e1d357f8f77440fb9bf5e04e" title=" " alt="" coords="11,56,115,83"/>
-<area shape="rect" id="node4" href="$class_zombie.html#a237c1c288dbfa5d7217ef3be03043556" title=" " alt="" coords="5,107,120,133"/>
-</map>

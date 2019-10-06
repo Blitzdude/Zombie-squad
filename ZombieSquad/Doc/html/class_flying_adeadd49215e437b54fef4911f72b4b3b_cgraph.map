@@ -1,8 +1,0 @@
-<map id="Flying::Update" name="Flying::Update">
-<area shape="rect" id="node1" title=" " alt="" coords="5,107,112,133"/>
-<area shape="rect" id="node2" href="$class_actor.html#a938f21dadc75cbbe9a265da6736ec047" title=" " alt="" coords="163,5,297,32"/>
-<area shape="rect" id="node3" href="$class_actor.html#a9ae2bf6c669dda79a0ae408bb40e2816" title=" " alt="" coords="176,56,284,83"/>
-<area shape="rect" id="node4" href="$class_actor.html#a6430dd6201a54e633403c30ecb366b71" title=" " alt="" coords="165,107,295,133"/>
-<area shape="rect" id="node5" href="$class_actor.html#ab4c2acf9217d5865519a3ae37b4d4e71" title=" " alt="" coords="160,157,300,184"/>
-<area shape="rect" id="node6" href="$class_actor.html#a60ffe68d16326421524797631a7db0cf" title=" " alt="" coords="166,208,294,235"/>
-</map>

@@ -1,6 +1,0 @@
-<map id="ZombieHandler::GetZombies" name="ZombieHandler::GetZombies">
-<area shape="rect" id="node1" title=" " alt="" coords="621,13,808,39"/>
-<area shape="rect" id="node2" href="$class_player_handler.html#a4a1ad4f728ddf2d6a1c12eee2cfd346f" title=" " alt="" coords="397,5,573,47"/>
-<area shape="rect" id="node3" href="$class_player.html#a2f77cd8cd00652f721144100b690e1fe" title=" " alt="" coords="180,13,349,39"/>
-<area shape="rect" id="node4" href="$class_watching.html#a8097afd3ef6a60da5116c09dabca4deb" title=" " alt="" coords="5,13,132,39"/>
-</map>

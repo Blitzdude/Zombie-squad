@@ -1,6 +1,0 @@
-<map id="Physics::isColliding" name="Physics::isColliding">
-<area shape="rect" id="node1" title=" " alt="" coords="5,56,141,83"/>
-<area shape="rect" id="node2" href="$class_actor.html#a6430dd6201a54e633403c30ecb366b71" title=" " alt="" coords="189,5,319,32"/>
-<area shape="rect" id="node3" href="$class_actor.html#a7f01b833e5c15a83f3f15e1efd914442" title=" " alt="" coords="193,56,315,83"/>
-<area shape="rect" id="node4" href="$class_vec2.html#a388891cf567b4693dab4497866b048d7" title=" " alt="" coords="205,107,303,133"/>
-</map>

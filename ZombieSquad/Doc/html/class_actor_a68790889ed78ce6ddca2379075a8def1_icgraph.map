@@ -1,4 +1,0 @@
-<map id="Actor::ChangePlayer" name="Actor::ChangePlayer">
-<area shape="rect" id="node1" title="Changes the controlled player." alt="" coords="211,5,353,32"/>
-<area shape="rect" id="node2" href="$class_change_player.html#ae5aff4f022e56bb9e098206fc6af7293" title=" " alt="" coords="5,5,163,32"/>
-</map>

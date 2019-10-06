@@ -1,8 +1,0 @@
-<map id="Actor::SetDestroyed" name="Actor::SetDestroyed">
-<area shape="rect" id="node1" title=" " alt="" coords="196,107,336,133"/>
-<area shape="rect" id="node2" href="$class_bullet.html#a87077628d46db89d5a9208c85481f945" title=" " alt="" coords="29,5,125,32"/>
-<area shape="rect" id="node3" href="$class_player.html#a84321ec9e1d357f8f77440fb9bf5e04e" title=" " alt="" coords="25,56,129,83"/>
-<area shape="rect" id="node4" href="$class_zombie_dead.html#a0b46f05bfa0a7504bd592aedb0821f90" title=" " alt="" coords="5,107,148,133"/>
-<area shape="rect" id="node5" href="$class_flying.html#adeadd49215e437b54fef4911f72b4b3b" title=" " alt="" coords="23,157,130,184"/>
-<area shape="rect" id="node6" href="$class_zombie.html#a237c1c288dbfa5d7217ef3be03043556" title=" " alt="" coords="19,208,134,235"/>
-</map>

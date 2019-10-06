@@ -1,7 +1,0 @@
-<map id="ZombieHandler::GetClosestPlayer" name="ZombieHandler::GetClosestPlayer">
-<area shape="rect" id="node1" title=" " alt="" coords="5,74,187,115"/>
-<area shape="rect" id="node2" href="$class_vec2.html#a9e9bf7c233308fb8416a3d0260f350c9" title=" " alt="" coords="235,5,444,32"/>
-<area shape="rect" id="node3" href="$class_player.html#afd1feb2207a774520e2fda96894851fa" title=" " alt="" coords="259,56,420,83"/>
-<area shape="rect" id="node4" href="$class_actor.html#a6430dd6201a54e633403c30ecb366b71" title=" " alt="" coords="275,107,404,133"/>
-<area shape="rect" id="node5" href="$class_player_state.html#ac28306fb7619776227875a124c410ccb" title=" " alt="" coords="258,157,421,184"/>
-</map>

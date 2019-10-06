@@ -1,8 +1,0 @@
-<map id="Player::GetCurrentState" name="Player::GetCurrentState">
-<area shape="rect" id="node1" title=" " alt="" coords="1163,13,1324,39"/>
-<area shape="rect" id="node2" href="$class_zombie_handler.html#a0ccaada77514d44b528c3629244a949d" title=" " alt="" coords="933,5,1115,47"/>
-<area shape="rect" id="node3" href="$class_zombie_handler.html#ac233925a124fbfa52b91f2ec4aafde0d" title=" " alt="" coords="703,13,885,39"/>
-<area shape="rect" id="node4" href="$class_zombie_handler.html#a42c3f3476b2aa165e695db4b8905cda9" title=" " alt="" coords="449,13,655,39"/>
-<area shape="rect" id="node5" href="$class_zombie_squad.html#aec065debeb04f7823be4d23bd3760a52" title=" " alt="" coords="248,13,401,39"/>
-<area shape="rect" id="node6" href="$class_zombie_squad.html#ae086a8d81b15ca84408ea06b051da706" title=" " alt="" coords="5,13,200,39"/>
-</map>

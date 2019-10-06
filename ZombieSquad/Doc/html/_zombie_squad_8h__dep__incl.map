@@ -1,9 +1,0 @@
-<map id="ZombieSquad.h" name="ZombieSquad.h">
-<area shape="rect" id="node1" title=" " alt="" coords="288,5,400,32"/>
-<area shape="rect" id="node2" href="$main_8cpp.html" title=" " alt="" coords="5,80,80,107"/>
-<area shape="rect" id="node3" href="$_player_8cpp.html" title=" " alt="" coords="105,80,189,107"/>
-<area shape="rect" id="node4" href="$_player_handler_8cpp.html" title=" " alt="" coords="213,80,341,107"/>
-<area shape="rect" id="node5" href="$_zombie_8cpp.html" title=" " alt="" coords="366,80,455,107"/>
-<area shape="rect" id="node6" href="$_zombie_handler_8cpp.html" title=" " alt="" coords="480,80,613,107"/>
-<area shape="rect" id="node7" href="$_zombie_squad_8cpp.html" title=" " alt="" coords="638,80,765,107"/>
-</map>

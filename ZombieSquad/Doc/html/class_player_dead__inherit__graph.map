@@ -1,4 +1,0 @@
-<map id="PlayerDead" name="PlayerDead">
-<area shape="rect" id="node1" title=" " alt="" coords="10,175,119,296"/>
-<area shape="rect" id="node2" href="$class_player_state.html" title=" " alt="" coords="5,5,124,127"/>
-</map>

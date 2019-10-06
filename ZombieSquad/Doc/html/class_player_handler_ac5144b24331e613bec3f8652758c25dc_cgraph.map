@@ -1,6 +1,0 @@
-<map id="PlayerHandler::HandlePlayers" name="PlayerHandler::HandlePlayers">
-<area shape="rect" id="node1" title=" " alt="" coords="5,31,200,57"/>
-<area shape="rect" id="node2" href="$class_command.html#a2e9fc05d97be1b1dc2a9e5742beb4a4b" title=" " alt="" coords="481,5,616,32"/>
-<area shape="rect" id="node3" href="$class_player_handler.html#a58943ce2ee489ff606c8e4e29e0c110c" title=" " alt="" coords="248,56,425,83"/>
-<area shape="rect" id="node4" href="$classolc_1_1_pixel_game_engine.html#a9b16a76f71a52175cb013ff9e22a2180" title=" " alt="" coords="473,57,624,98"/>
-</map>

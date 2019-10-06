@@ -1,6 +1,0 @@
-<map id="Actor" name="Actor">
-<area shape="rect" id="node1" title="Abstract base class for all actors." alt="" coords="141,5,263,244"/>
-<area shape="rect" id="node2" href="$class_bullet.html" title=" " alt="" coords="5,351,105,487"/>
-<area shape="rect" id="node3" href="$class_player.html" title=" " alt="" coords="130,292,274,545"/>
-<area shape="rect" id="node4" href="$class_zombie.html" title=" " alt="" coords="299,307,481,531"/>
-</map>

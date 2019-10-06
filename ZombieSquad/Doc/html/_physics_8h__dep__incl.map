@@ -1,8 +1,0 @@
-<map id="Physics.h" name="Physics.h">
-<area shape="rect" id="node1" title=" " alt="" coords="249,5,329,32"/>
-<area shape="rect" id="node2" href="$_level_8cpp.html" title=" " alt="" coords="5,80,81,107"/>
-<area shape="rect" id="node3" href="$_physics_8cpp.html" title=" " alt="" coords="105,80,200,107"/>
-<area shape="rect" id="node4" href="$_player_handler_8cpp.html" title=" " alt="" coords="225,80,353,107"/>
-<area shape="rect" id="node5" href="$_zombie_handler_8cpp.html" title=" " alt="" coords="377,80,510,107"/>
-<area shape="rect" id="node6" href="$_zombie_squad_8cpp.html" title=" " alt="" coords="535,80,661,107"/>
-</map>

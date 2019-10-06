@@ -1,7 +1,0 @@
-<map id="olc::PixelGameEngine::GetKey" name="olc::PixelGameEngine::GetKey">
-<area shape="rect" id="node1" title=" " alt="" coords="917,5,1068,47"/>
-<area shape="rect" id="node2" href="$class_zombie_squad.html#aec065debeb04f7823be4d23bd3760a52" title=" " alt="" coords="248,13,401,39"/>
-<area shape="rect" id="node4" href="$class_player_handler.html#a58943ce2ee489ff606c8e4e29e0c110c" title=" " alt="" coords="692,38,869,65"/>
-<area shape="rect" id="node3" href="$class_zombie_squad.html#ae086a8d81b15ca84408ea06b051da706" title=" " alt="" coords="5,13,200,39"/>
-<area shape="rect" id="node5" href="$class_player_handler.html#ac5144b24331e613bec3f8652758c25dc" title=" " alt="" coords="449,38,644,65"/>
-</map>

@@ -1,7 +1,0 @@
-<map id="ZombieState::GetStateID" name="ZombieState::GetStateID">
-<area shape="rect" id="node1" title=" " alt="" coords="188,81,355,108"/>
-<area shape="rect" id="node2" href="$class_zombie.html#a706a5f5f44aa914ffb24b2469c584bf9" title="Command actor to Chase target player." alt="" coords="18,5,127,32"/>
-<area shape="rect" id="node3" href="$class_zombie.html#a52f8429fa686ecbe509ec9ea9f287e8f" title="Commands actor to die." alt="" coords="27,56,118,83"/>
-<area shape="rect" id="node4" href="$class_zombie.html#a70d0bccebcb4318c2e4619cd4c54851b" title="Draws the actor." alt="" coords="22,107,123,133"/>
-<area shape="rect" id="node5" href="$class_zombie.html#aa14bf9eeddb7235d553b63378f646781" title="Command zombie to Navigate to target location." alt="" coords="5,157,140,184"/>
-</map>

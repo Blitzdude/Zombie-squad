@@ -1,5 +1,0 @@
-<map id="olc::MAGENTA" name="olc::MAGENTA">
-<area shape="rect" id="node1" title=" " alt="" coords="155,31,265,57"/>
-<area shape="rect" id="node2" href="$class_player.html#ae7ac3a01c3dc2328a1f6c05967c4f8bc" title="Draws the actor." alt="" coords="8,5,104,32"/>
-<area shape="rect" id="node3" href="$class_zombie.html#a70d0bccebcb4318c2e4619cd4c54851b" title="Draws the actor." alt="" coords="5,56,107,83"/>
-</map>
