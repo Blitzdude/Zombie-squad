@@ -95,19 +95,7 @@ bool ZombieSquad::OnUserUpdate(float fElapsedTime)
 		*/
 		DoDraw();
 	}
-	if (m_isGameOver)
-	{
-		bool isWin = CheckVictory();
-		if (!isWin)
-		{
-			// all players are dead
-			std::cout << "You and your friends are dead. Game Over\n";
-		}
-		else if (isWin)
-		{
-			std::cout << "You have survived, Congratulations!\n";
-		}
-	}
+	
 
 	return m_isRunning;
 }
@@ -245,17 +233,48 @@ void ZombieSquad::DoDraw()
 		itr->Draw(*this);
 	}
 
-	// Draw instruction text
-	const int TEXT_X_POSITION = 2;
-	const int TEXT_Y_POSITION = ScreenHeight() - 46;
-	const std::string INSTRUCTION_TEXT =
-		"1 2 3-keys: Change characters\n"
-		"W/A/S/D-keys: Move forward/back. Turn left/right\n"
-		"Space: Shoot\n"
-		"Esc-key: Exit game\n"
-		"Get to the safe house and try not to die. Get as many of you can to the safe house alive";
-	
-	DrawString(TEXT_X_POSITION, TEXT_Y_POSITION, INSTRUCTION_TEXT);
+	if (m_isRunning && !m_isGameOver)
+	{
+		// Draw instruction text
+		const int c_textXPos = 2;
+		const int c_textYPos = ScreenHeight() - 46;
+		const std::string c_instructionText =
+			"Get to the safe house and try not to die. Save as many survivors as you can"
+			"1 2 3-keys: Change survivors\n"
+			"W/A/S/D-keys: Move forward/back. Turn left/right\n"
+			"Space: Shoot\n"
+			"Esc-key: Exit game\n";
+		
+		DrawString(c_textXPos, c_textYPos, c_instructionText);
+	}
+	else if (m_isRunning && m_isGameOver)
+	{
+		// game is over
+		int numAlive = m_playerHandler.NumberOfPlayersAlive();
+		if (numAlive <= 0)
+		{
+			const std::string c_deathText =
+				"All the survivors are dead.\n"
+				"Care to try again?\n";
+
+			DrawString(ScreenWidth() / 6.0f, ScreenHeight() / 4.0f, c_deathText, olc::RED, 4U);
+		}
+		else 
+		{
+			// At least one survivor is alive.
+			const std::string c_victoryText1 =
+				"Congratulations!\n"
+				"You have successfully guided \n";
+
+			const std::string c_victoryText2 =
+				" of your survivors to the safe house!\n"
+				"Thank you for playing my game!\n";
+
+			std::string victoryTextWhole = c_victoryText1 + std::to_string(numAlive) + c_victoryText2;
+
+			DrawString(ScreenWidth() / 6.0f, ScreenHeight() / 4.0f, victoryTextWhole, olc::RED, 3U);
+		}
+	}
 	
 }
 
@@ -279,41 +298,6 @@ bool ZombieSquad::GameIsOver()
 	}
 	return false;
 }
-/*
-bool ZombieSquad::CheckVictory()
-{
-	// returns condition, that tells if game is over
-	bool allPlayersDead = true;
-	// Check if all players are dead
-	for (auto itr : m_playerHandler.GetPlayers())
-	{
-		if (itr->GetCurrentState()->GetStateID() != StateID::STATE_DEAD)
-		{
-			// at least one player is alive -> game is not over
-			allPlayersDead =  false;
-			break;
-		}
-	}
-	
-	// if all alive players are on the goal, it's a win
-	bool win = true;
-	for (auto itr : m_playerHandler.GetPlayers())
-	{
-		if (!m_currentLevel->GetCell(itr->GetPosition())->isGoal)
-		{
-			// if even on alive player is outside the goal, they havent won
-			if (itr->GetCurrentState()->GetStateID() != StateID::STATE_DEAD)
-			{
-				win	= false;
-			}
-		}
-	}
-
-	m_isWin = win;
-	return allPlayersDead || win;
-	// if this gets here, the game is over
-}
-*/
 
 Player* ZombieSquad::SpawnPlayer(float xPos, float yPos, float dir, int playerNum, 
 	ZombieSquad& game, PlayerHandler& playerHandler, float offset, bool startingPlayer)
