@@ -24,6 +24,10 @@ public:
 	const Zombie* GetClosestVisibleZombiePosition(const Player& player);
 	bool PlayerSeesTarget(const Vec2f& targetPos, const Player& player);
 
+	int NumberOfPlayersAlive();
+
+	int NumberOfPlayersOnGoal();
+
 	const std::array<Player*, 3> GetPlayers() { return m_players; }
 
 private:
@@ -43,5 +47,6 @@ private:
 	ZombieHandler* m_zombieHandler;
 	std::array<Player*, 3> m_players;
 	Player* m_selectedPlayer;
+
 };
 

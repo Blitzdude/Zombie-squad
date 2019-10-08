@@ -24,6 +24,7 @@ public:
 	void DoUpdate(float fElapsedTime);
 	void DoDraw();
 	bool CheckVictory();
+	bool GameIsOver();
 
 	Player* SpawnPlayer(float xPos, float yPos, float dir, int playerNum, ZombieSquad& game, PlayerHandler& playerHandler, float offset = 0.0f, bool startingPlayer = false);
 	void SpawnZombie(int x, int y, float offset = 0.0f);

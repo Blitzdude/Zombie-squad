@@ -42,22 +42,18 @@ bool ZombieSquad::OnUserCreate()
 		- Add zombies to unoccupied cells
 	*/
 
-	int highest = 0;						  // Debug
-	int zombiesSpawned = 0;					  // Debug
 
 	for (int y = 0; y < m_currentLevel->GetNumCellsY(); y++)
 	{
 		for (int x = 0; x < m_currentLevel->GetNumCellsX(); x++)
 		{
 			int distance = ManhattanDistance(m_currentLevel->GetStartX(), m_currentLevel->GetStartY(), x, y);
-			highest = highest < distance ? distance : highest; // Debug
 			if (distance > MINIMUM_DISTANCE && m_currentLevel->GetCell(x, y)->isObstacle == false)
 			{
-				int numZombies = rand() % 2;
+				int numZombies = ZOMBIES_MAX_NUM_PER_TILE - 1; // rand() % 2;
 				for (int i = 0; i <= numZombies; i++)
 				{
 					SpawnZombie(x, y, i * 0.5f);
-					zombiesSpawned++;
 				}
 			}
 		}
@@ -73,9 +69,11 @@ bool ZombieSquad::OnUserCreate()
 
 bool ZombieSquad::OnUserUpdate(float fElapsedTime)
 {
+	// input outside so we can quit
+	DoInput(fElapsedTime);
+	
 	if (!m_isGameOver)
 	{
-		DoInput(fElapsedTime);
 		// Check input
 
 		DoUpdate(fElapsedTime);
@@ -97,14 +95,18 @@ bool ZombieSquad::OnUserUpdate(float fElapsedTime)
 		*/
 		DoDraw();
 	}
-	if (m_isGameOver && !m_isWin)
+	if (m_isGameOver)
 	{
-		// all players are dead
-		std::cout << "You and your friends are dead. Game Over\n";
-	}
-	else if (m_isGameOver && m_isWin)
-	{
-		std::cout << "You have survived, Congratulations!\n";
+		bool isWin = CheckVictory();
+		if (!isWin)
+		{
+			// all players are dead
+			std::cout << "You and your friends are dead. Game Over\n";
+		}
+		else if (isWin)
+		{
+			std::cout << "You have survived, Congratulations!\n";
+		}
 	}
 
 	return m_isRunning;
@@ -121,10 +123,11 @@ void ZombieSquad::DoInput(float fElapsedTime)
 	- Space - fire gun -> create bullets
 	*/
 
-	m_playerHandler.HandlePlayers(fElapsedTime);
-	// m_bulletHandler.HandleBullets(fElapsedTime);
-	m_zombieHandler.HandleZombies(fElapsedTime);
-
+	if (m_isRunning)
+	{
+		m_playerHandler.HandlePlayers(fElapsedTime);;
+		m_zombieHandler.HandleZombies(fElapsedTime);
+	}
 
 	if (GetKey(olc::ESCAPE).bReleased)
 	{
@@ -144,7 +147,7 @@ void ZombieSquad::DoUpdate(float fElapsedTime)
 	*/
 
 	// checkGame conditions
-	m_isGameOver = CheckVictory();
+	m_isGameOver = GameIsOver();
 
 	AddActors();
 	// update actors
@@ -258,6 +261,27 @@ void ZombieSquad::DoDraw()
 
 bool ZombieSquad::CheckVictory()
 {
+	if (m_playerHandler.NumberOfPlayersAlive() > 0)
+	{
+		// someone is alive. You win!
+		return true;
+	}
+	// everyone is dead.
+	return false;
+}
+bool ZombieSquad::GameIsOver()
+{
+	if (m_playerHandler.NumberOfPlayersAlive() <= 0 ||
+		m_playerHandler.NumberOfPlayersOnGoal() >= m_playerHandler.NumberOfPlayersAlive())
+	{
+		// all players are dead or on the goal tile
+		return true;
+	}
+	return false;
+}
+/*
+bool ZombieSquad::CheckVictory()
+{
 	// returns condition, that tells if game is over
 	bool allPlayersDead = true;
 	// Check if all players are dead
@@ -289,6 +313,7 @@ bool ZombieSquad::CheckVictory()
 	return allPlayersDead || win;
 	// if this gets here, the game is over
 }
+*/
 
 Player* ZombieSquad::SpawnPlayer(float xPos, float yPos, float dir, int playerNum, 
 	ZombieSquad& game, PlayerHandler& playerHandler, float offset, bool startingPlayer)
