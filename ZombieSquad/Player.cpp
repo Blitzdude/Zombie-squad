@@ -43,7 +43,6 @@ void Player::Draw(olc::PixelGameEngine& game)
 {
 
 #pragma warning (disable : 4244) // converting from float to int32_t
-
 	// player circle
 	game.FillCircle((int32_t)GetX(), (int32_t)GetY(), (int32_t)GetRadius(), GetColor());
 
@@ -56,10 +55,8 @@ void Player::Draw(olc::PixelGameEngine& game)
 	// players number
 	game.DrawString((int32_t)GetX() + 5.0f, (int32_t)GetY() + 5.0f,
 		std::to_string(m_playerNumber), olc::WHITE, GAME_SCALE);
-
-	
-
 #pragma warning (default : 4244)
+
 }
 
 void Player::Update(float dt)
@@ -115,7 +112,7 @@ void Player::ChangePlayer(bool truth)
 {
 	if (truth)
 	{
-		// This becomes the controlled player
+		// This becomes the controlled character
 		m_currentState = new Controlled();
 		m_currentState->Enter(*this);
 	}

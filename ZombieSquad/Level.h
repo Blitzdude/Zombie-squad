@@ -101,7 +101,7 @@ public:
 	 * @param screenWidth, screenHeight width and height of the screen used for centering the level
 	 */
 	Level(std::string path, float screenWidth, float screenHeight);
-	~Level();
+	~Level() {};
 
 	bool LoadLevel(std::string filepath, float screenWidth, float screenHeight);
 	bool LoadTextures();

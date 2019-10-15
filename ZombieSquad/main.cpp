@@ -9,7 +9,7 @@ ZombieSquad - Project by Joel Känsälä. Public license.
 
 /* STYLE GUIDE
 types: (struct, class etc)
-	- TypeName
+	- TypeName (PascalCase)
 methods, functions: 
 	- FunctionName()
 variables:
@@ -18,7 +18,7 @@ variables:
 	- m_=member, c_=constants, p_=parameter
 multiple types:
 	- mc_= member constant etc.
-global constants/Defines:
+global constants/Defines: (ANGRY_SNAKE_CASE)
 	- ALL_UPPER_CASE
 	
 */

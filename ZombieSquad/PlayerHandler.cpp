@@ -41,15 +41,16 @@ bool PlayerHandler::Init(ZombieHandler& zombieHandler)
 
 Command * PlayerHandler::handleInput()
 {
-	if (m_game->GetKey(olc::W).bHeld) return buttonW;
-	if (m_game->GetKey(olc::A).bHeld) return buttonA;
-	if (m_game->GetKey(olc::S).bHeld) return buttonS;
-	if (m_game->GetKey(olc::D).bHeld) return buttonD;
+	if (m_game->GetKey(olc::W).bHeld)	  return buttonW;
+	if (m_game->GetKey(olc::A).bHeld)	  return buttonA;
+	if (m_game->GetKey(olc::S).bHeld)	  return buttonS;
+	if (m_game->GetKey(olc::D).bHeld)	  return buttonD;
 	if (m_game->GetKey(olc::SPACE).bHeld) return buttonSpace;
 
 	if (m_game->GetKey(olc::K1).bReleased && 
 			m_players[0]->GetCurrentState()->GetStateID() != StateID::STATE_DEAD)
 	{
+		// change to player 1
 		buttonChangeFalse->execute(*m_selectedPlayer, 0.0f);
 		m_selectedPlayer = m_players[0];
 		buttonChangeTrue->execute(*m_selectedPlayer, 0.0f);
@@ -58,6 +59,7 @@ Command * PlayerHandler::handleInput()
 	else if (m_game->GetKey(olc::K2).bReleased &&
 		m_players[1]->GetCurrentState()->GetStateID() != StateID::STATE_DEAD)
 	{
+		// change to player 2
 		buttonChangeFalse->execute(*m_selectedPlayer, 0.0f);
 		m_selectedPlayer = m_players[1];
 		buttonChangeTrue->execute(*m_selectedPlayer, 0.0f);
@@ -67,6 +69,7 @@ Command * PlayerHandler::handleInput()
 	else if (m_game->GetKey(olc::K3).bReleased &&
 		m_players[2]->GetCurrentState()->GetStateID() != StateID::STATE_DEAD)
 	{
+		// change to player 3
 		buttonChangeFalse->execute(*m_selectedPlayer, 0.0f);
 		m_selectedPlayer = m_players[2];
 		buttonChangeTrue->execute(*m_selectedPlayer, 0.0f);
@@ -78,16 +81,7 @@ Command * PlayerHandler::handleInput()
 
 void PlayerHandler::HandlePlayers(float fElapsedTime)
 {
-	// New player handling
-	// get input 
-	// go through the plaeyrs
-	// if the player has taken damage -> command it to die
-	// if player state is controlled and command is not nullptr
-	// else if player state is overwatch
-	// check if zombies are close and fire at them
-
-	// We also need to make sure, we have a controlled player
-	// otherwise we need to make one of the players into the controlled state
+	
 	Command* input = handleInput();
 	for (auto& p : m_players)
 	{

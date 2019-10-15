@@ -20,7 +20,6 @@ bool ZombieSquad::OnUserCreate()
 	m_currentLevel = new Level("level4.txt", (float)ScreenWidth(), (float)ScreenHeight());
 	m_currentLevel->InitPathfinding();
 
-	
 	float startX = m_currentLevel->GetStart().x;
 	float startY = m_currentLevel->GetStart().y;
 
@@ -37,12 +36,6 @@ bool ZombieSquad::OnUserCreate()
 	createSuccess = m_playerHandler.Init(m_zombieHandler);
 
 	// Populate Level with zombies
-	/*
-		For each open cell far enough away from start
-		- Add zombies to unoccupied cells
-	*/
-
-
 	for (int y = 0; y < m_currentLevel->GetNumCellsY(); y++)
 	{
 		for (int x = 0; x < m_currentLevel->GetNumCellsX(); x++)
@@ -74,29 +67,12 @@ bool ZombieSquad::OnUserUpdate(float fElapsedTime)
 	
 	if (!m_isGameOver)
 	{
-		// Check input
-
 		DoUpdate(fElapsedTime);
-		// Update 
-		/*
-			Check victory condition
-			- All player characters are in the goal cell
-			Check Collisions
-			Resolve collisions
-			- Move zombies and characters away from walls
-			- destroy bullets, when they touch something
-			Move Actors (zombies, characters, bullets)
-			Calculate visibility polygons
 
-		*/
-
-		/*
-			Draw level, and actors.
-		*/
+		// Draw level, and actors. 
 		DoDraw();
 	}
 	
-
 	return m_isRunning;
 }
 
@@ -126,14 +102,6 @@ void ZombieSquad::DoInput(float fElapsedTime)
 
 void ZombieSquad::DoUpdate(float fElapsedTime)
 {
-	/* REMOVED: until can check vectors of Player-pointers
-	if (m_currentLevel->CheckVictory(m_selectedPlayer))
-	{
-		// DrawString(1, 1, "You Win!", olc::WHITE, 2U);
-		std::cout << "You Win! Yattaa!\n";
-	}
-	*/
-
 	// checkGame conditions
 	m_isGameOver = GameIsOver();
 
@@ -257,7 +225,9 @@ void ZombieSquad::DoDraw()
 				"All the survivors are dead.\n"
 				"Care to try again?\n";
 
+#pragma warning (disable : 4244) // narrowing conversion from float to int32_t
 			DrawString(ScreenWidth() / 6.0f, ScreenHeight() / 4.0f, c_deathText, olc::RED, 4U);
+#pragma warning (default : 4244)
 		}
 		else 
 		{
@@ -271,8 +241,9 @@ void ZombieSquad::DoDraw()
 				"Thank you for playing my game!\n";
 
 			std::string victoryTextWhole = c_victoryText1 + std::to_string(numAlive) + c_victoryText2;
-
+#pragma warning (disable : 4244) // narrowing conversion from float to int32_t
 			DrawString(ScreenWidth() / 6.0f, ScreenHeight() / 4.0f, victoryTextWhole, olc::RED, 3U);
+#pragma warning (default : 4244)
 		}
 	}
 	

@@ -22,14 +22,11 @@ int   Level::m_startCoordX = 0;
 int   Level::m_startCoordY = 0;
 Vec2f Level::m_endPosition(0.0f, 0.0f);
 bool  Level::m_instantiated = false;
-std::vector<Edge> Level::vec_edges;
 int   Level::m_mapCellWidth = 0;
 int	  Level::m_mapCellHeight = 0;
 Cell* Level::m_map = nullptr;
 
-Level::~Level()
-{
-}
+std::vector<Edge> Level::vec_edges;
 
 Level::Level(std::string path, float screenWidth, float screenHeight)
 {
@@ -169,7 +166,6 @@ bool Level::LoadTextures()
 	loadTexture("resources/roof.png",			 SpriteId::ROOF);
 	loadTexture("resources/goal.png",			 SpriteId::GOAL);
 
-
 	// Check we loaded all the sprites
 	if (numSpritesLoaded != (size_t)SpriteId::COUNT)
 	{
@@ -184,7 +180,6 @@ bool Level::LoadTextures()
 
 void Level::InitPathfinding()
 {
-
 	ClearPathfinding();
 
 	// Create connections - in this case m_map are on a regular grid
@@ -360,7 +355,6 @@ void Level::ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float offsetX,
 			int west = (y + sy) * pitch + (x + sx - 1);		// Western Neighbour
 			int east = (y + sy) * pitch + (x + sx + 1);		// Eastern Neighbour
 			// Bools for if neighbors are inside the array
-			bool i_isBoundary = x == 0 || x + 1 == m_mapCellWidth || y == 0 || y + 1 == m_mapCellHeight;
 			bool north_in = y > 0;
 			bool south_in = y + 1 < m_mapCellHeight;
 			bool west_in  = x > 0;
@@ -811,7 +805,6 @@ std::vector<std::pair<int, int>> Level::SolveAStarPath(std::pair<int, int> start
 #pragma warning (default : 4244)
 
 	// Setup starting conditions
-	
 	Cell* nodeStart = GetCell(startCoord.first, startCoord.second);
 	Cell* nodeEnd = GetCell(targetCoord.first, targetCoord.second);
 

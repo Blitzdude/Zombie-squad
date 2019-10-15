@@ -4,10 +4,8 @@
 #include <assert.h>
 
 
-// Function returns the amount of overlap for circle and edge. if they are not colliding, function returns 0.0f
 float Physics::isColliding(const Actor& act, const Edge& edge)
 {
-	// Check that line formed by velocity vector, intersects with line segment
 	Vec2f vecSE(edge.end - edge.start); // edge vector
 	Vec2f vecPS(act.GetPosition() - edge.start); // vector from actor to edge start
 	float edgeLength = vecSE.SqLength(); // edge length squared
@@ -38,7 +36,7 @@ float Physics::isColliding(const Actor& lhs, const Actor& rhs)
 	// Vector from lhs to rhs
 	Vec2f vecLR(rhs.GetPosition() - lhs.GetPosition());
 	float length = vecLR.Length();
-	// if length of this vector is less then radius of both -> circles are collidign
+	// if length of this vector is less then radius of both -> circles are colliding
 	if (rhs.GetRadius() + lhs.GetRadius() >= length)
 	{
 		// if they are, calculate absolute overlap and return it
@@ -60,15 +58,13 @@ void Physics::resolveEdgeCircle(Actor* act, Vec2f normal, float distToMove)
 	else {
 		// move the actor in the direction of the normal
 		act->SetPosition(act->GetPosition() + normal * distToMove);
-		// calculate the movement vector
-		// add the movement vector to the position of the Actor
 	}
 
 }
 
 void Physics::resolveCircleCircle(Actor* lhs, Actor* rhs, float overlap)
 {
-
+	// Either right or left actor is a bullet
 	if (lhs->GetTag() == ActorTag::BULLET)
 	{
 		if (static_cast<Bullet*>(lhs)->GetOwner() != rhs->GetTag())
@@ -103,7 +99,6 @@ void Physics::resolveCircleCircle(Actor* lhs, Actor* rhs, float overlap)
 bool Physics::CheckLineIntersection(Ray& r, Edge& e, IntersectResult* point)
 {
 	// Source: http://www.cs.swan.ac.uk/~cssimon/line_intersection.html
-	// calculate t1 and t2 where t1 is 
 
 	// calculate denominator 
 	float denominator = (e.end.x - e.start.x) * (r.start.y - r.end.y) - (r.start.x - r.end.x) * (e.end.y - e.start.y);
@@ -118,7 +113,8 @@ bool Physics::CheckLineIntersection(Ray& r, Edge& e, IntersectResult* point)
 		float t2 = ((r.start.y - r.end.y) * (r.start.x - e.start.x) + (r.end.x - r.start.x) * (r.start.y - e.start.y))
 			/ denominator;
 
-		if ((t1 >= 0.0f && t1 <= 1.0f) && (t2 >= 0.0f && t2 <= 1.0f)) // line segments are intersecting if true
+		// if 0 <= t1 <= 1 and 0 <= t2 <= 1, then lines are intersecting
+		if ((t1 >= 0.0f && t1 <= 1.0f) && (t2 >= 0.0f && t2 <= 1.0f)) 
 		{
 			if (point != nullptr)
 			{
