@@ -2,6 +2,8 @@
 #include "Actor.h"
 #include "State.h"
 
+class ZombieSquad;
+
 /**
  * Bullet actor class
  *
@@ -9,7 +11,6 @@
  * is different from tag held in the bullet. They are also destroyed if they hit a wall
  * or fly long enough
  */
-
 class Bullet :
 	public Actor
 {
@@ -39,7 +40,7 @@ public:
 	 * @param game reference to the engine instance
 	 * @returns no return vale
 	 */
-	void Draw(olc::PixelGameEngine& game) override;
+	void Draw(ZombieSquad& game) override;
 
 	/**
 	 * Updates the bullet

@@ -3,6 +3,7 @@
 #include <math.h>
 #include <memory>
 
+
 constexpr float PI = 3.14159265f;
 constexpr float PI2 = 3.14159265f * 2.0f;
 

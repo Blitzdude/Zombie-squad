@@ -1,7 +1,6 @@
 #pragma once
 #include "Vec2.h"
 #include "StructCollection.h"
-#include "olcPixelGameEngine.h"
 #include <string>
 #include <map>
 #include <array>
@@ -74,6 +73,8 @@ public:
 
 };
 
+class ZombieSquad;
+
 /**
 * Level class
 *
@@ -115,8 +116,8 @@ public:
 
 	void ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float offsetX, float offsetY, float fBlockWidth, int pitch);
 
-	void DrawPolyMap(olc::PixelGameEngine& engine);
-	void DrawConnections(olc::PixelGameEngine& engine);
+	void DrawPolyMap(ZombieSquad& game);
+	void DrawConnections(ZombieSquad& game);
 
 	/** NOT IMPLEMENTED
 	void CalculateVisibilityPolygon(float ox, float oy, float radius, float direction, float fovRad); 
@@ -136,7 +137,7 @@ public:
 	 * Used for drawing the level
 	 * @param engine Reference to the game engine class
 	 */
-	void DrawLevel(olc::PixelGameEngine& engine);
+	void DrawLevel(ZombieSquad& game);
 	
 	/**
 	 * Gets path as vector of int pairs
@@ -167,7 +168,9 @@ public:
 	};
 	/// Gets all edges of the level 
 	static const std::vector<Edge>& GetEdges() { return vec_edges; }
+	/// Gets the cell x-coordinate of start
 	static int GetStartX() { return m_startCoordX; }
+	/// Gets the cell y-coordinate of start
 	static int GetStartY() { return m_startCoordY; }
 	static int GetNumCellsX() { return m_mapCellWidth; }
 	static int GetNumCellsY() { return m_mapCellHeight; }

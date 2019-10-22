@@ -81,9 +81,11 @@ Physics
 */
 
 
-int main()
+int main(int argc, char* argv[])
 {
-	ZombieSquad game;
+	std::string str = argv[1];
+	bool startWithDevMode = argc > 1 && str == "devmode" ? true : false;
+	ZombieSquad game(startWithDevMode);
 	if (game.Construct(1200, 800, 1, 1))
 	{
 		game.Start();

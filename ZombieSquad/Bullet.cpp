@@ -1,6 +1,7 @@
 #include "Bullet.h"
 #include "State.h"
 #include "GlobalConstants.h"
+#include "ZombieSquad.h"
 
 Bullet::Bullet(const Vec2f& pos, float dir, float speed, float lifeTime, ActorTag owner)
 	: m_lifeTime(lifeTime), m_radius(0.0f), m_owner(owner)
@@ -22,7 +23,7 @@ Bullet::~Bullet()
 	m_currentState = nullptr;
 }
 
-void Bullet::Draw(olc::PixelGameEngine& game)
+void Bullet::Draw(ZombieSquad& game)
 {
 	game.FillCircle((int32_t)GetX(), (int32_t)GetY(), (int32_t)GetRadius(), GetColor());
 }

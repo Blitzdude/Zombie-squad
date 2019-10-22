@@ -26,7 +26,7 @@ constexpr int   MINIMUM_DISTANCE = 3;
 constexpr float ZOMBIE_SIGHT_FOV_RAD = 32.5f * PI / 180.0f;
 constexpr float PLAYER_SIGHT_FOV_RAD = 22.5f * PI / 180.0f;
 constexpr float ZOMBIE_SIGHT_RANGE = 200.0f; // variable to control enemy sight range
-constexpr int	ZOMBIES_MAX_NUM_PER_TILE = 3;
+constexpr int	ZOMBIES_MAX_NUM_PER_TILE = 4;
 // Timings
 constexpr float TIME_UNTIL_CHANGE_DIR = 5.0f;
 constexpr float MIN_TIME_UNTIL_CHANGE_DIR = 1.0f;

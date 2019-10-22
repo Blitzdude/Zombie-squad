@@ -29,7 +29,7 @@ Zombie::~Zombie()
 }
 
 
-void Zombie::Draw(olc::PixelGameEngine& game)
+void Zombie::Draw(ZombieSquad& game)
 {
 #pragma warning (disable : 4244) // Disable conversion from 'float' to 'int32_t' warning
 
@@ -44,35 +44,37 @@ void Zombie::Draw(olc::PixelGameEngine& game)
 
 	const float VISION_LINES_LENGTH = 50.0f;
 
-	// Draw vision cone lines
 	Vec2f left = GetDirectionVector().GetRotated(ZOMBIE_SIGHT_FOV_RAD);
 	left = left.GetNormalized() * VISION_LINES_LENGTH + GetPosition();
-	game.DrawLine((int32_t)GetX(), (int32_t)GetY(), (int32_t)left.x, (int32_t)left.y, olc::CYAN);
-
-
+	
 	Vec2f right = GetDirectionVector().GetRotated(-ZOMBIE_SIGHT_FOV_RAD);
 	right = right.GetNormalized() * VISION_LINES_LENGTH + GetPosition();
-	game.DrawLine((int32_t)GetX(), (int32_t)GetY(), (int32_t)right.x, (int32_t)right.y, olc::CYAN);
-
 	
-	// game.DrawTriangle(GetX(), GetY(), left.x, left.y, right.x, right.y, olc::CYAN);
+	// Draw vision cone lines
+	if (game.DevMode())
+	{
+		game.DrawTriangle(GetX(), GetY(), left.x, left.y, right.x, right.y, olc::CYAN);
+
+		Vec2f vec = m_target - GetPosition();
+
+		// normalize vector
+		vec.Normalize();
+		float angle = std::abs(Vec2f::AngleBetween(vec, GetDirectionVector()));
+
+		// draw the reference vector for angle
+		// game.DrawLine(GetX(), GetY(), vec.x*8.0f + GetX(), vec.y*8.0f + GetY());
+		game.DrawString(GetX(), GetY(), std::to_string(angle));
 	
-	// Draw line to current target
-	game.DrawLine(m_target.x, m_target.y, GetX(), GetY(), olc::MAGENTA);
+		// Draw line to current target
+		game.DrawLine(m_target.x, m_target.y, GetX(), GetY(), olc::MAGENTA);
+	}
+	else 
+	{
+		game.DrawLine((int32_t)GetX(), (int32_t)GetY(), (int32_t)left.x, (int32_t)left.y, olc::CYAN);
+		game.DrawLine((int32_t)GetX(), (int32_t)GetY(), (int32_t)right.x, (int32_t)right.y, olc::CYAN);
+	}
 
-	// get vector to target
-	/*
-	Vec2f vec = m_target - GetPosition();
 
-	// normalize vector
-	vec.Normalize();
-	float angle = std::abs(Vec2f::AngleBetween(vec, GetDirectionVector()));
-
-	// draw the reference vector for angle
-	// game.DrawLine(GetX(), GetY(), vec.x*8.0f + GetX(), vec.y*8.0f + GetY());
-	game.DrawString(GetX(), GetY(), std::to_string(angle));
-
-	*/
 
 	// Get closest player
 	const Player* closestPlayer = m_handler->GetClosestPlayer(*this);
@@ -188,7 +190,7 @@ Vec2f Zombie::GetRandomCellLocation()
 	Cell* currentCell = Level::GetCell(GetPosition());
 	float cellSize = Level::GetCellSize();
 	// choose a random cell from current and neighbors
-	unsigned int r = rand() % currentCell->vecNeighbours.size(); // number between 0 - size
+	unsigned int r = rand() % currentCell->vecNeighbours.size() + 1; // number between 0 - size
 	Cell* choice = nullptr;
 	if (r < currentCell->vecNeighbours.size()) 
 	{

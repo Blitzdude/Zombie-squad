@@ -1,9 +1,8 @@
 #pragma once
-
 #include "olcPixelGameEngine.h"
 #include "Vec2.h"
 
-
+class ZombieSquad;
 class Player;
 
 
@@ -39,7 +38,7 @@ public:
 	 *  @param game reference to
 	 *  @returns no return value
 	 */
-	virtual void Draw(olc::PixelGameEngine& game) = 0;
+	virtual void Draw(ZombieSquad& game) = 0;
 	
 	/**
 	 *  Updates the actor

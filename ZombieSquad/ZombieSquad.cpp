@@ -4,14 +4,17 @@
 #include <algorithm>
 #include <functional>
 
-ZombieSquad::ZombieSquad() 
-	: m_playerHandler(*this), m_zombieHandler(*this)
+ZombieSquad::ZombieSquad(bool devmode) 
+	: m_playerHandler(*this), m_zombieHandler(*this), m_devMode(devmode)
 {
 	sAppName = "ZombieSquad";
 }
 
 bool ZombieSquad::OnUserCreate()
 {
+	// Seed random generation
+	srand(time(nullptr));
+
 	std::cout << ScreenWidth() << " , " << ScreenHeight() << "\n";
 
 	bool createSuccess = false;
@@ -43,7 +46,7 @@ bool ZombieSquad::OnUserCreate()
 			int distance = ManhattanDistance(m_currentLevel->GetStartX(), m_currentLevel->GetStartY(), x, y);
 			if (distance > MINIMUM_DISTANCE && m_currentLevel->GetCell(x, y)->isObstacle == false)
 			{
-				int numZombies = ZOMBIES_MAX_NUM_PER_TILE - 1; // rand() % 2;
+				int numZombies = rand() % ZOMBIES_MAX_NUM_PER_TILE; 
 				for (int i = 0; i <= numZombies; i++)
 				{
 					SpawnZombie(x, y, i * 0.5f);
@@ -78,14 +81,6 @@ bool ZombieSquad::OnUserUpdate(float fElapsedTime)
 
 void ZombieSquad::DoInput(float fElapsedTime)
 {
-	/*
-	Check player inputs
-	- Keyboard:
-	- W/S - Move forward/back
-	- A/D - Turn left/right
-	- 1,2,3,4 - switch characters
-	- Space - fire gun -> create bullets
-	*/
 
 	if (m_isRunning)
 	{
@@ -183,19 +178,18 @@ void ZombieSquad::DoUpdate(float fElapsedTime)
 
 void ZombieSquad::DoDraw()
 {
-	// Drawing
-	/*
-		Clear the screen
-
-		Draw tiles
-		Draw visibility
-		Draw Actors (if in polygon)
-	*/
+	
 	Clear(olc::BLACK);
 
 	m_currentLevel->DrawLevel(*this);
-	// m_currentLevel->DrawPolyMap(*this);
-	// m_currentLevel->DrawConnections(*this);
+
+	// Useful for debugging
+	if (m_devMode)
+	{
+		m_currentLevel->DrawPolyMap(*this);
+		m_currentLevel->DrawConnections(*this);
+	}
+
 	for (auto& itr : vecActors)
 	{
 		itr->Draw(*this);
@@ -207,7 +201,7 @@ void ZombieSquad::DoDraw()
 		const int c_textXPos = 2;
 		const int c_textYPos = ScreenHeight() - 46;
 		const std::string c_instructionText =
-			"Get to the safe house and try not to die. Save as many survivors as you can"
+			"Get to the safe house and try not to die. Save as many survivors as you can\n"
 			"1 2 3-keys: Change survivors\n"
 			"W/A/S/D-keys: Move forward/back. Turn left/right\n"
 			"Space: Shoot\n"

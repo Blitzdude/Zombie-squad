@@ -1,6 +1,7 @@
 #include "Level.h"
 #include "Physics.h"
 #include "GlobalConstants.h"
+#include "ZombieSquad.h"
 #include <sstream>
 #include <assert.h>
 // #include <algorithm>
@@ -566,25 +567,25 @@ void Level::ConvertTileMapToPolyMap(int sx, int sy, int w, int h, float offsetX,
 }
 
 
-void Level::DrawPolyMap(olc::PixelGameEngine & engine)
+void Level::DrawPolyMap(ZombieSquad& game)
 {
 #pragma warning (disable : 4244) // Narrowing conversion from float to int32_t
 	for (auto e : vec_edges)
 	{
-		engine.DrawLine(e.start.x, e.start.y, e.end.x, e.end.y, olc::DARK_RED);
-		engine.DrawCircle(e.start.x, e.start.y, 5, olc::GREEN);
-		engine.FillCircle(e.end.x, e.end.y, 3, olc::RED);
+		game.DrawLine(e.start.x, e.start.y, e.end.x, e.end.y, olc::DARK_RED);
+		game.DrawCircle(e.start.x, e.start.y, 5, olc::GREEN);
+		game.FillCircle(e.end.x, e.end.y, 3, olc::RED);
 		// Draw the normal
 		Vec2f edgeCenter = { e.start.x + (e.end.x - e.start.x)*0.5f, e.start.y + (e.end.y-e.start.y)*0.5f };
 
-		engine.FillCircle(edgeCenter.x, edgeCenter.y, 3, olc::BLUE);
-		engine.DrawLine(edgeCenter.x, edgeCenter.y, edgeCenter.x + e.normal.x*10.0f, edgeCenter.y + e.normal.y*10.0f, olc::BLUE);
+		game.FillCircle(edgeCenter.x, edgeCenter.y, 3, olc::BLUE);
+		game.DrawLine(edgeCenter.x, edgeCenter.y, edgeCenter.x + e.normal.x*10.0f, edgeCenter.y + e.normal.y*10.0f, olc::BLUE);
 	}
 
 #pragma warning (default : 4244)
 }
 
-void Level::DrawConnections(olc::PixelGameEngine& engine)
+void Level::DrawConnections(ZombieSquad& game)
 {
 	for (int y = 0; y < m_mapCellHeight; y++)
 	{
@@ -596,7 +597,7 @@ void Level::DrawConnections(olc::PixelGameEngine& engine)
 				Vec2f neighborCenter = GetCellCenterPos(itr->xCoord, itr->yCoord);
 
 #pragma warning (disable : 4244) // Conversion from T to int32_t
-				engine.DrawLine( cellCenter.x, cellCenter.y,
+				game.DrawLine( cellCenter.x, cellCenter.y,
 								 neighborCenter.x, neighborCenter.y,
 								 olc::WHITE, (uint32_t)0xF0F0F0F0F);
 #pragma warning (default : 4244) 
@@ -747,7 +748,7 @@ void Level::CalculateVisibilityPolygon(float ox, float oy, float radius, float d
 }
 */
 
-void Level::DrawLevel(olc::PixelGameEngine & engine)
+void Level::DrawLevel(ZombieSquad& game)
 {
 #pragma warning (disable : 4244) // Narrowing conversion from float to int32_t
 
@@ -757,12 +758,13 @@ void Level::DrawLevel(olc::PixelGameEngine & engine)
 		for (int y = 0; y < m_mapCellHeight; y++)
 		{
 			Cell* currentCell = GetCell(x, y);
-			engine.DrawSprite(currentCell->xPos, currentCell->yPos,
+			game.DrawSprite(currentCell->xPos, currentCell->yPos,
 				m_sprites[(size_t)currentCell->sprId]);
 
-			if (currentCell->isStart)
+			
+			if (game.DevMode() && currentCell->isStart)
 			{
-				engine.DrawString(currentCell->xPos, currentCell->yPos, "Start", olc::BLUE, GAME_SCALE);
+				game.DrawString(currentCell->xPos, currentCell->yPos, "Start", olc::BLUE, GAME_SCALE);
 			}
 		}
 	}

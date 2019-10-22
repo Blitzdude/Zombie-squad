@@ -13,7 +13,7 @@ class Player : public Actor
 public:
 	Player(float x, float y, float dir, int playerNum, ZombieSquad& game, PlayerHandler& player_handler, bool startingPlayer = false);
 	~Player();
-	virtual void Draw(olc::PixelGameEngine& game) override;
+	virtual void Draw(ZombieSquad& game) override;
 	virtual void Update(float dt) override;
 
 	virtual void MoveForward(float dt) override;

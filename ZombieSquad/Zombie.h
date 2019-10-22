@@ -1,5 +1,5 @@
 #pragma once
-// #include "ZombieSquad.h"
+
 #include "Actor.h"
 #include "State.h"
 
@@ -13,7 +13,7 @@ public:
 	Zombie(float x, float y, ZombieSquad& game, ZombieHandler& handler);
 	~Zombie();
 
-	virtual void Draw(olc::PixelGameEngine& game) override;
+	virtual void Draw(ZombieSquad& game) override;
 	virtual void Update(float dt)  override;
 	virtual void Chase(const Player& player) override;
 	virtual void Die(float dt) override;

@@ -39,7 +39,7 @@ Player::~Player()
 	m_currentState = nullptr;
 }
 
-void Player::Draw(olc::PixelGameEngine& game)
+void Player::Draw(ZombieSquad& game)
 {
 
 #pragma warning (disable : 4244) // converting from float to int32_t
