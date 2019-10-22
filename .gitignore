@@ -13,10 +13,6 @@
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
-# project files, for compatiblity between VS2017 and VS2019
-*.vcxproj
-*.vcxproj.filters
-
 
 # Build results
 [Dd]ebug/
