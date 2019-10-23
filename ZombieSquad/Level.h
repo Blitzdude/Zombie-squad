@@ -148,18 +148,13 @@ public:
 	 * @param target Position of the target location
 	 */
 	static std::vector<std::pair<int, int>> GetPathToTarget(const Vec2f& start, const Vec2f& target);
-	
-	// TODO: Change naming scheme to following: 
-	// - Cell -> Returns Cell*
-	// - Pos -> Returns Vec2f as Cells center?
-	// - CoordX/CoordY -> returns Cells coordinate int in array
 
 	/// Gets the size of a single cell
 	static const float GetCellSize() { return m_cellSize; }
 	/// Gets the level coordinate of the level start
-	static const Vec2f& GetStart() { return m_startPosition; }
+	static const Vec2f& GetStartPosition() { return m_startPosition; }
 	/// Gets the level coordinate of the level goal
-	static const Vec2f& GetEnd() { return m_endPosition; }
+	static const Vec2f& GetEndPosition() { return m_endPosition; }
 	/// gets the center position of a single cell
 	static const Vec2f GetCellCenterPos(int x, int y) 
 	{ 
@@ -169,9 +164,9 @@ public:
 	/// Gets all edges of the level 
 	static const std::vector<Edge>& GetEdges() { return vec_edges; }
 	/// Gets the cell x-coordinate of start
-	static int GetStartX() { return m_startCoordX; }
+	static int GetStartCoordX() { return m_startCoordX; }
 	/// Gets the cell y-coordinate of start
-	static int GetStartY() { return m_startCoordY; }
+	static int GetStartCoordY() { return m_startCoordY; }
 	static int GetNumCellsX() { return m_mapCellWidth; }
 	static int GetNumCellsY() { return m_mapCellHeight; }
 	static Cell* GetCell(int x, int y);
@@ -184,7 +179,14 @@ private:
 	/// Needed to be called, whenever pathfinding is done
 	static void ClearPathfinding();
 	
+	/*
+	* Sets the levels tile id's
+	*
+	*
+	*
+	*/
 	void SetLevelTiles();
+
 	/// Solves a path using A-star
 	/// 
 	/// called by GetPathToTarget(const Vec2f&, const Vec2f&) to solve the path from starting

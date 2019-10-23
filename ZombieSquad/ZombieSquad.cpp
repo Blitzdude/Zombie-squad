@@ -23,8 +23,8 @@ bool ZombieSquad::OnUserCreate()
 	m_currentLevel = new Level("level4.txt", (float)ScreenWidth(), (float)ScreenHeight());
 	m_currentLevel->InitPathfinding();
 
-	float startX = m_currentLevel->GetStart().x;
-	float startY = m_currentLevel->GetStart().y;
+	float startX = m_currentLevel->GetStartPosition().x;
+	float startY = m_currentLevel->GetStartPosition().y;
 
 	// Put player characters into the game
 	// Player 1
@@ -43,7 +43,7 @@ bool ZombieSquad::OnUserCreate()
 	{
 		for (int x = 0; x < m_currentLevel->GetNumCellsX(); x++)
 		{
-			int distance = ManhattanDistance(m_currentLevel->GetStartX(), m_currentLevel->GetStartY(), x, y);
+			int distance = ManhattanDistance(m_currentLevel->GetStartCoordX(), m_currentLevel->GetStartCoordY(), x, y);
 			if (distance > MINIMUM_DISTANCE && m_currentLevel->GetCell(x, y)->isObstacle == false)
 			{
 				int numZombies = rand() % ZOMBIES_MAX_NUM_PER_TILE; 

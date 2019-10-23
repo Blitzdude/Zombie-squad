@@ -83,6 +83,4 @@ public:
 private:
 	Physics() {};
 	~Physics() {};
-
-
 };
