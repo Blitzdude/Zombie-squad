@@ -86,11 +86,59 @@ public:
 	 * @param fElapsedTime time elapsed between update frames.
 	 */
 	bool CheckVictory();
+
+	/**
+	 * Checks if game is over
+	 *
+	 * Checks if the game is over. The game is over if all the players are dead or all alive players are on the goal tile
+	 *
+	 * @return returns true if players are dead or all alive players are on the goal. Otherwise returns false, meaning the game should continue to run
+	 */
 	bool GameIsOver();
 
-	Player* SpawnPlayer(float xPos, float yPos, float dir, int playerNum, ZombieSquad& game, PlayerHandler& playerHandler, float offset = 0.0f, bool startingPlayer = false);
+	/**
+	 * Spawns a Plyaer actor
+	 *
+	 * Spawns a Player actor. The Player is first created and given to the PlayerHandler object. The actor is also added to the actors vector for updating
+	 * 
+	 * @param xPos,yPos Coordinate position to spawn the actor.
+	 * @param dir Starting facing direction.
+	 * @param playerNum The players number for selection.
+	 * @param game Reference to the main game.
+	 * @param playerHandler The Playerhandler reference to pass to player.
+	 * @param offset Offset position to spawn the actor, so they do not start on top of each other.
+	 * @param startingPlayer Boolean for if this is the player that begins controlled by user. 
+	 * @return returns pointer to the created player.
+	 */
+	Player* SpawnPlayer(float xPos, float yPos, float dir, int playerNum, ZombieSquad& game, float offset = 0.0f, bool startingPlayer = false);
+
+	/**
+	 * Spawns a Zombie actor
+	 *
+	 * Spawns a Zombie actor. The Zombie is first created and given to the Zombiehandler object. The actor is also added to the actors vector for updating.
+	 *
+	 * @param xPos,yPos Coordinate position to spawn the actor.
+	 * @param dir Starting facing direction.
+	 * @return returns pointer to the created player.
+	 */
 	void SpawnZombie(int x, int y, float offset = 0.0f);
+
+	/**
+	 * Spawns a Bullet actor
+	 *
+	 * Spawns a Bullet actor. The Bullet is first created and given to the Zombiehandler object. The actor is also added to the actors vector for updating.
+	 * As Bullets can be spawned by Actors, we need to make sure we do not add actors during updating the Actors, as this invalidates any iterators.
+	 * Therefore we first add the bullet to vecActorsToAdd vector. All of these actors are added to the game by the AddActors method after updating the Actors is done.
+	 *
+	 * @param pos Coordinate position to spawn the actor.
+	 * @param dir Starting facing direction.
+	 * @param lifetime How long will the bullet fly forward in seconds
+	 * @param speed Movement speed of the bullet.
+	 * @param tag Tag of the owning actor.
+	 * @return returns pointer to the created player.
+	 */
 	void SpawnBullet(const Vec2f& pos, float dir, float lifetime, float speed, ActorTag tag);
+
 
 	void AddActors(); 
 

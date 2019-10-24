@@ -13,14 +13,14 @@ ZombieSquad::ZombieSquad(bool devmode)
 bool ZombieSquad::OnUserCreate()
 {
 	// Seed random generation
-	srand(time(nullptr));
+	srand((unsigned int)time(nullptr));
 
 	std::cout << ScreenWidth() << " , " << ScreenHeight() << "\n";
 
 	bool createSuccess = false;
 
 	// Load Level data
-	m_currentLevel = new Level("level4.txt", (float)ScreenWidth(), (float)ScreenHeight());
+	m_currentLevel = new Level("level.txt", (float)ScreenWidth(), (float)ScreenHeight());
 	m_currentLevel->InitPathfinding();
 
 	float startX = m_currentLevel->GetStartPosition().x;
@@ -28,11 +28,11 @@ bool ZombieSquad::OnUserCreate()
 
 	// Put player characters into the game
 	// Player 1
-	Player* player1 = SpawnPlayer(startX, startY, 0.0f, 0, *this, m_playerHandler, 0.0f, true);
+	Player* player1 = SpawnPlayer(startX, startY, 0.0f, 0, *this, 0.0f, true);
 	// Player 2
-	Player* player2 = SpawnPlayer(startX, startY, 0.0f, 1, *this, m_playerHandler, 3.0f);
+	Player* player2 = SpawnPlayer(startX, startY, 0.0f, 1, *this, 3.0f);
 	// Player 3
-	Player* player3 = SpawnPlayer(startX, startY, 0.0f, 2, *this, m_playerHandler, 6.0f);
+	Player* player3 = SpawnPlayer(startX, startY, 0.0f, 2, *this, 6.0f);
 
 	// Initialize handlers
 	createSuccess = m_zombieHandler.Init(*player1, *player2, *player3);
@@ -265,12 +265,10 @@ bool ZombieSquad::GameIsOver()
 }
 
 Player* ZombieSquad::SpawnPlayer(float xPos, float yPos, float dir, int playerNum, 
-	ZombieSquad& game, PlayerHandler& playerHandler, float offset, bool startingPlayer)
+	ZombieSquad& game, float offset, bool startingPlayer)
 {
 	float size = m_currentLevel->GetCellSize();
-	// float xPos = (x * size) + (size / 2.0f) + offset;
-	// float yPos = (y * size) + (size / 2.0f);
-	Player* player = new Player(xPos + offset, yPos, dir, playerNum + 1, game, playerHandler, startingPlayer);
+	Player* player = new Player(xPos + offset, yPos, dir, playerNum + 1, game, m_playerHandler, startingPlayer);
 	// add player's directly to game, because it's the first thing we do.
 	m_playerHandler.addPlayer(player, playerNum);
 	vecActors.push_back(player);
