@@ -294,7 +294,7 @@ void ZombieSquad::SpawnBullet(const Vec2f& pos, float dir, float lifetime, float
 
 void ZombieSquad::AddActors()
 {
-	// add the add the actors to be added
+	// add the the actors to be added
 	for (auto itr : vecActorsToAdd)
 	{
 		vecActors.push_back(itr);

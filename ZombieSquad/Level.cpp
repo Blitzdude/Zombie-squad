@@ -606,7 +606,7 @@ void Level::DrawConnections(ZombieSquad& game)
 	}
 }
 
-/** NOT IMPLEMENTED
+/* NOT IMPLEMENTED
 
 NOTE: Currently this isn't implemented in the project. Might implementit in a later time
 void Level::CalculateVisibilityPolygon(float ox, float oy, float radius, float direction, float fovRad)

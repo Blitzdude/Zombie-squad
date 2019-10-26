@@ -7,6 +7,8 @@ class Command;
 class ZombieSquad;
 class ZombieHandler;
 
+/**
+*/
 class PlayerHandler
 {
 public:

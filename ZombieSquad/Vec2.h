@@ -4,7 +4,7 @@
 
 template <class T>
 class Vec2 {
-public: // methods
+public: 
 	Vec2()
 		: 
 		x(0), 
@@ -16,7 +16,7 @@ public: // methods
 		y(_y)
 	{}
 
-	// copy constructor
+	/**  copy constructor */
 	Vec2(const Vec2 &vect)
 		:
 		Vec2(vect.x, vect.y)
@@ -25,21 +25,21 @@ public: // methods
 	/* METHODS *///////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////
 
-	// return length squared
+	/** Returns vectors length squared */
 	T SqLength() const
 	{
 		T ret = (this->x * this->x + this->y * this->y);
 		return ret;
 	}
 
-	// return the vector length
+	/// return the vectors length
 	T Length() const
 	{
 		T ret = sqrtf(SqLength());
 		return ret;
 	}
 
-	// Normalize the vector
+	/** Normalizes the vector */
 	Vec2& Normalize()
 	{
 		const T len = this->Length();
@@ -48,6 +48,10 @@ public: // methods
 		return *this;
 	}
 
+	/** 
+	* Returns the vector rotated by radians
+	* @param rads of radians to rotate
+	*/
 	Vec2 GetRotated(T rads)
 	{
 		Vec2<T> ret = *this;
@@ -56,7 +60,7 @@ public: // methods
 		return ret;
 	}
 
-	// get the normalized vector
+	/** Returns the normalized vector */
 	Vec2 GetNormalized() const
 	{
 		Vec2 norm = *this;
@@ -64,21 +68,25 @@ public: // methods
 		return norm;
 	}
 
-	// returns the scalar of 2d cross product
-	// it's just the determinant of [x,y] and [x',y']
+	/** 
+	* Returns the scalar of 2d cross product
+	* it's just the determinant of [x,y] and [x',y']
+	*/
 	static T CrossProduct(const Vec2<T> &v1, const Vec2<T> &v2)
 	{
 		return (v1.x * v2.y) - (v1.y * v2.x);
 	}
 
-	// returns the dot product between 2 vectors
+	/** returns the dot product between 2 vectors
+	*/
 	static T DotProduct(const Vec2<T> &v1, const Vec2<T> &v2)
 	{
 		T ret = (v1.x * v2.x) + (v1.y * v2.y);
 		return ret;
 	}
 
-	// returns the angle between 2d vectors
+	/** returns the angle between 2d vectors
+	*/
 	static T AngleBetween(const Vec2<T> &v1, const Vec2<T> &v2)
 	{
 		T dot = DotProduct(v1, v2);
@@ -88,7 +96,8 @@ public: // methods
 		return ret;
 	}
 
-	// returns the angle between 2d vectors
+	/** returns the angle between 2d vectors
+	*/
 	static T PolarAngle(const Vec2<T> &v1)
 	{
 		// reference is unit vector along x- axis
@@ -102,13 +111,16 @@ public: // methods
 		return ret;
 	}
 
+	/**
+	*/
 	static bool IsLeft(const Vec2<T> &a, const Vec2<T> &b, const Vec2<T> &point)
 	{
 		// return CrossProduct(b - a, c - a) > 0;
 		return ((b.x - a.x)*(point.y - a.y) - (b.y - a.y)*(point.x - a.x)) > 0;
 	}
 
-	// returns the distance between 2d points
+	/** returns the distance between 2d points
+	*/
 	static T DistanceBetween(const Vec2<T>& a, const Vec2<T>& b)
 	{
 		return sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
@@ -120,7 +132,8 @@ public: // methods
 	/* OPERATORS *///////////////////////////////////////////////////////
 				   //////////////////////////////////////////////////////
 
-	// - operator negate vector
+	/** - operator negate vector
+	*/
 	Vec2 operator-() const
 	{
 		return Vec2(-x, -y);
@@ -128,7 +141,8 @@ public: // methods
 
 
 
-	// = operator
+	/** = operator
+	*/
 	Vec2& operator=(const Vec2 &other)
 	{
 		x = other.x;
@@ -136,7 +150,8 @@ public: // methods
 		return *this;
 	}
 
-	// += operator
+	/** += operator
+	*/
 	Vec2& operator+=(const Vec2 &other)
 	{
 		x += other.x;
@@ -144,13 +159,15 @@ public: // methods
 		return *this;
 	}
 
-	// + operator
+	/** + operator
+	*/
 	Vec2 operator+(const Vec2 &other) const
 	{
 		return Vec2(*this) += other;
 	}
 
-	// -= operator
+	/** -= operator
+	*/
 	Vec2& operator-=(const Vec2 &other)
 	{
 		x -= other.x;
@@ -158,20 +175,23 @@ public: // methods
 		return *this;
 	}
 
-	// - operator vec2 - vec2
+	/** - operator vec2 - vec2
+	*/
 	Vec2 operator-(const Vec2 &other) const
 	{
 
 		return Vec2(*this) -= other;
 	}
 
-	// * operator scalar * vector
+	/** * operator scalar * vector
+	*/
 	T operator*(const Vec2 &other) const
 	{
 		return x * other.x + y * other.y;
 	}
 
-	// *= operator vector *= scalar
+	/** *= operator vector *= scalar
+	*/
 	Vec2& operator*=(const T &other)
 	{
 		x *= other;
@@ -179,13 +199,15 @@ public: // methods
 		return *this;
 	}
 
-	// * operator vector * scalar
+	/** * operator vector * scalar
+	*/
 	Vec2 operator*(const T other) const
 	{
 		return Vec2(*this) *= other;
 	}
 
-	// /= operator vector /= scalar
+	/** /= operator vector /= scalar
+	*/
 	Vec2& operator/=(const T &other)
 	{
 		x /= other;
@@ -193,16 +215,24 @@ public: // methods
 		return *this;
 	}
 
+	/** / operator vector / scalar
+	*/
 	Vec2 operator/(const T &other)
 	{
 		return Vec2(*this) /= other;
 	}
 
+	/**
+	* == comparison operator
+	*/
 	bool operator==(const Vec2 &other) const
 	{
 		return x == other.x && y == other.y;
 	}
 
+	/**
+	* != comparison operator
+	*/
 	bool operator!=(const Vec2 &other) const
 	{
 		return !(*this == other);

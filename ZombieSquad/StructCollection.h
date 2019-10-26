@@ -3,6 +3,9 @@
 #include "Vec2.h"
 #include "Actor.h"
 
+/**
+* Holds all data relating to edges
+*/
 struct Edge
 {
 	Edge() {}
@@ -14,6 +17,9 @@ struct Edge
 	Vec2f normal;
 };
 
+/**
+* Rays are lines with start and end. 
+*/
 struct Ray
 {
 	Ray() {}
@@ -28,6 +34,9 @@ struct Ray
 	Vec2f end;
 };
 
+/**
+* Holds the results between intersections
+*/
 struct IntersectResult
 {
 	IntersectResult()
@@ -41,6 +50,9 @@ struct IntersectResult
 	float t;
 };
 
+/**
+* Holds results of collision between Circle and Edge
+*/
 struct CECollision 
 {
 	CECollision(Actor* act, const Vec2f& norm, float dist)
@@ -51,6 +63,10 @@ struct CECollision
 	float distance; // distance to move
 };
 
+
+/**
+* Holds results of collision between Circle and Edge
+*/
 struct CCCollision
 {
 	CCCollision(Actor* l, Actor* r, float o)

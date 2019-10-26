@@ -135,7 +135,7 @@ public:
 	 * Draws the level
 	 *
 	 * Used for drawing the level
-	 * @param engine Reference to the game engine class
+	 * @param game Reference to the game engine class
 	 */
 	void DrawLevel(ZombieSquad& game);
 	

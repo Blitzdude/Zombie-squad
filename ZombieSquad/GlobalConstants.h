@@ -3,8 +3,6 @@
 
 /**
 * Holds all used constants of the game
-*
-*
 */
 
 constexpr int GAME_SCALE = 1;

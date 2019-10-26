@@ -74,7 +74,6 @@ public:
 	 * Draws the game every frame. All functions for drawing are inherited
 	 * from PixelGameEngine. 
 	 *
-	 * @param fElapsedTime time elapsed between update frames.
 	 */
 	void DoDraw();
 
@@ -82,8 +81,6 @@ public:
 	 * Checks if the player has won
 	 *
 	 * Checks if all the survivors still alive are on the goal tile
-	 *
-	 * @param fElapsedTime time elapsed between update frames.
 	 */
 	bool CheckVictory();
 
@@ -105,7 +102,6 @@ public:
 	 * @param dir Starting facing direction.
 	 * @param playerNum The players number for selection.
 	 * @param game Reference to the main game.
-	 * @param playerHandler The Playerhandler reference to pass to player.
 	 * @param offset Offset position to spawn the actor, so they do not start on top of each other.
 	 * @param startingPlayer Boolean for if this is the player that begins controlled by user. 
 	 * @return returns pointer to the created player.
@@ -117,9 +113,8 @@ public:
 	 *
 	 * Spawns a Zombie actor. The Zombie is first created and given to the Zombiehandler object. The actor is also added to the actors vector for updating.
 	 *
-	 * @param xPos,yPos Coordinate position to spawn the actor.
-	 * @param dir Starting facing direction.
-	 * @return returns pointer to the created player.
+	 * @param x,y Coordinate position to spawn the actor.
+	 * @param offset offset for the position to spawn in.
 	 */
 	void SpawnZombie(int x, int y, float offset = 0.0f);
 
@@ -139,19 +134,24 @@ public:
 	 */
 	void SpawnBullet(const Vec2f& pos, float dir, float lifetime, float speed, ActorTag tag);
 
-
+	/**
+	* Adds actors to the actors list
+	*
+	* Pushes the Actors spawned by Players and Zombies to the vector of actors. 
+	* This is done separately, because we cannot add actors while we are iterating over them
+	*/
 	void AddActors(); 
 
-	// Getters
+	
+	/// Gets the vector of Actors
 	const std::vector<Actor*>& GetActors() { return vecActors; };
+	/// Returns if we are in developer mode
+	bool DevMode() { return m_devMode; };
 
 	ZombieHandler m_zombieHandler;
 	PlayerHandler m_playerHandler;
 
 	Level* m_currentLevel;
-
-	bool DevMode() { return m_devMode; };
-
 private:
 
 	bool m_devMode;
