@@ -17,6 +17,11 @@ class Player;
 class Zombie;
 class Bullet;
 
+/*
+ * Short description
+ *
+ * Long description
+ */
 class PlayerState
 {
 public:
