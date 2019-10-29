@@ -18,14 +18,15 @@ class Zombie;
 class Bullet;
 
 /*
- * Short description
+ * PlayerState base class
  *
- * Long description
+ * PlayerState is an abstract base class for all player state objects
+ * Each state has an Enter and Update which allow different behaviours
  */
 class PlayerState
 {
 public:
-	// Abstract class to give a common update Functionality for Actors
+	
 	PlayerState() {}
 	virtual ~PlayerState() {}
 
@@ -35,11 +36,15 @@ public:
 	virtual const StateID& GetStateID() = 0;
 };
 
-
+/*
+ * ZombieState base class
+ *
+ * ZombieState is an abstract base class for all zombie state objects
+ * Each state has an Enter and Update which allow different behaviours
+ */
 class ZombieState
 {
 public:
-	// Abstract class to give a common update Functionality for Actors
 	ZombieState() {}
 	virtual ~ZombieState() {};
 
@@ -49,11 +54,15 @@ public:
 	virtual const StateID& GetStateID() = 0;
 };
 
-
+/*
+ * BulletState base class
+ *
+ * BulletState is an abstract base class for all bullet state objects
+ * Each state has an Enter and Update which allow different behaviours
+ */
 class BulletState
 {
 public:
-	// Abstract class to give a common update Functionality for Actors
 	BulletState() {}
 	virtual ~BulletState() {};
 
@@ -64,6 +73,12 @@ public:
 
 // PLAYER STATES
 /////////////////
+
+/**
+* Controlled state
+*
+* In this state the player is taking inputs from user keyboard
+*/
 class Controlled : public PlayerState
 {
 public:
@@ -74,13 +89,17 @@ public:
 
 	virtual void Enter(Player& player) override;
 	virtual void Update(Player&, float dt) override;
-	// virtual void Exit(Player& player) {}; // Not Implemented
 
 	const StateID& GetStateID() override { return m_id; }
 private:
 	StateID m_id;
 };
 
+/**
+* Watching state
+*
+* In this state the player will automatically fire at visible zombies
+*/
 class Watching : public PlayerState
 {
 public:
@@ -91,7 +110,6 @@ public:
 
 	virtual void Enter(Player& player) override;
 	virtual void Update(Player& player, float dt) override;
-	// virtual void Exit(Player& player) {}; // Not Implemented
 
 	const StateID& GetStateID() override { return m_id; }
 private:
@@ -99,6 +117,11 @@ private:
 	StateID m_id;
 };
 
+/**
+* PlayerDead state
+*
+* In this state the player cannot be controlled and is considered dead
+*/
 class PlayerDead : public PlayerState
 {
 public:
@@ -110,7 +133,6 @@ public:
 
 	virtual void Enter(Player& player) override; 
 	virtual void Update(Player& player, float dt) override;
-	// virtual void Exit(Zombie& player) {}; // Not Implemented
 
 	const StateID& GetStateID() override { return m_id; }
 private:
@@ -120,6 +142,12 @@ private:
 
 // ZOMBIE STATES
 /////////////////
+
+/**
+* Chasing state
+*
+* In this state the zombie chases the target player
+*/
 class Chasing : public ZombieState
 {
 public:
@@ -131,7 +159,6 @@ public:
 
 	virtual void Enter(Zombie& zombie) override;
 	virtual void Update(Zombie& zombie, float dt) override;
-	// virtual void Exit(Zombie& player) {}; // Not Implemented
 
 	const StateID& GetStateID() override { return m_id; }
 private:
@@ -139,6 +166,11 @@ private:
 	const Player* m_chaseTarget;
 };
 
+/**
+* Chasing state
+*
+* In this state the zombie picks a random location in a random neighboring cell and moves there
+*/
 class Roaming : public ZombieState
 {
 public:
@@ -152,7 +184,6 @@ public:
 
 	virtual void Enter(Zombie& zombie) override;
 	virtual void Update(Zombie& zombie, float dt) override;
-	// virtual void Exit(Zombie& player) {}; // Not Implemented
 
 	const StateID& GetStateID() override { return m_id; }
 private:
@@ -192,7 +223,6 @@ public:
 
 	virtual void Enter(Zombie& zombie) override; 	
 	virtual void Update(Zombie& zombie, float dt) override;
-	// virtual void Exit(Zombie& player) {}; // Not Implemented
 
 	const StateID& GetStateID() override { return m_id; }
 private:
@@ -209,7 +239,6 @@ public:
 
 	virtual void Enter(Zombie& zombie) override;
 	virtual void Update(Zombie& zombie, float dt) override;
-	// virtual void Exit(Zombie& player) {}; // Not Implemented
 
 	const StateID& GetStateID() override { return m_id; }
 private:
@@ -230,7 +259,6 @@ public:
 
 	virtual void Enter(Bullet& bullet) {};
 	virtual void Update(Bullet& bullet, float dt) override;
-	// virtual void Exit(Player& player) {}; // Not implemented
 
 	const StateID& GetStateID() override { return m_id; }
 private:
