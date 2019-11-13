@@ -1,5 +1,6 @@
 #define OLC_PGE_APPLICATION
 #include "ZombieSquad.h"
+#include <string>
 #include <vector>
 #include <iostream>
 
@@ -83,8 +84,26 @@ Physics
 
 int main(int argc, char* argv[])
 {
-	std::string str = argv[1];
-	bool startWithDevMode = argc > 1 && str == "devmode" ? true : false;
+	std::cout << "Starting ZombieSquad" << std::endl;
+	bool startWithDevMode;
+	std::string str;
+	if (argc > 1)
+		str = argv[1];
+	else
+		str = "normal";
+		
+	if (argc > 1 && str == "devmode")
+	{
+		startWithDevMode = true;
+		std::cout << "Starting in DevMode" << std::endl;
+	}
+	else
+	{
+		startWithDevMode = false;
+		std::cout << "Starting in Normal mode" << std::endl;
+	}
+
+
 	ZombieSquad game(startWithDevMode);
 	if (game.Construct(1200, 800, 1, 1))
 	{

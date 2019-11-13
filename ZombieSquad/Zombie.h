@@ -36,7 +36,7 @@ public:
 	*
 	* Long description
 	* 
-	* @param
+	* @param dt
 	*/
 	virtual void Update(float dt)  override;
 
@@ -44,8 +44,8 @@ public:
 	* Short description
 	*
 	* Long description
-	*
-	* @param
+	* 
+	* @param player
 	*/
 	virtual void Chase(const Player& player) override;
 
@@ -54,7 +54,7 @@ public:
 	*
 	* Long description
 	*
-	* @param
+	* @param dt
 	*/
 	virtual void Die(float dt) override;
 
@@ -63,7 +63,7 @@ public:
 	*
 	* Long description
 	*
-	* @param
+	* @param dt
 	*/
 	virtual void Attack(float dt) override;
 
@@ -72,7 +72,7 @@ public:
 	*
 	* Long description
 	*
-	* @param
+	* @param target
 	*/
 	virtual void NavigateTo(const Vec2f& target) override;
 	
@@ -81,7 +81,6 @@ public:
 	*
 	* Long description
 	*
-	* @param
 	*/
 	bool SeesTarget();
 
@@ -90,7 +89,7 @@ public:
 	*
 	* Long description
 	*
-	* @param
+	* @param dt 
 	*/
 	void SpawnBullet(float dt);
 
@@ -99,7 +98,7 @@ public:
 	*
 	* Long description
 	*
-	* @param
+	* @param dt
 	*/
 	void doMove(float dt);
 
@@ -108,7 +107,6 @@ public:
 	*
 	* Long description
 	*
-	* @param
 	*/
 	void doRoam();
 
@@ -117,7 +115,6 @@ public:
 	*
 	* Long description
 	*
-	* @param
 	*/
 	void doNavigateTo();
 
@@ -126,7 +123,7 @@ public:
 	*
 	* Long description
 	*
-	* @return
+	* @return vector
 	*/
 	Vec2f GetRandomCellLocation();
 

@@ -13,7 +13,7 @@ constexpr float BULLET_SIZE = 4.0f;
 // Speeds
 constexpr float BULLET_SPEED = 100.0f;
 constexpr float ZOMBIE_SPEED = 55.0f;
-constexpr float PLAYER_SPEED = 150.0f;
+constexpr float PLAYER_SPEED = 60.0f;
 constexpr float PLAYER_TURN_SPEED = 2.5f;
 constexpr float ZOMBIE_TURN_SPEED = 0.5f;
 constexpr float ZOMBIE_ATTACK_SPEED = 0.75f;

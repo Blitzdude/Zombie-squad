@@ -89,6 +89,7 @@ public:
 	* Long description
 	*
 	* @param target
+	* @param zombie
 	*/
 	bool ZombieSeesTarget(const Vec2f& target, const Zombie& zombie);
 
