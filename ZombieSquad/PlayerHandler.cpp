@@ -48,7 +48,7 @@ Command * PlayerHandler::handleInput()
 	if (m_game->GetKey(olc::SPACE).bHeld) return buttonSpace;
 
 	if (m_game->GetKey(olc::K1).bReleased && 
-			m_players[0]->GetCurrentState()->GetStateID() != StateID::STATE_DEAD)
+			m_players[0]->GetCurrentState()->GetStateID() != StateId::STATE_DEAD)
 	{
 		// change to player 1
 		buttonChangeFalse->execute(*m_selectedPlayer, 0.0f);
@@ -57,7 +57,7 @@ Command * PlayerHandler::handleInput()
 		return nullptr;
 	}
 	else if (m_game->GetKey(olc::K2).bReleased &&
-		m_players[1]->GetCurrentState()->GetStateID() != StateID::STATE_DEAD)
+		m_players[1]->GetCurrentState()->GetStateID() != StateId::STATE_DEAD)
 	{
 		// change to player 2
 		buttonChangeFalse->execute(*m_selectedPlayer, 0.0f);
@@ -67,7 +67,7 @@ Command * PlayerHandler::handleInput()
 		return nullptr;
 	}
 	else if (m_game->GetKey(olc::K3).bReleased &&
-		m_players[2]->GetCurrentState()->GetStateID() != StateID::STATE_DEAD)
+		m_players[2]->GetCurrentState()->GetStateID() != StateId::STATE_DEAD)
 	{
 		// change to player 3
 		buttonChangeFalse->execute(*m_selectedPlayer, 0.0f);
@@ -91,18 +91,18 @@ void PlayerHandler::HandlePlayers(float fElapsedTime)
 			Command* youMustDie = new Die();
 			youMustDie->execute(*p, fElapsedTime);
 		}
-		else if (input && p->GetCurrentState()->GetStateID() == StateID::PLAYER_CONTROLLED)
+		else if (input && p->GetCurrentState()->GetStateID() == StateId::PLAYER_CONTROLLED)
 		{
 			input->execute(*p, fElapsedTime);
 		}
 
 	}
 	
-	if (m_selectedPlayer->GetCurrentState()->GetStateID() == StateID::STATE_DEAD)
+	if (m_selectedPlayer->GetCurrentState()->GetStateID() == StateId::STATE_DEAD)
 	{
 		for (auto& p : m_players)
 		{
-			if (p->GetCurrentState()->GetStateID() != StateID::STATE_DEAD)
+			if (p->GetCurrentState()->GetStateID() != StateId::STATE_DEAD)
 			{
 				buttonChangeTrue->execute(*p, 0.0f);
 				m_selectedPlayer = p;
@@ -195,7 +195,7 @@ int PlayerHandler::NumberOfPlayersAlive()
 	int num = 0;
 	for (auto itr : m_players)
 	{
-		if (itr->GetCurrentState()->GetStateID() != StateID::STATE_DEAD)
+		if (itr->GetCurrentState()->GetStateID() != StateId::STATE_DEAD)
 		{
 			num++;
 		}

@@ -101,7 +101,7 @@ void Player::Attack(float)
 
 void Player::Die(float)
 {
-	if (m_currentState->GetStateID() != StateID::STATE_DEAD)
+	if (m_currentState->GetStateID() != StateId::STATE_DEAD)
 	{
 		m_currentState = new PlayerDead();
 		m_currentState->Enter(*this);

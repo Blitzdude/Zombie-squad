@@ -212,6 +212,5 @@ private:
 	static std::vector<Edge> vec_edges;
 	static Cell* m_map;
 	std::array<olc::Sprite*, (size_t)SpriteId::COUNT> m_sprites;
-	std::vector<std::tuple<float, float, float>> m_vecVisibilityPolygonPoints;
 };
 

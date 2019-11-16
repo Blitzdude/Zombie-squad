@@ -91,8 +91,8 @@ void Zombie::Update(float dt)
 
 void Zombie::Chase(const Player& player)
 {
-	if (m_currentState->GetStateID() == StateID::ZOMBIE_ROAM ||
-		m_currentState->GetStateID() == StateID::ZOMBIE_NAVIGATING)
+	if (m_currentState->GetStateID() == StateId::ZOMBIE_ROAM ||
+		m_currentState->GetStateID() == StateId::ZOMBIE_NAVIGATING)
 	{
 		m_currentState = new Chasing(player);
 		m_currentState->Enter(*this);
@@ -101,7 +101,7 @@ void Zombie::Chase(const Player& player)
 
 void Zombie::Die(float)
 {
-	if (m_currentState->GetStateID() != StateID::STATE_DEAD)
+	if (m_currentState->GetStateID() != StateId::STATE_DEAD)
 	{
 		delete m_currentState;
 		m_currentState = new ZombieDead();
@@ -111,7 +111,7 @@ void Zombie::Die(float)
 
 void Zombie::Attack(float)
 {
-	if (m_currentState->GetStateID() == StateID::ZOMBIE_CHASE)
+	if (m_currentState->GetStateID() == StateId::ZOMBIE_CHASE)
 	{
 		m_currentState = new ZombieAttacking();
 		m_currentState->Enter(*this);
@@ -128,7 +128,7 @@ void Zombie::SpawnBullet(float)
 
 void Zombie::NavigateTo(const Vec2f& target)
 {
-	if (m_currentState->GetStateID() == StateID::ZOMBIE_CHASE)
+	if (m_currentState->GetStateID() == StateId::ZOMBIE_CHASE)
 	{
 		m_currentState = new Navigating(target);
 		m_currentState->Enter(*this);
@@ -175,7 +175,7 @@ void Zombie::doRoam()
 
 void Zombie::doNavigateTo()
 {
-	if (m_currentState->GetStateID() == StateID::ZOMBIE_CHASE)
+	if (m_currentState->GetStateID() == StateId::ZOMBIE_CHASE)
 	{
 		delete m_currentState;
 		m_currentState = new Navigating(m_target);
@@ -190,7 +190,8 @@ Vec2f Zombie::GetRandomCellLocation()
 	Cell* currentCell = Level::GetCell(GetPosition());
 	float cellSize = Level::GetCellSize();
 	// choose a random cell from current and neighbors
-	unsigned int r = rand() % currentCell->vecNeighbours.size() + 1; // number between 0 - size
+	unsigned int r = rand() % currentCell->vecNeighbours.size() + 1;
+	unsigned int rNeighbor = rand() % currentCell->vecNeighbours.size() + 1; // number between 0 - size
 	Cell* choice = nullptr;
 	if (r < currentCell->vecNeighbours.size()) 
 	{

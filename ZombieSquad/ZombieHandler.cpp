@@ -69,7 +69,7 @@ Command* ZombieHandler::handleInput(Zombie& actor)
 			ZombieSeesTarget(player->GetPosition(), actor))
 		{
 			// If zombie can see player, chase them
-			if (player->GetCurrentState()->GetStateID() != StateID::STATE_DEAD)
+			if (player->GetCurrentState()->GetStateID() != StateId::STATE_DEAD)
 			{
 				return new ChasePlayer(player);
 			}
@@ -91,7 +91,7 @@ const Player* ZombieHandler::GetClosestPlayer(Zombie& zombie)
 	{
 		if (Vec2f::DistanceBetween(itr->GetPosition(), zombie.GetPosition()) < distance)
 		{
-			if (itr->GetCurrentState()->GetStateID() != StateID::STATE_DEAD)
+			if (itr->GetCurrentState()->GetStateID() != StateId::STATE_DEAD)
 			{
 				distance = Vec2f::DistanceBetween(itr->GetPosition(), zombie.GetPosition());
 				ret = itr;
