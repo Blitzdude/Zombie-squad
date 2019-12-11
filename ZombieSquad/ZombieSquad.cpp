@@ -28,11 +28,11 @@ bool ZombieSquad::OnUserCreate()
 
 	// Put player characters into the game
 	// Player 1
-	Player* player1 = SpawnPlayer(startX, startY, 0.0f, 0, *this, 0.0f, true);
+	Player* player1 = SpawnPlayer(startX, startY, 3.0f*PI / 2.0f, 0, *this, 0.0f, true);
 	// Player 2
-	Player* player2 = SpawnPlayer(startX, startY, 0.0f, 1, *this, 3.0f);
+	Player* player2 = SpawnPlayer(startX, startY, 3.0f * PI / 2.0f, 1, *this, 3.0f);
 	// Player 3
-	Player* player3 = SpawnPlayer(startX, startY, 0.0f, 2, *this, 6.0f);
+	Player* player3 = SpawnPlayer(startX, startY, 3.0f * PI / 2.0f, 2, *this, 6.0f);
 
 	// Initialize handlers
 	createSuccess = m_zombieHandler.Init(*player1, *player2, *player3);
