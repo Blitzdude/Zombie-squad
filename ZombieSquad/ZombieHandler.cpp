@@ -110,7 +110,6 @@ void ZombieHandler::AddZombie(Zombie* zombie)
 
 void ZombieHandler::RemoveDestroyed()
 {
-	// Remove destroyed actors (Bullets mostly)
 	// https://stackoverflow.com/questions/991335/how-to-erase-delete-pointers-to-objects-stored-in-a-vector rlbond's answer
 	// Apply a deleting function to each element. (call the destructor and make the pointer null)
 	std::for_each(m_vecZombies.begin(), m_vecZombies.end(), [](Zombie*& e)
@@ -125,7 +124,6 @@ void ZombieHandler::RemoveDestroyed()
 	std::vector<Zombie*>::iterator newEnd = std::remove(m_vecZombies.begin(), m_vecZombies.end(), static_cast<Zombie*>(nullptr));
 	// erase the elements from the vector
 	m_vecZombies.erase(newEnd, m_vecZombies.end());
-	// DELETE ACTORS END
 }
 
 bool ZombieHandler::ZombieSeesTarget(const Vec2f& target, const Zombie& zombie)
