@@ -91,7 +91,7 @@ public:
 	{
 		T dot = DotProduct(v1, v2);
 		T det = v1.x*v2.y - v1.y*v2.x;
-		T ret = std::atan2(det, dot);
+		T ret = atan2(det, dot);
 
 		return ret;
 	}
@@ -105,7 +105,7 @@ public:
 
 		T dot = DotProduct(v1, ref);
 		T det = v1.x*ref.y - v1.y*ref.x;
-		T ret = std::atan2(det, dot);
+		T ret = atan2(det, dot);
 		if (ret < 0.0f)
 			ret = (PI + ret) + PI; // ret is negative
 		return ret;
